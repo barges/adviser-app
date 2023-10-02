@@ -33,7 +33,7 @@ class RoutePathsZodiac {
   static const duplicateService = '${ZodiacBrand.alias}DuplicateService';
   static const editService = '${ZodiacBrand.alias}EditService';
   static const completeService = '${ZodiacBrand.alias}CompleteService';
-  static const categoriesListScreen = '${ZodiacBrand.alias}CategoriesList';
+  static const selectCategoriesScreen = '${ZodiacBrand.alias}SelectCategories';
   static const categoriesMethodsListScreen =
       '${ZodiacBrand.alias}CategoriesMethodsList';
   static const selectMethodsScreen = '${ZodiacBrand.alias}SelectMethods';

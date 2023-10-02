@@ -4,7 +4,7 @@ import 'package:zodiac/presentation/screens/add_service/add_service_screen.dart'
 import 'package:zodiac/presentation/screens/article_details_screen/article_details_screen.dart';
 import 'package:zodiac/presentation/screens/balance_and_transactions/balance_and_transactions_screen.dart';
 import 'package:zodiac/presentation/screens/brand_screen/zodiac_brand_screen.dart';
-import 'package:zodiac/presentation/screens/categories_list/categories_list_screen.dart';
+import 'package:zodiac/presentation/screens/select_categories/select_categories_screen.dart';
 import 'package:zodiac/presentation/screens/categories_methods_list/categories_methods_list_screen.dart';
 import 'package:zodiac/presentation/screens/chat/chat_screen.dart';
 import 'package:zodiac/presentation/screens/complete_service/complete_service_screen.dart';
@@ -180,9 +180,9 @@ const zodiacRoute = AutoRoute(
       name: RoutePathsZodiac.completeService,
     ),
     AutoRoute(
-      page: CategoriesListScreen,
-      path: RoutePathsZodiac.categoriesListScreen,
-      name: RoutePathsZodiac.categoriesListScreen,
+      page: SelectCategoriesScreen,
+      path: RoutePathsZodiac.selectCategoriesScreen,
+      name: RoutePathsZodiac.selectCategoriesScreen,
     ),
     AutoRoute(
       page: CategoriesMethodsListScreen,

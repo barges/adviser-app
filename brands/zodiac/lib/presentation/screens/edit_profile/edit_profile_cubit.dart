@@ -172,7 +172,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     emit(state.copyWith(selectedBrandIndex: index));
   }
 
-  void goToCategoriesList(BuildContext context) {
+  void goToSelectCategories(BuildContext context) {
     List<int> selectedIds = [];
 
     for (var element in state.advisorCategories[state.selectedBrandIndex]) {
@@ -184,7 +184,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     final int? mainCategoryId = _mainCategoryIds[state.selectedBrandIndex];
 
     context.push(
-        route: ZodiacCategoriesList(
+        route: ZodiacSelectCategories(
       selectedCategoryIds: selectedIds,
       mainCategoryId: mainCategoryId,
       returnCallback: _setCategories,

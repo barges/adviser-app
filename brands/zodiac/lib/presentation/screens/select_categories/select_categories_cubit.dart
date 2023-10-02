@@ -8,23 +8,23 @@ import 'package:zodiac/data/network/requests/list_request.dart';
 import 'package:zodiac/data/network/responses/specializations_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_edit_profile_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
-import 'package:zodiac/presentation/screens/categories_list/categories_list_state.dart';
+import 'package:zodiac/presentation/screens/select_categories/select_categories_state.dart';
 import 'package:zodiac/presentation/screens/categories_methods_list/categories_methods_list_screen.dart';
 
 const int maxCategoriesCount = 3;
 
-class CategoriesListCubit extends Cubit<CategoriesListState> {
+class SelectCategoriesCubit extends Cubit<SelectCategoriesState> {
   final ZodiacEditProfileRepository _editProfileRepository;
   final List<int> _selectedCategoryIds;
   final int? _mainCategoryId;
   final Function(List<CategoryInfo>, int) _returnCallback;
 
-  CategoriesListCubit(
+  SelectCategoriesCubit(
     this._selectedCategoryIds,
     this._mainCategoryId,
     this._returnCallback,
     this._editProfileRepository,
-  ) : super(const CategoriesListState()) {
+  ) : super(const SelectCategoriesState()) {
     emit(state.copyWith(
       selectedIds: _selectedCategoryIds,
       mainCategoryId: _mainCategoryId,

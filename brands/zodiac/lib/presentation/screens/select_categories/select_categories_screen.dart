@@ -7,16 +7,16 @@ import 'package:zodiac/data/models/user_info/category_info.dart';
 import 'package:zodiac/domain/repositories/zodiac_edit_profile_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
-import 'package:zodiac/presentation/screens/categories_list/categories_list_cubit.dart';
-import 'package:zodiac/presentation/screens/categories_list/widgets/categories_list_widget.dart';
+import 'package:zodiac/presentation/screens/select_categories/select_categories_cubit.dart';
+import 'package:zodiac/presentation/screens/select_categories/widgets/categories_list_widget.dart';
 import 'package:zodiac/presentation/screens/edit_profile/widgets/tile_menu_button.dart';
 
-class CategoriesListScreen extends StatelessWidget {
+class SelectCategoriesScreen extends StatelessWidget {
   final List<int> selectedCategoryIds;
   final int? mainCategoryId;
   final Function(List<CategoryInfo>, int) returnCallback;
 
-  const CategoriesListScreen({
+  const SelectCategoriesScreen({
     Key? key,
     required this.selectedCategoryIds,
     required this.returnCallback,
@@ -28,23 +28,23 @@ class CategoriesListScreen extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
 
     return BlocProvider(
-      create: (context) => CategoriesListCubit(
+      create: (context) => SelectCategoriesCubit(
         selectedCategoryIds,
         mainCategoryId,
         returnCallback,
         zodiacGetIt.get<ZodiacEditProfileRepository>(),
       ),
       child: Builder(builder: (context) {
-        final CategoriesListCubit categoriesListCubit =
-            context.read<CategoriesListCubit>();
+        final SelectCategoriesCubit categoriesListCubit =
+            context.read<SelectCategoriesCubit>();
 
         return Scaffold(
           appBar: SimpleAppBar(
             title: SZodiac.of(context).selectCategoriesZodiac,
           ),
           body: Builder(builder: (context) {
-            final List<CategoryInfo>? categories = context
-                .select((CategoriesListCubit cubit) => cubit.state.categories);
+            final List<CategoryInfo>? categories = context.select(
+                (SelectCategoriesCubit cubit) => cubit.state.categories);
 
             if (categories != null) {
               return SingleChildScrollView(
@@ -63,11 +63,11 @@ class CategoriesListScreen extends StatelessWidget {
                       ),
                       Builder(builder: (context) {
                         final List<int> selectedIds = context.select(
-                            (CategoriesListCubit cubit) =>
+                            (SelectCategoriesCubit cubit) =>
                                 cubit.state.selectedIds);
 
                         final int? mainCategoryId = context.select(
-                            (CategoriesListCubit cubit) =>
+                            (SelectCategoriesCubit cubit) =>
                                 cubit.state.mainCategoryId);
 
                         final bool mainCategoryIsNull = mainCategoryId == null;
@@ -115,7 +115,8 @@ class CategoriesListScreen extends StatelessWidget {
               ),
               child: Builder(builder: (context) {
                 final int? mainCategoryId = context.select(
-                    (CategoriesListCubit cubit) => cubit.state.mainCategoryId);
+                    (SelectCategoriesCubit cubit) =>
+                        cubit.state.mainCategoryId);
 
                 return AppElevatedButton(
                   title: SZodiac.of(context).saveZodiac,

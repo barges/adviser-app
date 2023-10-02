@@ -66,8 +66,6 @@ import 'package:zodiac/presentation/screens/balance_and_transactions/balance_and
     as _i30;
 import 'package:zodiac/presentation/screens/brand_screen/zodiac_brand_screen.dart'
     as _i4;
-import 'package:zodiac/presentation/screens/categories_list/categories_list_screen.dart'
-    as _i45;
 import 'package:zodiac/presentation/screens/categories_methods_list/categories_methods_list_screen.dart'
     as _i46;
 import 'package:zodiac/presentation/screens/chat/chat_screen.dart' as _i39;
@@ -104,6 +102,8 @@ import 'package:zodiac/presentation/screens/phone_number/phone_number_screen.dar
     as _i31;
 import 'package:zodiac/presentation/screens/reviews/reviews_screen.dart'
     as _i29;
+import 'package:zodiac/presentation/screens/select_categories/select_categories_screen.dart'
+    as _i45;
 import 'package:zodiac/presentation/screens/select_methods/select_methods_screen.dart'
     as _i47;
 import 'package:zodiac/presentation/screens/send_image/send_image_screen.dart'
@@ -505,11 +505,11 @@ class MainAppRouter extends _i53.RootStackRouter {
         child: const _i44.CompleteServiceScreen(),
       );
     },
-    ZodiacCategoriesList.name: (routeData) {
-      final args = routeData.argsAs<ZodiacCategoriesListArgs>();
+    ZodiacSelectCategories.name: (routeData) {
+      final args = routeData.argsAs<ZodiacSelectCategoriesArgs>();
       return _i53.AdaptivePage<dynamic>(
         routeData: routeData,
-        child: _i45.CategoriesListScreen(
+        child: _i45.SelectCategoriesScreen(
           key: args.key,
           selectedCategoryIds: args.selectedCategoryIds,
           returnCallback: args.returnCallback,
@@ -860,8 +860,8 @@ class MainAppRouter extends _i53.RootStackRouter {
                   parent: Zodiac.name,
                 ),
                 _i53.RouteConfig(
-                  ZodiacCategoriesList.name,
-                  path: 'zodiacCategoriesList',
+                  ZodiacSelectCategories.name,
+                  path: 'zodiacSelectCategories',
                   parent: Zodiac.name,
                 ),
                 _i53.RouteConfig(
@@ -2034,10 +2034,10 @@ class ZodiacCompleteService extends _i53.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i45.CategoriesListScreen]
-class ZodiacCategoriesList
-    extends _i53.PageRouteInfo<ZodiacCategoriesListArgs> {
-  ZodiacCategoriesList({
+/// [_i45.SelectCategoriesScreen]
+class ZodiacSelectCategories
+    extends _i53.PageRouteInfo<ZodiacSelectCategoriesArgs> {
+  ZodiacSelectCategories({
     _i54.Key? key,
     required List<int> selectedCategoryIds,
     required dynamic Function(
@@ -2046,9 +2046,9 @@ class ZodiacCategoriesList
     ) returnCallback,
     int? mainCategoryId,
   }) : super(
-          ZodiacCategoriesList.name,
-          path: 'zodiacCategoriesList',
-          args: ZodiacCategoriesListArgs(
+          ZodiacSelectCategories.name,
+          path: 'zodiacSelectCategories',
+          args: ZodiacSelectCategoriesArgs(
             key: key,
             selectedCategoryIds: selectedCategoryIds,
             returnCallback: returnCallback,
@@ -2056,11 +2056,11 @@ class ZodiacCategoriesList
           ),
         );
 
-  static const String name = 'ZodiacCategoriesList';
+  static const String name = 'ZodiacSelectCategories';
 }
 
-class ZodiacCategoriesListArgs {
-  const ZodiacCategoriesListArgs({
+class ZodiacSelectCategoriesArgs {
+  const ZodiacSelectCategoriesArgs({
     this.key,
     required this.selectedCategoryIds,
     required this.returnCallback,
@@ -2080,7 +2080,7 @@ class ZodiacCategoriesListArgs {
 
   @override
   String toString() {
-    return 'ZodiacCategoriesListArgs{key: $key, selectedCategoryIds: $selectedCategoryIds, returnCallback: $returnCallback, mainCategoryId: $mainCategoryId}';
+    return 'ZodiacSelectCategoriesArgs{key: $key, selectedCategoryIds: $selectedCategoryIds, returnCallback: $returnCallback, mainCategoryId: $mainCategoryId}';
   }
 }
 

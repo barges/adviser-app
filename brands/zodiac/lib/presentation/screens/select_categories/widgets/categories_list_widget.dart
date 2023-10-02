@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zodiac/data/models/user_info/category_info.dart';
 import 'package:zodiac/generated/l10n.dart';
-import 'package:zodiac/presentation/screens/categories_list/categories_list_cubit.dart';
-import 'package:zodiac/presentation/screens/categories_list/widgets/category_item_widget.dart';
+import 'package:zodiac/presentation/screens/select_categories/select_categories_cubit.dart';
+import 'package:zodiac/presentation/screens/select_categories/widgets/category_item_widget.dart';
 
 class CategoriesListWidget extends StatelessWidget {
   final List<CategoryInfo> categories;
@@ -18,11 +18,11 @@ class CategoriesListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    final CategoriesListCubit categoriesListCubit =
-        context.read<CategoriesListCubit>();
+    final SelectCategoriesCubit categoriesListCubit =
+        context.read<SelectCategoriesCubit>();
 
-    final List<int> selectedIds =
-        context.select((CategoriesListCubit cubit) => cubit.state.selectedIds);
+    final List<int> selectedIds = context
+        .select((SelectCategoriesCubit cubit) => cubit.state.selectedIds);
 
     return Container(
       decoration: BoxDecoration(
