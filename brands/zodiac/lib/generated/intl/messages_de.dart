@@ -187,6 +187,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Erklären Sie in 3-5 Schritten, was die Kunden bekommen."),
         "firstSelectTheCategoriesZodiac": MessageLookupByLibrary.simpleMessage(
             "Wählen Sie zunächst die Kategorien aus"),
+        "firstSelectTheMethodsZodiac": MessageLookupByLibrary.simpleMessage(
+            "Wählen Sie zunächst die Methoden aus"),
         "firstYouNeedFillInformationAboutServiceZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Zuerst müssen Sie alle erforderlichen Informationen über den Dienst ausfüllen, ihn dann zur Genehmigung einsenden und sobald er fertig ist, können Sie ihn verkaufen"),
@@ -226,6 +228,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Hauptkategorie"),
         "mainLanguageZodiac":
             MessageLookupByLibrary.simpleMessage("Muttersprache"),
+        "mainMethodZodiac":
+            MessageLookupByLibrary.simpleMessage("Hauptmethode"),
         "mainSpecialtyZodiac":
             MessageLookupByLibrary.simpleMessage("Hauptspezialität"),
         "mainZodiac": MessageLookupByLibrary.simpleMessage("Hauptsächlich"),
@@ -346,6 +350,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Wählen Sie Kategorien aus"),
         "selectMainCategoryZodiac":
             MessageLookupByLibrary.simpleMessage("Hauptkategorie auswählen"),
+        "selectMainMethodZodiac": MessageLookupByLibrary.simpleMessage(
+            "Wählen Sie die Hauptmethode aus"),
         "selectMethodsZodiac":
             MessageLookupByLibrary.simpleMessage("Wählen Sie Methoden aus"),
         "selectedCouponsWillBeRenewedAutomaticallyZodiac":

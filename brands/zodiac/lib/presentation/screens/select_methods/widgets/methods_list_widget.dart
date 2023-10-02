@@ -16,6 +16,9 @@ class MethodsListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
+    final SelectMethodsCubit selectMethodsCubit =
+        context.read<SelectMethodsCubit>();
+
     final List<int> selectedIds =
         context.select((SelectMethodsCubit cubit) => cubit.state.selectedIds);
 
@@ -64,9 +67,13 @@ class MethodsListWidget extends StatelessWidget {
           height: 16.0,
         ),
         ListView.separated(
+          shrinkWrap: true,
           itemBuilder: (context, index) => MethodItem(
             title: methods[index].name ?? '',
             isSelected: selectedIds.contains(methods[index].id),
+            onTap: () =>
+                selectMethodsCubit.onMethodSelectChange(methods[index].id),
+            limitReached: selectedIds.length >= maxMethodsCount,
           ),
           separatorBuilder: (context, index) => const SizedBox(height: 12.0),
           itemCount: methods.length,

@@ -247,5 +247,8 @@
   "firstSelectTheCategoriesZodiac": "Primeiro selecione as categorias",
   "methodsZodiac": "Métodos",
   "selectMethodsZodiac": "Selecione métodos",
-  "youCanChooseUpTo3MethodsZodiac": "Você pode escolher até 3 métodos com os quais está trabalhando e o método principal entre eles"
+  "youCanChooseUpTo3MethodsZodiac": "Você pode escolher até 3 métodos com os quais está trabalhando e o método principal entre eles",
+  "mainMethodZodiac": "Método principal",
+  "selectMainMethodZodiac": "Selecione o método principal",
+  "firstSelectTheMethodsZodiac": "Primeiro selecione os métodos"
 }

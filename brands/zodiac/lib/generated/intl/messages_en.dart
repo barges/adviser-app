@@ -184,6 +184,8 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Explain in 3-5 steps what the customers will get."),
         "firstSelectTheCategoriesZodiac":
             MessageLookupByLibrary.simpleMessage("First select the categories"),
+        "firstSelectTheMethodsZodiac":
+            MessageLookupByLibrary.simpleMessage("First select the methods"),
         "firstYouNeedFillInformationAboutServiceZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "First you need to fill up all required information about the service then send it for approval and as it would be ready you will be able to sell it"),
@@ -221,6 +223,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Main category"),
         "mainLanguageZodiac":
             MessageLookupByLibrary.simpleMessage("Main language"),
+        "mainMethodZodiac": MessageLookupByLibrary.simpleMessage("Main method"),
         "mainSpecialtyZodiac":
             MessageLookupByLibrary.simpleMessage("Main specialty"),
         "mainZodiac": MessageLookupByLibrary.simpleMessage("Main"),
@@ -344,6 +347,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Select categories"),
         "selectMainCategoryZodiac":
             MessageLookupByLibrary.simpleMessage("Select main category"),
+        "selectMainMethodZodiac":
+            MessageLookupByLibrary.simpleMessage("Select main method"),
         "selectMethodsZodiac":
             MessageLookupByLibrary.simpleMessage("Select methods"),
         "selectedCouponsWillBeRenewedAutomaticallyZodiac":

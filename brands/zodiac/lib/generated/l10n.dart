@@ -2545,6 +2545,36 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Main method`
+  String get mainMethodZodiac {
+    return Intl.message(
+      'Main method',
+      name: 'mainMethodZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select main method`
+  String get selectMainMethodZodiac {
+    return Intl.message(
+      'Select main method',
+      name: 'selectMainMethodZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `First select the methods`
+  String get firstSelectTheMethodsZodiac {
+    return Intl.message(
+      'First select the methods',
+      name: 'firstSelectTheMethodsZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {
