@@ -378,12 +378,9 @@ class WebSocketManagerImpl implements WebSocketManager {
         _currentState = WebSocketState.closed;
         ZodiacBrand().analytics.trackEvent(
               AnalyticsEvent.socketDisconnect(
-                reason: ConnectivityService.hasConnection
-                    ? ''
-                    : AnalyticsValues.lostConnection,
-                closedByServer:
-                    ConnectivityService.hasConnection ? true : false,
-                socketLiveTime: getSocketLiveTime(),
+                reason: 'code:${_channel!.closeCode}. ${_channel!.closeReason}',
+                closedByServer: true,
+                socketLiveTime: _getSocketLiveTime(),
               ),
             );
         // _authCheckOnBackend();
@@ -394,22 +391,12 @@ class WebSocketManagerImpl implements WebSocketManager {
         ZodiacBrand().analytics.trackEvent(AnalyticsEvent.socketDisconnect(
               reason: error.toString(),
               closedByServer: ConnectivityService.hasConnection ? true : false,
-              socketLiveTime: getSocketLiveTime(),
+              socketLiveTime: _getSocketLiveTime(),
             ));
         connect();
       });
       _onStart(advisorId);
     }
-  }
-
-  int getSocketLiveTime() {
-    if (_startTimeSocketConnected != null) {
-      final socketLiveTime =
-          DateTime.now().difference(_startTimeSocketConnected!).inSeconds;
-      _startTimeSocketConnected = null;
-      return socketLiveTime;
-    }
-    return 0;
   }
 
   @override
@@ -574,9 +561,19 @@ class WebSocketManagerImpl implements WebSocketManager {
       ZodiacBrand().analytics.trackEvent(AnalyticsEvent.socketDisconnect(
             reason: reason,
             closedByServer: false,
-            socketLiveTime: getSocketLiveTime(),
+            socketLiveTime: _getSocketLiveTime(),
           ));
     }
+  }
+
+  int _getSocketLiveTime() {
+    if (_startTimeSocketConnected != null) {
+      final socketLiveTime =
+          DateTime.now().difference(_startTimeSocketConnected!).inSeconds;
+      _startTimeSocketConnected = null;
+      return socketLiveTime;
+    }
+    return 0;
   }
 
   void endChat() {
