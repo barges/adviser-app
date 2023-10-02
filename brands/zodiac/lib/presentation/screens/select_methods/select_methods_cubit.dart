@@ -80,4 +80,19 @@ class SelectMethodsCubit extends Cubit<SelectMethodsState> {
   void setMainMethodId(int id) {
     emit(state.copyWith(mainMethodId: id));
   }
+
+  void saveChanges(BuildContext context) {
+    List<CategoryInfo> selectedCategories = [];
+
+    state.methods?.forEach((element) {
+      if (state.selectedIds.contains(element.id)) {
+        selectedCategories.add(element);
+      }
+    });
+
+    if (state.mainMethodId != null) {
+      _returnCallback(selectedCategories, state.mainMethodId!);
+      context.pop();
+    }
+  }
 }

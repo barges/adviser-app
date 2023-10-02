@@ -9,6 +9,7 @@ import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/screens/select_methods/select_methods_cubit.dart';
 import 'package:zodiac/presentation/screens/select_methods/widgets/main_method_button.dart';
 import 'package:zodiac/presentation/screens/select_methods/widgets/methods_list_widget.dart';
+import 'package:zodiac/presentation/screens/select_methods/widgets/save_methods_button.dart';
 
 class SelectMethodsScreen extends StatelessWidget {
   final List<int> selectedMethodIds;
@@ -58,6 +59,7 @@ class SelectMethodsScreen extends StatelessWidget {
             return const SizedBox.shrink();
           }
         }),
+        bottomNavigationBar: const SaveMethodsButton(),
       ),
     );
   }
