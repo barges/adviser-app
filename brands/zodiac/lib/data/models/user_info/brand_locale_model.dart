@@ -1,6 +1,7 @@
 // ignore_for_file: invalid_annotation_target
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:zodiac/data/models/enums/profile_field.dart';
 import 'package:zodiac/data/models/user_info/locale_descriptions.dart';
 import 'package:zodiac/data/models/user_info/locale_model.dart';
 
@@ -20,7 +21,7 @@ class BrandLocaleModel with _$BrandLocaleModel {
   const factory BrandLocaleModel({
     LocaleModel? locale,
     LocaleDescriptions? fields,
-    List<String>? pendingApproval,
+    List<ProfileField>? pendingApproval,
   }) = _BrandLocaleModel;
 
   factory BrandLocaleModel.fromJson(Map<String, dynamic> json) =>

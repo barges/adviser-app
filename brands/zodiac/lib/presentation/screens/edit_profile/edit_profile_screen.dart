@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
@@ -87,10 +88,10 @@ class EditProfileScreen extends StatelessWidget {
                             return IndexedStack(
                               index: selectedBrandIndex,
                               children: brands
-                                  .map(
-                                    (e) => EditProfileBodyWidget(
+                                  .mapIndexed(
+                                    (i, e) => EditProfileBodyWidget(
                                       brands: brands,
-                                      selectedBrandIndex: selectedBrandIndex,
+                                      selectedBrandIndex: i,
                                     ),
                                   )
                                   .toList(),

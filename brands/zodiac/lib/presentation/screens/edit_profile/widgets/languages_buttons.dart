@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/edit_profile/edit_profile_cubit.dart';
@@ -12,6 +13,7 @@ class LanguagesButtons extends StatelessWidget {
   final ValueChanged<int> onTapToLocale;
   final VoidCallback addLocaleOnTap;
   final int? currentLocaleIndex;
+  final int selectedBrandIndex;
 
   const LanguagesButtons({
     Key? key,
@@ -19,6 +21,7 @@ class LanguagesButtons extends StatelessWidget {
     required this.locales,
     required this.onTapToLocale,
     required this.addLocaleOnTap,
+    required this.selectedBrandIndex,
   }) : super(key: key);
 
   @override
@@ -36,9 +39,14 @@ class LanguagesButtons extends StatelessWidget {
             children: locales.mapIndexed<Widget>(
               (index, element) {
                 final bool isSelected = index == currentLocaleIndex;
-                final GlobalKey key = editProfileCubit.localesGlobalKeys[index];
-                final bool isMainLocale =
-                    element == editProfileCubit.state.advisorMainLocale;
+                final GlobalKey key = editProfileCubit
+                    .localesGlobalKeys[selectedBrandIndex][index];
+
+                logger.d('Keyy: $key');
+
+                ///TODO - Refactoring
+                final bool isMainLocale = true;
+                // element == editProfileCubit.state.advisorMainLocale;
 
                 if (index < locales.length - 1) {
                   return Padding(

@@ -29,7 +29,6 @@ import 'package:zodiac/presentation/screens/services_messages/services_messages_
 import 'package:zodiac/presentation/screens/sms_verification/sms_verification_screen.dart';
 import 'package:zodiac/presentation/screens/sms_verification/widgets/phone_number_verified_screen.dart';
 import 'package:zodiac/presentation/screens/send_image/send_image_screen.dart';
-import 'package:zodiac/presentation/screens/specialities_list/specialities_list_screen.dart';
 import 'package:zodiac/presentation/screens/support/support_screen.dart';
 import 'package:zodiac/presentation/wrappers/auth_wrapper/zodiac_auth_wrapper.dart';
 import 'package:zodiac/zodiac.dart';
@@ -133,11 +132,6 @@ const zodiacRoute = AutoRoute(
       page: SupportScreen,
       path: RoutePathsZodiac.supportScreen,
       name: RoutePathsZodiac.supportScreen,
-    ),
-    AutoRoute(
-      page: SpecialitiesListScreen,
-      path: RoutePathsZodiac.specialitiesListScreen,
-      name: RoutePathsZodiac.specialitiesListScreen,
     ),
     AutoRoute(
       page: LocalesListScreen,

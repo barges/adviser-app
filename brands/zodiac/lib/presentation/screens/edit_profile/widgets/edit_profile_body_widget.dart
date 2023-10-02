@@ -11,6 +11,7 @@ import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/user_avatar.dart';
 import 'package:zodiac/presentation/screens/edit_profile/edit_profile_cubit.dart';
 import 'package:zodiac/presentation/screens/edit_profile/widgets/brands_part/brands_list_widget.dart';
+import 'package:zodiac/presentation/screens/edit_profile/widgets/locales_descriptions_part_widget.dart';
 import 'package:zodiac/presentation/screens/edit_profile/widgets/tile_menu_button.dart';
 
 class EditProfileBodyWidget extends StatelessWidget {
@@ -51,6 +52,7 @@ class EditProfileBodyWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(
               horizontal: AppConstants.horizontalScreenPadding),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Builder(builder: (context) {
                 final List<List<CategoryInfo>> categories = context.select(
@@ -85,6 +87,12 @@ class EditProfileBodyWidget extends StatelessWidget {
                   onTap: () => editProfileCubit.goToSelectMethods(context),
                 );
               }),
+              const SizedBox(
+                height: 24.0,
+              ),
+              LocalesDescriptionsPartWidget(
+                selectedBrandIndex: selectedBrandIndex,
+              ),
             ],
           ),
         )

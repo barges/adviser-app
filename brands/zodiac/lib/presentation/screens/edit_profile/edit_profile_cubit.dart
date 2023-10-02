@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,9 @@ import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/enums/brands.dart';
+import 'package:zodiac/data/models/enums/profile_field.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
+import 'package:zodiac/data/models/user_info/brand_locale_model.dart';
 import 'package:zodiac/data/models/user_info/brand_model.dart';
 import 'package:zodiac/data/models/user_info/category_info.dart';
 import 'package:zodiac/data/models/user_info/detailed_user_info.dart';
@@ -33,10 +36,10 @@ import 'package:zodiac/presentation/screens/edit_profile/edit_profile_state.dart
 
 const int _textFieldsCount = 4;
 
-const int nickNameIndex = 0;
-const int aboutIndex = 1;
-const int experienceIndex = 2;
-const int helloMessageIndex = 3;
+int nickNameIndex = ProfileField.nicknameIndex;
+int aboutIndex = ProfileField.aboutIndex;
+int experienceIndex = ProfileField.experienceIndex;
+int helloMessageIndex = ProfileField.helloMessageIndex;
 
 class EditProfileCubit extends Cubit<EditProfileState> {
   final ZodiacCachingManager _cachingManager;
@@ -45,12 +48,12 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   final ZodiacEditProfileRepository _editProfileRepository;
 
   late final StreamSubscription<bool> _internetConnectionSubscription;
-  late List<GlobalKey> localesGlobalKeys;
+  List<List<GlobalKey>> localesGlobalKeys = [];
 
-  final Map<String, List<TextEditingController>> textControllersMap = {};
-  final Map<String, List<FocusNode>> focusNodesMap = {};
-  final Map<String, List<ValueNotifier>> hasFocusNotifiersMap = {};
-  final Map<String, List<ValidationErrorType>> errorTextsMap = {};
+  final List<Map<String, List<TextEditingController>>> textControllersMap = [];
+  final List<Map<String, List<FocusNode>>> focusNodesMap = [];
+  final List<Map<String, List<ValueNotifier>>> hasFocusNotifiersMap = [];
+  final List<Map<String, List<ValidationErrorType>>> errorTextsMap = [];
 
   final Map<String, List<String>> _oldTextsMap = {};
 
@@ -76,24 +79,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     this._connectivityService,
     this._editProfileRepository,
   ) : super(const EditProfileState()) {
-    final DetailedUserInfo? userInfoFromCache =
-        _cachingManager.getDetailedUserInfo();
-    final List<String> locales = userInfoFromCache?.locales ?? [];
-    _oldLocales.addAll(locales);
-    localesGlobalKeys = locales.map((e) => GlobalKey()).toList();
-
-    final List<CategoryInfo>? advisorCategories = userInfoFromCache?.category;
-    List<CategoryInfo> categories = [];
-    if (advisorCategories != null) {
-      categories = CategoryInfo.normalizeList(advisorCategories);
-      _oldCategories = categories;
-    }
-    emit(state.copyWith(
-      detailedUserInfo: userInfoFromCache,
-      advisorMainLocale: userInfoFromCache?.details?.locale ?? 'en',
-      //  advisorCategories: categories,
-    ));
-
     _internetConnectionSubscription =
         _connectivityService.connectivityStream.listen((event) {
       if (event) {
@@ -106,39 +91,53 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   @override
   Future<void> close() {
-    for (var entry in textControllersMap.entries) {
-      for (var element in entry.value) {
-        element.dispose();
+    for (var element in textControllersMap) {
+      for (var entry in element.entries) {
+        for (var element in entry.value) {
+          element.dispose();
+        }
       }
     }
-    for (var entry in focusNodesMap.entries) {
-      for (var element in entry.value) {
-        element.dispose();
+
+    for (var element in focusNodesMap) {
+      for (var entry in element.entries) {
+        for (var element in entry.value) {
+          element.dispose();
+        }
       }
     }
-    for (var entry in hasFocusNotifiersMap.entries) {
-      for (var element in entry.value) {
-        element.dispose();
+
+    for (var element in hasFocusNotifiersMap) {
+      for (var entry in element.entries) {
+        for (var element in entry.value) {
+          element.dispose();
+        }
       }
     }
+
     _internetConnectionSubscription.cancel();
     return super.close();
   }
 
   Future<void> getData() async {
     ///////////
-    final bool mainIsDone = await _getMainSpeciality();
-    final bool localesDescriptionsIsDone = await _setUpLocalesDescriptions();
+    // final bool mainIsDone = await _getMainSpeciality();
+    // final bool localesDescriptionsIsDone = await _setUpLocalesDescriptions();
 
-    if (mainIsDone && localesDescriptionsIsDone) {
-      _internetConnectionSubscription.cancel();
-      emit(state.copyWith(
-        canRefresh: false,
-        advisorLocales: [..._oldLocales],
-      ));
-      _updateTextsFlag();
-    }
+    // if (mainIsDone && localesDescriptionsIsDone) {
+    //   _internetConnectionSubscription.cancel();
+    //   emit(state.copyWith(
+    //     canRefresh: false,
+    //     advisorLocales: [..._oldLocales],
+    //   ));
+    //   _updateTextsFlag();
+    // }
     ////////////
+
+    textControllersMap.clear();
+    focusNodesMap.clear();
+    hasFocusNotifiersMap.clear();
+    errorTextsMap.clear();
 
     final BrandLocalesResponse response =
         await _editProfileRepository.getBrandLocales(AuthorizedRequest());
@@ -146,14 +145,33 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     if (response.status == true) {
       List<BrandModel>? brands =
           response.result?.map((e) => e.brand ?? const BrandModel()).toList();
+      List<List<BrandLocaleModel>>? locales = response.result
+          ?.map((e) => e.locales ?? List<BrandLocaleModel>.empty())
+          .toList();
 
       brands?.forEach(
-        (element) => _mainCategoryIds.add(element.fields?.mainCategoryId),
+        (element) {
+          _mainCategoryIds.add(element.fields?.mainCategoryId);
+          _mainMethodIds.add(element.fields?.mainMethodId);
+        },
       );
 
-      brands?.forEach(
-        (element) => _mainMethodIds.add(element.fields?.mainMethodId),
-      );
+      List<List<String>> brandLocales = [];
+
+      locales?.forEachIndexed((brandIndex, element) {
+        brandLocales.add(element.map((e) => e.locale?.code ?? '').toList());
+        textControllersMap.add({});
+        focusNodesMap.add({});
+        hasFocusNotifiersMap.add({});
+        errorTextsMap.add({});
+        localesGlobalKeys.add([]);
+
+        for (BrandLocaleModel element in element) {
+          _setUpLocalesDescriptions(element, brandIndex);
+        }
+      });
+
+      logger.d('brandLocales: $brandLocales');
 
       emit(
         state.copyWith(
@@ -163,6 +181,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
               brands?.map((e) => e.fields?.categories ?? []).toList() ?? [],
           advisorMethods:
               brands?.map((e) => e.fields?.methods ?? []).toList() ?? [],
+          brandLocales: brandLocales,
         ),
       );
     }
@@ -262,112 +281,67 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   void changeLocaleIndex(int newIndex) {
     emit(state.copyWith(currentLocaleIndex: newIndex));
-    Utils.animateToWidget(localesGlobalKeys[newIndex]);
+    Utils.animateToWidget(
+        localesGlobalKeys[state.selectedBrandIndex][newIndex]);
   }
 
-  Future<bool> _setUpLocalesDescriptions() async {
-    bool isOk = true;
-    for (String locale in _oldLocales) {
-      final LocaleDescriptionsResponse response =
-          await _userRepository.getLocaleDescriptions(
-        LocaleDescriptionsRequest(locale: locale),
+  void _setUpLocalesDescriptions(
+      BrandLocaleModel brandLocaleModel, int brandIndex) async {
+    String? locale = brandLocaleModel.locale?.code;
+
+    if (locale != null) {
+      final List<String> texts = [];
+      texts.insert(
+        nickNameIndex,
+        brandLocaleModel.fields?.nickname?.toString().trim() ?? '',
       );
-      final LocaleDescriptions? descriptions = response.result;
-      if (response.status == true) {
-        if (descriptions != null) {
-          final List<String> texts = [];
-          texts.insert(
-            nickNameIndex,
-            descriptions.nickname?.toString().trim() ?? '',
-          );
-          texts.insert(
-            aboutIndex,
-            Utils.parseHtmlString(descriptions.about?.toString().trim() ?? ''),
-          );
-          texts.insert(
-            experienceIndex,
-            Utils.parseHtmlString(
-                descriptions.experience?.toString().trim() ?? ''),
-          );
-          texts.insert(
-            helloMessageIndex,
-            descriptions.helloMessage?.toString().trim() ?? '',
-          );
+      texts.insert(
+        aboutIndex,
+        Utils.parseHtmlString(
+            brandLocaleModel.fields?.about?.toString().trim() ?? ''),
+      );
+      texts.insert(
+        experienceIndex,
+        Utils.parseHtmlString(
+            brandLocaleModel.fields?.experience?.toString().trim() ?? ''),
+      );
+      texts.insert(
+        helloMessageIndex,
+        brandLocaleModel.fields?.helloMessage?.toString().trim() ?? '',
+      );
 
-          _oldTextsMap[locale] = texts;
+      hasFocusNotifiersMap[brandIndex][locale] =
+          texts.map((text) => ValueNotifier(false)).toList();
+      errorTextsMap[brandIndex][locale] =
+          texts.map((e) => ValidationErrorType.empty).toList();
 
-          hasFocusNotifiersMap[locale] =
-              texts.map((text) => ValueNotifier(false)).toList();
-          errorTextsMap[locale] =
-              texts.map((e) => ValidationErrorType.empty).toList();
+      textControllersMap[brandIndex][locale] = texts.mapIndexed((index, text) {
+        final TextEditingController controller = TextEditingController();
+        controller.text = text;
+        controller.addListener(() {
+          errorTextsMap[brandIndex][locale]?[index] = ValidationErrorType.empty;
+          _updateTextsFlag();
+        });
+        return controller;
+      }).toList();
+      focusNodesMap[brandIndex][locale] = texts.mapIndexed((index, text) {
+        final FocusNode node = FocusNode();
+        node.addListener(() {
+          hasFocusNotifiersMap[brandIndex][locale]?[index].value =
+              node.hasFocus;
+        });
+        return node;
+      }).toList();
 
-          textControllersMap[locale] = texts.mapIndexed((index, text) {
-            final TextEditingController controller = TextEditingController();
-            controller.text = text;
-            controller.addListener(() {
-              errorTextsMap[locale]?[index] = ValidationErrorType.empty;
-              _updateTextsFlag();
-            });
-            return controller;
-          }).toList();
-          focusNodesMap[locale] = texts.mapIndexed((index, text) {
-            final FocusNode node = FocusNode();
-            node.addListener(() {
-              hasFocusNotifiersMap[locale]?[index].value = node.hasFocus;
-            });
-            return node;
-          }).toList();
-        }
-      } else {
-        isOk = false;
-      }
+      localesGlobalKeys[brandIndex].add(GlobalKey());
     }
-    return isOk;
   }
-
-  // Future<void> goToSelectAllCategories(BuildContext context) async {
-  //   context.push(
-  //       route: ZodiacSpecialitiesList(
-  //           oldSelectedCategories: state.advisorCategories,
-  //           returnCallback: (categories) {
-  //             if (categories.isNotEmpty) {
-  //               final int? mainCategoryId =
-  //                   state.advisorMainCategory?.firstOrNull?.id;
-  //               if (mainCategoryId != null &&
-  //                   !categories
-  //                       .map((e) => e.id)
-  //                       .toList()
-  //                       .contains(mainCategoryId)) {
-  //                 _changeMainCategory([categories.first]);
-  //               }
-  //             }
-
-  //             emit(state.copyWith(advisorCategories: categories));
-  //           }));
-  // }
-
-  // Future<void> goToSelectMainCategory(BuildContext context) async {
-  //   final List<CategoryInfo>? mainCategory = state.advisorMainCategory;
-  //   final List<CategoryInfo> advisorCategories = state.advisorCategories;
-
-  //   if (mainCategory != null && advisorCategories.isNotEmpty) {
-  //     context.push(
-  //       route: ZodiacSpecialitiesList(
-  //           isMultiselect: false,
-  //           allCategories: advisorCategories,
-  //           oldSelectedCategories: mainCategory,
-  //           returnCallback: (categories) {
-  //             _changeMainCategory(categories);
-  //           }),
-  //     );
-  //   }
-  // }
 
   Future<void> goToAddNewLocale(BuildContext context) async {
     context.push(
       route: ZodiacLocalesList(
         title: SZodiac.of(context).languageZodiac,
-        unnecessaryLocalesCodes: state.advisorLocales,
+        unnecessaryLocalesCodes: state.brandLocales[state.selectedBrandIndex],
         returnCallback: (locale) {
           _addLocaleLocally(locale);
         },
@@ -457,17 +431,21 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   //   return isOk;
   // }
 
-  Future<bool> _addAdvisorLocale(String localeCode) async {
+  Future<bool> _addAdvisorLocale(String localeCode, int brandIndex) async {
     bool isOk;
 
     final String? newNickName =
-        textControllersMap[localeCode]?[nickNameIndex].text.trim();
+        textControllersMap[brandIndex][localeCode]?[nickNameIndex].text.trim();
     final String? newAbout =
-        textControllersMap[localeCode]?[aboutIndex].text.trim();
-    final String? newExperience =
-        textControllersMap[localeCode]?[experienceIndex].text.trim();
-    final String? newHelloMessage =
-        textControllersMap[localeCode]?[helloMessageIndex].text.trim();
+        textControllersMap[brandIndex][localeCode]?[aboutIndex].text.trim();
+    final String? newExperience = textControllersMap[brandIndex][localeCode]
+            ?[experienceIndex]
+        .text
+        .trim();
+    final String? newHelloMessage = textControllersMap[brandIndex][localeCode]
+            ?[helloMessageIndex]
+        .text
+        .trim();
 
     final BaseResponse response = await _userRepository.addLocaleAdvisor(
       AddRemoveLocaleRequest(
@@ -512,121 +490,121 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   }
 
   Future<bool?> _updateAdvisorLocale(String localeCode) async {
-    bool? isOk;
+    // bool? isOk;
 
-    final String? oldNickName = _oldTextsMap[localeCode]?[nickNameIndex];
-    final String? oldAbout = _oldTextsMap[localeCode]?[aboutIndex];
-    final String? oldExperience = _oldTextsMap[localeCode]?[experienceIndex];
-    final String? oldHelloMessage =
-        _oldTextsMap[localeCode]?[helloMessageIndex];
+    // final String? oldNickName = _oldTextsMap[localeCode]?[nickNameIndex];
+    // final String? oldAbout = _oldTextsMap[localeCode]?[aboutIndex];
+    // final String? oldExperience = _oldTextsMap[localeCode]?[experienceIndex];
+    // final String? oldHelloMessage =
+    //     _oldTextsMap[localeCode]?[helloMessageIndex];
 
-    final String? newNickName =
-        textControllersMap[localeCode]?[nickNameIndex].text.trim();
-    final String? newAbout =
-        textControllersMap[localeCode]?[aboutIndex].text.trim();
-    final String? newExperience =
-        textControllersMap[localeCode]?[experienceIndex].text.trim();
-    final String? newHelloMessage =
-        textControllersMap[localeCode]?[helloMessageIndex].text.trim();
+    // final String? newNickName =
+    //     textControllersMap[localeCode]?[nickNameIndex].text.trim();
+    // final String? newAbout =
+    //     textControllersMap[localeCode]?[aboutIndex].text.trim();
+    // final String? newExperience =
+    //     textControllersMap[localeCode]?[experienceIndex].text.trim();
+    // final String? newHelloMessage =
+    //     textControllersMap[localeCode]?[helloMessageIndex].text.trim();
 
-    logger.d(oldNickName);
-    logger.d(newNickName);
-    logger.d(oldNickName != newNickName);
+    // logger.d(oldNickName);
+    // logger.d(newNickName);
+    // logger.d(oldNickName != newNickName);
 
-    if (oldNickName != newNickName ||
-        oldAbout != newAbout ||
-        oldExperience != newExperience ||
-        oldHelloMessage != newHelloMessage) {
-      final BaseResponse response =
-          await _userRepository.updateLocaleDescriptionsAdvisor(
-        AddRemoveLocaleRequest(
-            brandId: Brands.zodiac.id,
-            localeCode: localeCode,
-            data: LocaleDescriptions(
-              nickname: newNickName,
-              about: newAbout,
-              experience: newExperience,
-              helloMessage: newHelloMessage,
-            )),
-      );
+    // if (oldNickName != newNickName ||
+    //     oldAbout != newAbout ||
+    //     oldExperience != newExperience ||
+    //     oldHelloMessage != newHelloMessage) {
+    //   final BaseResponse response =
+    //       await _userRepository.updateLocaleDescriptionsAdvisor(
+    //     AddRemoveLocaleRequest(
+    //         brandId: Brands.zodiac.id,
+    //         localeCode: localeCode,
+    //         data: LocaleDescriptions(
+    //           nickname: newNickName,
+    //           about: newAbout,
+    //           experience: newExperience,
+    //           helloMessage: newHelloMessage,
+    //         )),
+    //   );
 
-      if (response.status == true) {
-        final List<String> texts = [];
-        texts.insert(
-          nickNameIndex,
-          newNickName ?? '',
-        );
-        texts.insert(
-          aboutIndex,
-          newAbout ?? '',
-        );
-        texts.insert(
-          experienceIndex,
-          newExperience ?? '',
-        );
-        texts.insert(
-          helloMessageIndex,
-          newHelloMessage ?? '',
-        );
+    //   if (response.status == true) {
+    //     final List<String> texts = [];
+    //     texts.insert(
+    //       nickNameIndex,
+    //       newNickName ?? '',
+    //     );
+    //     texts.insert(
+    //       aboutIndex,
+    //       newAbout ?? '',
+    //     );
+    //     texts.insert(
+    //       experienceIndex,
+    //       newExperience ?? '',
+    //     );
+    //     texts.insert(
+    //       helloMessageIndex,
+    //       newHelloMessage ?? '',
+    //     );
 
-        _oldTextsMap[localeCode] = texts;
-        isOk = true;
-      } else {
-        isOk = false;
-      }
-    }
+    //     _oldTextsMap[localeCode] = texts;
+    //     isOk = true;
+    //   } else {
+    //     isOk = false;
+    //   }
+    // }
 
-    return isOk;
+    // return isOk;
   }
 
   void _addLocaleLocally(String localeCode) {
-    final List<String> locales = List.from(state.advisorLocales);
-    locales.add(localeCode);
+    final List<List<String>> locales = List.from(state.brandLocales);
+    locales[state.selectedBrandIndex].add(localeCode);
     _newLocales.add(localeCode);
     _setNewLocaleProperties(localeCode);
 
-    emit(state.copyWith(advisorLocales: locales));
+    emit(state.copyWith(brandLocales: locales));
 
-    final codeIndex = locales.indexOf(localeCode);
+    final codeIndex = locales[state.selectedBrandIndex].indexOf(localeCode);
     if (codeIndex != -1) {
       changeLocaleIndex(codeIndex);
     }
   }
 
   void _setNewLocaleProperties(String localeCode) {
-    hasFocusNotifiersMap[localeCode] = List<ValueNotifier>.generate(
-      _textFieldsCount,
-      (index) => ValueNotifier(false),
-    );
-    errorTextsMap[localeCode] = List<ValidationErrorType>.generate(
-      _textFieldsCount,
-      (index) => index == nickNameIndex
-          ? ValidationErrorType.theNicknameIsInvalidMustBe3to250Symbols
-          : ValidationErrorType.requiredField,
-    );
+    // hasFocusNotifiersMap[localeCode] = List<ValueNotifier>.generate(
+    //   _textFieldsCount,
+    //   (index) => ValueNotifier(false),
+    // );
+    // errorTextsMap[localeCode] = List<ValidationErrorType>.generate(
+    //   _textFieldsCount,
+    //   (index) => index == nickNameIndex
+    //       ? ValidationErrorType.theNicknameIsInvalidMustBe3to250Symbols
+    //       : ValidationErrorType.requiredField,
+    // );
 
-    textControllersMap[localeCode] = List<TextEditingController>.generate(
-      _textFieldsCount,
-      (index) {
-        return TextEditingController()
-          ..addListener(() {
-            errorTextsMap[localeCode]?[index] = ValidationErrorType.empty;
-            _updateTextsFlag();
-          });
-      },
-    );
-    focusNodesMap[localeCode] = List<FocusNode>.generate(
-      _textFieldsCount,
-      (index) {
-        final node = FocusNode();
-        node.addListener(() {
-          hasFocusNotifiersMap[localeCode]?[index].value = node.hasFocus;
-        });
-        return node;
-      },
-    );
+    // textControllersMap[localeCode] = List<TextEditingController>.generate(
+    //   _textFieldsCount,
+    //   (index) {
+    //     return TextEditingController()
+    //       ..addListener(() {
+    //         errorTextsMap[localeCode]?[index] = ValidationErrorType.empty;
+    //         _updateTextsFlag();
+    //       });
+    //   },
+    // );
+    // focusNodesMap[localeCode] = List<FocusNode>.generate(
+    //   _textFieldsCount,
+    //   (index) {
+    //     final node = FocusNode();
+    //     node.addListener(() {
+    //       hasFocusNotifiersMap[localeCode]?[index].value = node.hasFocus;
+    //     });
+    //     return node;
+    //   },
+    // );
 
-    localesGlobalKeys.add(GlobalKey());
+    // localesGlobalKeys[state.selectedBrandIndex].add(GlobalKey());
   }
 
   Future<void> removeLocale(String localeCode) async {
@@ -647,8 +625,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   }
 
   void _removeLocaleLocally(String localeCode) {
-    final List<String> locales = List.of(state.advisorLocales);
-    final codeIndex = locales.indexOf(localeCode);
+    final List<List<String>> locales = List.of(state.brandLocales);
+    final codeIndex = locales[state.selectedBrandIndex].indexOf(localeCode);
     int newLocaleIndex = state.currentLocaleIndex;
 
     if (codeIndex <= newLocaleIndex) {
@@ -656,107 +634,106 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     }
     _removeLocaleProperties(localeCode);
 
-    _newLocales.remove(localeCode);
-    _oldLocales.remove(localeCode);
+    locales[state.selectedBrandIndex].remove(localeCode);
 
     emit(state.copyWith(
-      advisorLocales: [..._oldLocales, ..._newLocales],
+      brandLocales: locales,
       currentLocaleIndex: newLocaleIndex,
     ));
   }
 
   void _removeLocaleProperties(String localeCode) {
-    for (TextEditingController element
-        in textControllersMap[localeCode] ?? []) {
-      element.dispose();
-    }
-    for (FocusNode element in focusNodesMap[localeCode] ?? []) {
-      element.dispose();
-    }
-    for (ValueNotifier element in hasFocusNotifiersMap[localeCode] ?? []) {
-      element.dispose();
-    }
+    // for (TextEditingController element
+    //     in textControllersMap[localeCode] ?? []) {
+    //   element.dispose();
+    // }
+    // for (FocusNode element in focusNodesMap[localeCode] ?? []) {
+    //   element.dispose();
+    // }
+    // for (ValueNotifier element in hasFocusNotifiersMap[localeCode] ?? []) {
+    //   element.dispose();
+    // }
 
-    textControllersMap.remove(localeCode);
-    focusNodesMap.remove(localeCode);
-    hasFocusNotifiersMap.remove(localeCode);
-    errorTextsMap.remove(localeCode);
+    // textControllersMap.remove(localeCode);
+    // focusNodesMap.remove(localeCode);
+    // hasFocusNotifiersMap.remove(localeCode);
+    // errorTextsMap.remove(localeCode);
 
-    localesGlobalKeys.removeAt(state.advisorLocales.indexOf(localeCode));
+    // localesGlobalKeys.removeAt(state.advisorLocales.indexOf(localeCode));
   }
 
-  bool _checkTextFields() {
-    bool isValid = true;
-    int? firstLanguageWithErrorIndex;
-    final List<String> locales = List.from(state.advisorLocales);
-    for (String localeCode in locales) {
-      final List<TextEditingController>? controllersByLocale =
-          textControllersMap[localeCode];
-      if (controllersByLocale != null) {
-        for (int i = 0; i < controllersByLocale.length; i++) {
-          if (i == nickNameIndex) {
-            if (!_checkNickName(localeCode)) {
-              firstLanguageWithErrorIndex ??= locales.indexOf(localeCode);
-              _wasFocusRequest = true;
-              isValid = false;
-            }
-          } else {
-            if (!_checkTextField(localeCode, i)) {
-              firstLanguageWithErrorIndex ??= locales.indexOf(localeCode);
-              _wasFocusRequest = true;
-              isValid = false;
-            }
-          }
-          if (localeCode == locales.lastOrNull &&
-              i == controllersByLocale.length - 1) {
-            _wasFocusRequest = false;
-          }
-        }
-      }
-    }
-    if (firstLanguageWithErrorIndex != null) {
-      changeLocaleIndex(firstLanguageWithErrorIndex);
-    }
-    return isValid;
-  }
+  // bool _checkTextFields() {
+  //   bool isValid = true;
+  //   int? firstLanguageWithErrorIndex;
+  //   final List<String> locales = List.from(state.advisorLocales);
+  //   for (String localeCode in locales) {
+  //     final List<TextEditingController>? controllersByLocale =
+  //         textControllersMap[localeCode];
+  //     if (controllersByLocale != null) {
+  //       for (int i = 0; i < controllersByLocale.length; i++) {
+  //         if (i == nickNameIndex) {
+  //           if (!_checkNickName(localeCode)) {
+  //             firstLanguageWithErrorIndex ??= locales.indexOf(localeCode);
+  //             _wasFocusRequest = true;
+  //             isValid = false;
+  //           }
+  //         } else {
+  //           if (!_checkTextField(localeCode, i)) {
+  //             firstLanguageWithErrorIndex ??= locales.indexOf(localeCode);
+  //             _wasFocusRequest = true;
+  //             isValid = false;
+  //           }
+  //         }
+  //         if (localeCode == locales.lastOrNull &&
+  //             i == controllersByLocale.length - 1) {
+  //           _wasFocusRequest = false;
+  //         }
+  //       }
+  //     }
+  //   }
+  //   if (firstLanguageWithErrorIndex != null) {
+  //     changeLocaleIndex(firstLanguageWithErrorIndex);
+  //   }
+  //   return isValid;
+  // }
 
   bool _checkNickName(String localeCode) {
     bool isValid = true;
-    final String nickName =
-        textControllersMap[localeCode]?[nickNameIndex].text.trim() ?? '';
-    final bool isShort = nickName.length < 3;
-    final bool isLong = nickName.length > 250;
-    if (isShort || isLong) {
-      isValid = false;
+    // final String nickName =
+    //     textControllersMap[localeCode]?[nickNameIndex].text.trim() ?? '';
+    // final bool isShort = nickName.length < 3;
+    // final bool isLong = nickName.length > 250;
+    // if (isShort || isLong) {
+    //   isValid = false;
 
-      errorTextsMap[localeCode]?[nickNameIndex] = isShort
-          ? ValidationErrorType.theNicknameIsInvalidMustBe3to250Symbols
-          : ValidationErrorType.characterLimitExceeded;
+    //   errorTextsMap[localeCode]?[nickNameIndex] = isShort
+    //       ? ValidationErrorType.theNicknameIsInvalidMustBe3to250Symbols
+    //       : ValidationErrorType.characterLimitExceeded;
 
-      if (!_wasFocusRequest) {
-        focusNodesMap[localeCode]?[nickNameIndex].requestFocus();
-      }
-    }
+    //   if (!_wasFocusRequest) {
+    //     focusNodesMap[localeCode]?[nickNameIndex].requestFocus();
+    //   }
+    // }
     return isValid;
   }
 
   bool _checkTextField(String localeCode, int index) {
     bool isValid = true;
-    final String text =
-        textControllersMap[localeCode]?[index].text.trim() ?? '';
-    final bool isShort = text.isEmpty;
-    final bool isLong = text.length > 65000;
-    if (isShort || isLong) {
-      isValid = false;
+    // final String text =
+    //     textControllersMap[localeCode]?[index].text.trim() ?? '';
+    // final bool isShort = text.isEmpty;
+    // final bool isLong = text.length > 65000;
+    // if (isShort || isLong) {
+    //   isValid = false;
 
-      errorTextsMap[localeCode]?[index] = isShort
-          ? ValidationErrorType.requiredField
-          : ValidationErrorType.characterLimitExceeded;
+    //   errorTextsMap[localeCode]?[index] = isShort
+    //       ? ValidationErrorType.requiredField
+    //       : ValidationErrorType.characterLimitExceeded;
 
-      if (!_wasFocusRequest) {
-        focusNodesMap[localeCode]?[index].requestFocus();
-      }
-    }
+    //   if (!_wasFocusRequest) {
+    //     focusNodesMap[localeCode]?[index].requestFocus();
+    //   }
+    // }
     return isValid;
   }
 
