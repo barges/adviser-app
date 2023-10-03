@@ -26,7 +26,6 @@ class CheckboxTileWidget extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 12.0),
         color: theme.canvasColor,
-        height: 22.0,
         child: Row(
           children: [
             isMultiselect

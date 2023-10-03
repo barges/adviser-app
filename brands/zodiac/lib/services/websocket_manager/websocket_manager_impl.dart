@@ -120,7 +120,7 @@ class WebSocketManagerImpl implements WebSocketManager {
     this._zodiacCachingManager,
     this._connectivityService,
   ) {
-    setHost();
+    _setHost();
 
     //ping-pong
     _emitter.on(Commands.ping, this, (ev, _) => _send(SocketMessage.pong()));
@@ -378,12 +378,12 @@ class WebSocketManagerImpl implements WebSocketManager {
         _webSocketStateStream.add(WebSocketState.closed);
         _currentState = WebSocketState.closed;
         // _authCheckOnBackend();
-        setHost();
+        _setHost();
       }, onError: (error) async {
         logger.d("Socket error: $error");
         _webSocketStateStream.add(WebSocketState.closed);
         _currentState = WebSocketState.closed;
-        await setHost();
+        await _setHost();
         connect();
       });
       _onStart(advisorId);
@@ -549,17 +549,17 @@ class WebSocketManagerImpl implements WebSocketManager {
     _channel?.sink.close();
   }
 
-  Future<void> setHost() async {
+  Future<void> _setHost() async {
     if (_host == null) {
       _host = _socketUrls[_hostIndex];
     } else {
       if (await _connectivityService.checkConnection()) {
-        _host = getNextHost();
+        _host = _getNextHost();
       }
     }
   }
 
-  String getNextHost() {
+  String _getNextHost() {
     _hostIndex++;
     if (_hostIndex == _socketUrls.length) {
       _hostIndex = 0;

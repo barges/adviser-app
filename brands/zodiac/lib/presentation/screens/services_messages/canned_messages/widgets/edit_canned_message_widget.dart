@@ -106,6 +106,7 @@ class _EditCannedMessageWidgetState extends State<EditCannedMessageWidget> {
                         isBig: true,
                         showCounter: true,
                         maxLength: ZodiacConstants.cannedMessageMaxLength,
+                        minLength: 1,
                       ),
                       const SizedBox(
                         height: verticalInterval,

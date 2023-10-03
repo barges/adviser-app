@@ -18,6 +18,7 @@ class FocusedMenuItem {
 
 class FocusedMenuHolder extends StatefulWidget {
   final Widget child;
+  final bool isOutgoing;
   final double? menuItemExtent;
   final double? menuWidth;
   final List<FocusedMenuItem> menuItems;
@@ -45,6 +46,7 @@ class FocusedMenuHolder extends StatefulWidget {
       required this.child,
       required this.onPressed,
       required this.menuItems,
+      required this.isOutgoing,
       this.duration,
       this.menuBoxDecoration,
       this.menuItemExtent,
@@ -122,6 +124,7 @@ class _FocusedMenuHolderState extends State<FocusedMenuHolder> {
               return FadeTransition(
                   opacity: animation,
                   child: FocusedMenuDetails(
+                    isOutgoing: widget.isOutgoing,
                     itemExtent: widget.menuItemExtent,
                     menuBoxDecoration: widget.menuBoxDecoration,
                     childOffset: childOffset,
@@ -155,6 +158,7 @@ class _FocusedMenuHolderState extends State<FocusedMenuHolder> {
 
 class FocusedMenuDetails extends StatefulWidget {
   final List<FocusedMenuItem> menuItems;
+  final bool isOutgoing;
   final BoxDecoration? menuBoxDecoration;
   final Offset childOffset;
   final double? itemExtent;
@@ -183,6 +187,7 @@ class FocusedMenuDetails extends StatefulWidget {
     required this.blurSize,
     required this.blurBackgroundColor,
     required this.menuWidth,
+    required this.isOutgoing,
     this.bottomOffsetHeight,
     this.menuOffset,
     this.menuBorderRadius,
@@ -210,6 +215,7 @@ class _FocusedMenuDetailsState extends State<FocusedMenuDetails> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    EdgeInsets screenPadding = MediaQuery.paddingOf(context);
 
     final menuHeight = widget.menuItems.length * (widget.itemExtent ?? 50.0) +
         (widget.menuSeparator != null
@@ -221,19 +227,21 @@ class _FocusedMenuDetailsState extends State<FocusedMenuDetails> {
     final bool messageBiggerThanScreen = (widget.childSize?.height ?? 0.0) +
             menuHeight +
             (widget.topMenuWidgetHeight ?? 0) >
-        size.height - MediaQuery.of(context).padding.top;
+        size.height - screenPadding.top;
 
     final bool topOverflows = messageBiggerThanScreen ||
         (widget.childOffset.dy -
                 (widget.topMenuWidgetHeight ?? 0) -
                 (widget.menuOffset ?? 0) <
-            MediaQuery.of(context).padding.top);
+            screenPadding.top);
 
     final bool bottomOverflows = !messageBiggerThanScreen &&
         (widget.childOffset.dy +
                 (widget.childSize?.height ?? 0) +
-                MediaQuery.of(context).padding.top +
-                MediaQuery.of(context).padding.bottom >
+                screenPadding.top +
+                screenPadding.bottom +
+                (widget.menuOffset ?? 0) +
+                menuHeight >
             size.height);
 
     return Scaffold(
@@ -266,7 +274,9 @@ class _FocusedMenuDetailsState extends State<FocusedMenuDetails> {
             child: SingleChildScrollView(
               controller: controller,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: widget.isOutgoing
+                    ? CrossAxisAlignment.end
+                    : CrossAxisAlignment.start,
                 children: [
                   SizedBox(
                     height: topOverflows

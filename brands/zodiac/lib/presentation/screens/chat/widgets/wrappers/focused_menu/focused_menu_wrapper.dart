@@ -60,6 +60,7 @@ class _FocusedMenuWrapperState extends State<FocusedMenuWrapper> {
             onPressed: () {
               FocusScope.of(context).unfocus();
             },
+            isOutgoing: widget.chatMessageModel.isOutgoing,
             animateMenuItems: true,
             menuWidth: 244.0,
             menuOffset: 8.0,
