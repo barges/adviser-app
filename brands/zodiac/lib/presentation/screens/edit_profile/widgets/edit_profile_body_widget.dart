@@ -16,12 +16,12 @@ import 'package:zodiac/presentation/screens/edit_profile/widgets/tile_menu_butto
 
 class EditProfileBodyWidget extends StatelessWidget {
   final List<BrandModel> brands;
-  final int selectedBrandIndex;
+  final int brandIndex;
 
   const EditProfileBodyWidget({
     Key? key,
     required this.brands,
-    required this.selectedBrandIndex,
+    required this.brandIndex,
   }) : super(key: key);
 
   @override
@@ -36,13 +36,13 @@ class EditProfileBodyWidget extends StatelessWidget {
         ),
         BrandsListWidget(
           brands: brands,
-          selectedBrandIndex: selectedBrandIndex,
+          selectedBrandIndex: brandIndex,
         ),
         const SizedBox(
           height: 24.0,
         ),
         _UserAvatarWidget(
-          selectedBrandIndex: selectedBrandIndex,
+          selectedBrandIndex: brandIndex,
           avatarUrls: brands.map((e) => e.fields?.avatar).toList(),
         ),
         const SizedBox(
@@ -60,8 +60,8 @@ class EditProfileBodyWidget extends StatelessWidget {
 
                 return TileMenuButton(
                   label: SZodiac.of(context).categoriesZodiac,
-                  title: categories[selectedBrandIndex].isNotEmpty
-                      ? categories[selectedBrandIndex]
+                  title: categories[brandIndex].isNotEmpty
+                      ? categories[brandIndex]
                           .map((e) => e.name)
                           .toList()
                           .join(', ')
@@ -78,8 +78,8 @@ class EditProfileBodyWidget extends StatelessWidget {
 
                 return TileMenuButton(
                   label: SZodiac.of(context).methodsZodiac,
-                  title: methods[selectedBrandIndex].isNotEmpty
-                      ? methods[selectedBrandIndex]
+                  title: methods[brandIndex].isNotEmpty
+                      ? methods[brandIndex]
                           .map((e) => e.name)
                           .toList()
                           .join(', ')
@@ -91,7 +91,7 @@ class EditProfileBodyWidget extends StatelessWidget {
                 height: 24.0,
               ),
               LocalesDescriptionsPartWidget(
-                selectedBrandIndex: selectedBrandIndex,
+                brandIndex: brandIndex,
               ),
             ],
           ),

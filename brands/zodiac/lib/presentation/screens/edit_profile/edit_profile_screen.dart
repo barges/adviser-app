@@ -91,7 +91,7 @@ class EditProfileScreen extends StatelessWidget {
                                   .mapIndexed(
                                     (i, e) => EditProfileBodyWidget(
                                       brands: brands,
-                                      selectedBrandIndex: i,
+                                      brandIndex: i,
                                     ),
                                   )
                                   .toList(),
