@@ -55,6 +55,7 @@ import 'package:zodiac/zodiac_main_cubit.dart';
 class WebSocketManagerImpl implements WebSocketManager {
   final ZodiacCachingManager _zodiacCachingManager;
   final ZodiacMainCubit _zodiacMainCubit;
+  final ConnectivityService _connectivityService;
 
   final EventEmitter _emitter = EventEmitter();
   final PublishSubject<bool> _endChatTrigger = PublishSubject();
@@ -65,6 +66,10 @@ class WebSocketManagerImpl implements WebSocketManager {
   WebSocketState _currentState = WebSocketState.closed;
 
   DateTime? _startTimeSocketConnected;
+
+  final List<String> _socketUrls = ZodiacConstants.socketUrlsZodiacStage;
+  String? _host;
+  int _hostIndex = 0;
 
   final PublishSubject<List<ChatMessageModel>> _entitiesStream =
       PublishSubject();
@@ -117,7 +122,10 @@ class WebSocketManagerImpl implements WebSocketManager {
   WebSocketManagerImpl(
     this._zodiacMainCubit,
     this._zodiacCachingManager,
+    this._connectivityService,
   ) {
+    _setHost();
+
     //ping-pong
     _emitter.on(Commands.ping, this, (ev, _) => _send(SocketMessage.pong()));
 
@@ -347,11 +355,10 @@ class WebSocketManagerImpl implements WebSocketManager {
       if (_channel != null) {
         close(AnalyticsValues.reconnect);
       }
-      const host = ZodiacConstants.socketUrlZodiac;
 
       final url = Uri(
           scheme: "wss",
-          host: host,
+          host: _host,
           path: "/wss",
           queryParameters: {"authToken": authToken});
 
@@ -384,7 +391,8 @@ class WebSocketManagerImpl implements WebSocketManager {
               ),
             );
         // _authCheckOnBackend();
-      }, onError: (error) {
+        _setHost();
+      }, onError: (error) async {
         logger.d("Socket error: $error");
         _webSocketStateStream.add(WebSocketState.closed);
         _currentState = WebSocketState.closed;
@@ -393,6 +401,7 @@ class WebSocketManagerImpl implements WebSocketManager {
               closedByServer: ConnectivityService.hasConnection ? true : false,
               socketLiveTime: _getSocketLiveTime(),
             ));
+        await _setHost();
         connect();
       });
       _onStart(advisorId);
@@ -574,6 +583,24 @@ class WebSocketManagerImpl implements WebSocketManager {
       return socketLiveTime;
     }
     return 0;
+  }
+
+  Future<void> _setHost() async {
+    if (_host == null) {
+      _host = _socketUrls[_hostIndex];
+    } else {
+      if (await _connectivityService.checkConnection()) {
+        _host = _getNextHost();
+      }
+    }
+  }
+
+  String _getNextHost() {
+    _hostIndex++;
+    if (_hostIndex == _socketUrls.length) {
+      _hostIndex = 0;
+    }
+    return _socketUrls[_hostIndex];
   }
 
   void endChat() {

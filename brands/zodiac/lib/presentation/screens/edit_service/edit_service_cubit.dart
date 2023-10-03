@@ -7,6 +7,7 @@ import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/enums/approval_status.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
+import 'package:zodiac/data/models/services/approval_service_language_model.dart';
 import 'package:zodiac/data/models/services/image_sample_model.dart';
 import 'package:zodiac/data/models/services/service_info_item.dart';
 import 'package:zodiac/data/models/services/service_language_model.dart';
@@ -116,26 +117,40 @@ class EditServiceCubit extends Cubit<EditServiceState> {
       final ServiceInfoItem? serviceInfo = response.result;
 
       final List<String> _newLanguagesList = [];
-      serviceInfo?.translations?.forEach((element) {
-        if (element.code != null) {
+
+      List<ServiceLanguageModel>? translations = serviceInfo?.translations;
+      List<ApprovalServiceLanguageModel>? approval = serviceInfo?.approval;
+
+      if (approval?.isNotEmpty == true) {
+        approval?.forEach((element) {
+          if (element.code != null) {
+            _newLanguagesList.add(element.code!);
+            _setLocaleProperties(element.code!);
+            _setupLanguageTexts(
+              element.code!,
+              element.title?.value ??
+                  translations
+                      ?.firstWhere((item) => element.code == item.code)
+                      .title ??
+                  '',
+              element.description?.value ??
+                  translations
+                      ?.firstWhere((item) => element.code == item.code)
+                      .description ??
+                  '',
+              approvalStatusTitle: element.title?.status,
+              approvalStatusDescription: element.description?.status,
+            );
+          }
+        });
+      }
+
+      translations?.forEach((element) {
+        if (element.code != null && !_newLanguagesList.contains(element.code)) {
           _newLanguagesList.add(element.code!);
           _setLocaleProperties(element.code!);
           _setupLanguageTexts(
               element.code!, element.title ?? '', element.description ?? '');
-        }
-      });
-
-      serviceInfo?.approval?.forEach((element) {
-        if (element.code != null) {
-          _newLanguagesList.add(element.code!);
-          _setLocaleProperties(element.code!);
-          _setupLanguageTexts(
-            element.code!,
-            element.title?.value ?? '',
-            element.description?.value ?? '',
-            approvalStatusTitle: element.title?.status,
-            approvalStatusDescription: element.description?.status,
-          );
         }
       });
 
