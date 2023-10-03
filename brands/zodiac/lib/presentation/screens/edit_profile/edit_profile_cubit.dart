@@ -576,53 +576,57 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   }
 
   void _addLocaleLocally(String localeCode) {
+    final int selectedBrandIndex = state.selectedBrandIndex;
     final List<List<String>> locales = List.from(state.brandLocales);
-    locales[state.selectedBrandIndex].add(localeCode);
+    locales[selectedBrandIndex].add(localeCode);
     _newLocales.add(localeCode);
-    _setNewLocaleProperties(localeCode);
+    _setNewLocaleProperties(localeCode, selectedBrandIndex);
 
     emit(state.copyWith(brandLocales: locales));
 
-    final codeIndex = locales[state.selectedBrandIndex].indexOf(localeCode);
+    final codeIndex = locales[selectedBrandIndex].indexOf(localeCode);
     if (codeIndex != -1) {
       changeLocaleIndex(codeIndex);
     }
   }
 
-  void _setNewLocaleProperties(String localeCode) {
-    // hasFocusNotifiersMap[localeCode] = List<ValueNotifier>.generate(
-    //   _textFieldsCount,
-    //   (index) => ValueNotifier(false),
-    // );
-    // errorTextsMap[localeCode] = List<ValidationErrorType>.generate(
-    //   _textFieldsCount,
-    //   (index) => index == nickNameIndex
-    //       ? ValidationErrorType.theNicknameIsInvalidMustBe3to250Symbols
-    //       : ValidationErrorType.requiredField,
-    // );
+  void _setNewLocaleProperties(String localeCode, int brandIndex) {
+    hasFocusNotifiersMap[brandIndex][localeCode] = List<ValueNotifier>.generate(
+      _textFieldsCount,
+      (index) => ValueNotifier(false),
+    );
+    errorTextsMap[brandIndex][localeCode] = List<ValidationErrorType>.generate(
+      _textFieldsCount,
+      (index) => index == nickNameIndex
+          ? ValidationErrorType.theNicknameIsInvalidMustBe3to250Symbols
+          : ValidationErrorType.requiredField,
+    );
 
-    // textControllersMap[localeCode] = List<TextEditingController>.generate(
-    //   _textFieldsCount,
-    //   (index) {
-    //     return TextEditingController()
-    //       ..addListener(() {
-    //         errorTextsMap[localeCode]?[index] = ValidationErrorType.empty;
-    //         _updateTextsFlag();
-    //       });
-    //   },
-    // );
-    // focusNodesMap[localeCode] = List<FocusNode>.generate(
-    //   _textFieldsCount,
-    //   (index) {
-    //     final node = FocusNode();
-    //     node.addListener(() {
-    //       hasFocusNotifiersMap[localeCode]?[index].value = node.hasFocus;
-    //     });
-    //     return node;
-    //   },
-    // );
+    textControllersMap[brandIndex][localeCode] =
+        List<TextEditingController>.generate(
+      _textFieldsCount,
+      (index) {
+        return TextEditingController()
+          ..addListener(() {
+            errorTextsMap[brandIndex][localeCode]?[index] =
+                ValidationErrorType.empty;
+            _updateTextsFlag();
+          });
+      },
+    );
+    focusNodesMap[brandIndex][localeCode] = List<FocusNode>.generate(
+      _textFieldsCount,
+      (index) {
+        final node = FocusNode();
+        node.addListener(() {
+          hasFocusNotifiersMap[brandIndex][localeCode]?[index].value =
+              node.hasFocus;
+        });
+        return node;
+      },
+    );
 
-    // localesGlobalKeys[state.selectedBrandIndex].add(GlobalKey());
+    localesGlobalKeys[brandIndex].add(GlobalKey());
   }
 
   Future<void> removeLocale(String localeCode) async {
