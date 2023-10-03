@@ -38,9 +38,8 @@ class LanguagesButtons extends StatelessWidget {
               final GlobalKey key =
                   editProfileCubit.localesGlobalKeys[brandIndex][index];
 
-              ///TODO - Refactoring
-              final bool isMainLocale = true;
-              // element == editProfileCubit.state.advisorMainLocale;
+              final bool isMainLocale =
+                  element == editProfileCubit.mainLocales[brandIndex];
 
               if (index < locales.length - 1) {
                 return Padding(

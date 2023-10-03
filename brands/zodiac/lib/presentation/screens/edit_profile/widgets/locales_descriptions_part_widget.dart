@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
+import 'package:shared_advisor_interface/global.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/text_fields/app_text_field.dart';
@@ -21,8 +22,9 @@ class LocalesDescriptionsPartWidget extends StatelessWidget {
     final List<String> locales = context.select(
         (EditProfileCubit cubit) => cubit.state.brandLocales[brandIndex]);
 
-    final int currentLocaleIndex = context
-        .select((EditProfileCubit cubit) => cubit.state.currentLocaleIndex);
+    final int currentLocaleIndex = context.select((EditProfileCubit cubit) =>
+        cubit.state.currentLocaleIndexes[brandIndex]);
+
     context.select<EditProfileCubit, bool>(
         (EditProfileCubit cubit) => cubit.state.updateTextsFlag);
     return Padding(

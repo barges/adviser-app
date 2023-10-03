@@ -9,7 +9,6 @@ import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_a
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/user_info/brand_model.dart';
-import 'package:zodiac/data/models/user_info/detailed_user_info.dart';
 import 'package:zodiac/domain/repositories/zodiac_edit_profile_repository.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
@@ -17,8 +16,6 @@ import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/scrollable_appbar/scrollable_appbar.dart';
 import 'package:zodiac/presentation/screens/edit_profile/edit_profile_cubit.dart';
 import 'package:zodiac/presentation/screens/edit_profile/widgets/edit_profile_body_widget.dart';
-import 'package:zodiac/presentation/screens/edit_profile/widgets/locales_descriptions_part_widget.dart';
-import 'package:zodiac/presentation/screens/edit_profile/widgets/main_part_info_widget.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 class EditProfileScreen extends StatelessWidget {
@@ -48,8 +45,6 @@ class EditProfileScreen extends StatelessWidget {
             body: GestureDetector(
               onTap: FocusScope.of(context).unfocus,
               child: Builder(builder: (context) {
-                final DetailedUserInfo? detailedUserInfo = context.select(
-                    (EditProfileCubit cubit) => cubit.state.detailedUserInfo);
                 final bool canRefresh = context
                     .select((EditProfileCubit cubit) => cubit.state.canRefresh);
 
@@ -100,16 +95,6 @@ class EditProfileScreen extends StatelessWidget {
                             return const SizedBox.shrink();
                           }
                         }),
-                        // Column(
-                        //   crossAxisAlignment: CrossAxisAlignment.start,
-                        //   children: [
-                        //     MainPartInfoWidget(
-                        //       detailedUserInfo: detailedUserInfo,
-                        //     ),
-                        //     if (detailedUserInfo?.locales?.isNotEmpty == true)
-                        //       const LocalesDescriptionsPartWidget()
-                        //   ],
-                        // ),
                       ),
                     ],
                   ),

@@ -49,6 +49,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   late final StreamSubscription<bool> _internetConnectionSubscription;
   List<List<GlobalKey>> localesGlobalKeys = [];
+  List<String> mainLocales = [];
 
   final List<Map<String, List<TextEditingController>>> textControllersMap = [];
   final List<Map<String, List<FocusNode>>> focusNodesMap = [];
@@ -72,6 +73,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   bool _wasFocusRequest = false;
 
   bool needUpdateAccount = false;
+
+  bool _dataIsLoading = false;
 
   EditProfileCubit(
     this._cachingManager,
@@ -134,56 +137,80 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     // }
     ////////////
 
-    textControllersMap.clear();
-    focusNodesMap.clear();
-    hasFocusNotifiersMap.clear();
-    errorTextsMap.clear();
+    if (!_dataIsLoading) {
+      _dataIsLoading = true;
+      try {
+        textControllersMap.clear();
+        focusNodesMap.clear();
+        hasFocusNotifiersMap.clear();
+        errorTextsMap.clear();
+        mainLocales.clear();
 
-    final BrandLocalesResponse response =
-        await _editProfileRepository.getBrandLocales(AuthorizedRequest());
+        final BrandLocalesResponse response =
+            await _editProfileRepository.getBrandLocales(AuthorizedRequest());
 
-    if (response.status == true) {
-      List<BrandModel>? brands =
-          response.result?.map((e) => e.brand ?? const BrandModel()).toList();
-      List<List<BrandLocaleModel>>? locales = response.result
-          ?.map((e) => e.locales ?? List<BrandLocaleModel>.empty())
-          .toList();
+        if (response.status == true) {
+          List<BrandModel>? brands = response.result
+              ?.map((e) => e.brand ?? const BrandModel())
+              .toList();
+          List<List<BrandLocaleModel>>? locales = response.result
+              ?.map((e) => e.locales ?? List<BrandLocaleModel>.empty())
+              .toList();
 
-      brands?.forEach(
-        (element) {
-          _mainCategoryIds.add(element.fields?.mainCategoryId);
-          _mainMethodIds.add(element.fields?.mainMethodId);
-        },
-      );
+          brands?.forEach(
+            (element) {
+              _mainCategoryIds.add(element.fields?.mainCategoryId);
+              _mainMethodIds.add(element.fields?.mainMethodId);
+            },
+          );
 
-      List<List<String>> brandLocales = [];
+          List<List<String>> brandLocales = [];
 
-      locales?.forEachIndexed((brandIndex, element) {
-        brandLocales.add(element.map((e) => e.locale?.code ?? '').toList());
-        textControllersMap.add({});
-        focusNodesMap.add({});
-        hasFocusNotifiersMap.add({});
-        errorTextsMap.add({});
-        localesGlobalKeys.add([]);
+          locales?.forEachIndexed((brandIndex, locales) {
+            // mainLocales.add('');
+            brandLocales.add(locales.map((e) {
+              // if (e.locale?.isDefault == true) {
+              //   mainLocales[brandIndex] = e.locale?.code ?? '';
+              // }
 
-        for (BrandLocaleModel element in element) {
-          _setUpLocalesDescriptions(element, brandIndex);
+              return e.locale?.code ?? '';
+            }).toList());
+            textControllersMap.add({});
+            focusNodesMap.add({});
+            hasFocusNotifiersMap.add({});
+            errorTextsMap.add({});
+            localesGlobalKeys.add([]);
+
+            mainLocales.add('');
+
+            for (BrandLocaleModel item in locales) {
+              _setUpLocalesDescriptions(item, brandIndex);
+              if (item.locale?.isDefault == true) {
+                mainLocales[brandIndex] = item.locale?.code ?? '';
+              }
+            }
+          });
+
+          emit(
+            state.copyWith(
+              brands: brands,
+              avatars: response.result?.map((e) => null).toList() ?? [],
+              advisorCategories:
+                  brands?.map((e) => e.fields?.categories ?? []).toList() ?? [],
+              advisorMethods:
+                  brands?.map((e) => e.fields?.methods ?? []).toList() ?? [],
+              brandLocales: brandLocales,
+              currentLocaleIndexes: brands?.map((e) => 0).toList() ?? [],
+            ),
+          );
+
+          _internetConnectionSubscription.cancel();
         }
-      });
-
-      logger.d('brandLocales: $brandLocales');
-
-      emit(
-        state.copyWith(
-          brands: brands,
-          avatars: response.result?.map((e) => null).toList() ?? [],
-          advisorCategories:
-              brands?.map((e) => e.fields?.categories ?? []).toList() ?? [],
-          advisorMethods:
-              brands?.map((e) => e.fields?.methods ?? []).toList() ?? [],
-          brandLocales: brandLocales,
-        ),
-      );
+      } catch (e) {
+        logger.d(e);
+      } finally {
+        _dataIsLoading = false;
+      }
     }
   }
 
@@ -252,21 +279,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     emit(state.copyWith(updateTextsFlag: !flag));
   }
 
-  Future<bool> _getMainSpeciality() async {
-    bool isOk = false;
-    final MainSpecializationResponse response =
-        await _userRepository.getMainSpeciality(AuthorizedRequest());
-    final CategoryInfo? mainCategory = response.result;
-    if (mainCategory != null) {
-      _oldCategory = mainCategory;
-      _changeMainCategory([mainCategory]);
-      isOk = true;
-    }
-    return isOk;
-  }
-
   void setAvatar(File avatar) {
-    emit(state.copyWith(avatar: avatar));
+    // emit(state.copyWith(avatar: avatar));
   }
 
   String localeNativeName(String code) {
@@ -280,7 +294,11 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   }
 
   void changeLocaleIndex(int newIndex) {
-    emit(state.copyWith(currentLocaleIndex: newIndex));
+    List<int> currentLocaleIndexes = List.of(state.currentLocaleIndexes);
+
+    currentLocaleIndexes[state.selectedBrandIndex] = newIndex;
+
+    emit(state.copyWith(currentLocaleIndexes: currentLocaleIndexes));
     Utils.animateToWidget(
         localesGlobalKeys[state.selectedBrandIndex][newIndex]);
   }
@@ -625,20 +643,22 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   }
 
   void _removeLocaleLocally(String localeCode) {
+    final int selectedBrandIndex = state.selectedBrandIndex;
     final List<List<String>> locales = List.of(state.brandLocales);
-    final codeIndex = locales[state.selectedBrandIndex].indexOf(localeCode);
-    int newLocaleIndex = state.currentLocaleIndex;
+    final codeIndex = locales[selectedBrandIndex].indexOf(localeCode);
+    final List<int> currentLocaleIndexes = List.of(state.currentLocaleIndexes);
+    int newLocaleIndex = currentLocaleIndexes[selectedBrandIndex];
 
     if (codeIndex <= newLocaleIndex) {
-      newLocaleIndex = newLocaleIndex - 1;
+      currentLocaleIndexes[selectedBrandIndex] = newLocaleIndex - 1;
     }
     _removeLocaleProperties(localeCode);
 
-    locales[state.selectedBrandIndex].remove(localeCode);
+    locales[selectedBrandIndex].remove(localeCode);
 
     emit(state.copyWith(
       brandLocales: locales,
-      currentLocaleIndex: newLocaleIndex,
+      currentLocaleIndexes: currentLocaleIndexes,
     ));
   }
 
@@ -735,9 +755,5 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     //   }
     // }
     return isValid;
-  }
-
-  void _changeMainCategory(List<CategoryInfo> mainCategory) {
-    emit(state.copyWith(advisorMainCategory: mainCategory));
   }
 }
