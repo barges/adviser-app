@@ -113,6 +113,7 @@ Future<_i1.GetIt> $initGetIt(
   gh.singleton<_i16.WebSocketManager>(_i17.WebSocketManagerImpl(
     gh<_i15.ZodiacMainCubit>(),
     gh<_i13.ZodiacCachingManager>(),
+    gh<_i7.ConnectivityService>(),
   ));
   gh.singleton<_i18.AppInterceptor>(_i18.AppInterceptor(
     gh<_i10.MainCubit>(),

@@ -13,9 +13,25 @@ class ZodiacConstants {
 
   ///STAGE
   static const String baseUrlZodiac = 'https://stage.zodiacpsychics.com/api';
-  static const String socketUrlZodiac = 'stage.zodiacpsychics.com';
+  static const String socketUrlZodiacStage = 'stage.zodiacpsychics.com';
+  static const List<String> socketUrlsZodiacStage = [
+    socketUrlZodiacStage,
+    'wsstage.zodiacpsychics.com',
+    'wsstage.psiquicos.net'
+  ];
 
   ///DEV
   static const String baseUrlZodiacDev = 'https://dev.zodiacpsychics.com/api';
   static const String socketUrlZodiacDev = 'dev.zodiacpsychics.com';
+  static const List<String> socketUrlsZodiacDev = [
+    socketUrlZodiacDev,
+    'wsdev.zodiacpsychics.com',
+    'wsdev.psiquicos.net'
+  ];
+
+  /// PROD
+  static const List<String> socketUrlsZodiacProd = [
+    'ws.zodiacpsychics.com',
+    'ws.psiquicos.net'
+  ];
 }
