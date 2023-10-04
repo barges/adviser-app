@@ -8,7 +8,7 @@ import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart'
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
-import 'package:zodiac/data/models/user_info/brand_model.dart';
+import 'package:zodiac/data/models/edit_profile/brand_model.dart';
 import 'package:zodiac/domain/repositories/zodiac_edit_profile_repository.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/generated/l10n.dart';

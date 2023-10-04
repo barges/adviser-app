@@ -1,7 +1,7 @@
 // ignore_for_file: invalid_annotation_target
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:zodiac/data/models/user_info/brand_fields_model.dart';
+import 'package:zodiac/data/models/edit_profile/brand_fields_model.dart';
 
 part 'brand_model.g.dart';
 part 'brand_model.freezed.dart';

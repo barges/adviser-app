@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:zodiac/data/models/user_info/brand_and_locales_model.dart';
+import 'package:zodiac/data/models/edit_profile/brand_and_locales_model.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
 
 part 'brand_locales_response.g.dart';

@@ -11,11 +11,11 @@ import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.da
 import 'package:shared_advisor_interface/services/connectivity_service.dart';
 import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
+import 'package:zodiac/data/models/edit_profile/brand_locale_model.dart';
+import 'package:zodiac/data/models/edit_profile/brand_model.dart';
 import 'package:zodiac/data/models/enums/brands.dart';
 import 'package:zodiac/data/models/enums/profile_field.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
-import 'package:zodiac/data/models/user_info/brand_locale_model.dart';
-import 'package:zodiac/data/models/user_info/brand_model.dart';
 import 'package:zodiac/data/models/user_info/category_info.dart';
 import 'package:zodiac/data/models/user_info/detailed_user_info.dart';
 import 'package:zodiac/data/models/user_info/locale_descriptions.dart';
