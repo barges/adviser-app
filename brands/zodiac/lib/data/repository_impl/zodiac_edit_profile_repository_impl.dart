@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:injectable/injectable.dart';
 import 'package:zodiac/data/network/api/edit_profile_api.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
@@ -33,5 +35,20 @@ class ZodiacEditProfileRepositoryImpl implements ZodiacEditProfileRepository {
   @override
   Future<BaseResponse> saveBrandLocales(SaveBrandLocalesRequest request) async {
     return await _editProfileApi.saveBrandLocales(request);
+  }
+
+  @override
+  Future<BaseResponse> uploadAvatar(
+      {required AuthorizedRequest request,
+      required int brandId,
+      required File avatar}) async {
+    return await _editProfileApi.uploadAvatar(
+      secret: request.secret,
+      package: request.package,
+      version: request.version,
+      auth: request.auth,
+      brandId: brandId,
+      avatar: avatar,
+    );
   }
 }

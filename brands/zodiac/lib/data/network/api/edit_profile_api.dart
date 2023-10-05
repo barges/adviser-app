@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
@@ -34,4 +36,15 @@ abstract class EditProfileApi {
   @POST('/advisor/brand-locales/store')
   Future<BaseResponse> saveBrandLocales(
       @Body() SaveBrandLocalesRequest request);
+
+  @POST('/upload-avatar')
+  @MultiPart()
+  Future<BaseResponse> uploadAvatar({
+    @Part(name: 'secret') String? secret,
+    @Part(name: 'package') String? package,
+    @Part(name: 'version') String? version,
+    @Part(name: 'auth') String? auth,
+    @Part(name: 'brand_id') int? brandId,
+    @Part(name: 'avatar') File? avatar,
+  });
 }

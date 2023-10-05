@@ -43,7 +43,7 @@ class EditProfileBodyWidget extends StatelessWidget {
         ),
         _UserAvatarWidget(
           selectedBrandIndex: brandIndex,
-          avatarUrls: brands.map((e) => e.fields?.avatar).toList(),
+          avatarUrl: brands[brandIndex].fields?.avatar,
         ),
         const SizedBox(
           height: 24.0,
@@ -103,20 +103,22 @@ class EditProfileBodyWidget extends StatelessWidget {
 
 class _UserAvatarWidget extends StatelessWidget {
   final int selectedBrandIndex;
-  final List<String?> avatarUrls;
+  final String? avatarUrl;
 
   const _UserAvatarWidget({
     Key? key,
     required this.selectedBrandIndex,
-    required this.avatarUrls,
+    required this.avatarUrl,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    final List<File?> avatarFiles =
-        context.select((EditProfileCubit cubit) => cubit.state.avatars);
+    final EditProfileCubit editProfileCubit = context.read<EditProfileCubit>();
+
+    final File? avatarFile = context.select((EditProfileCubit cubit) =>
+        cubit.state.avatars[selectedBrandIndex].image);
 
     return Padding(
       padding: const EdgeInsets.only(
@@ -125,8 +127,8 @@ class _UserAvatarWidget extends StatelessWidget {
       child: Stack(children: [
         UserAvatar(
           // key: editProfileCubit.profileAvatarKey,
-          imageFile: avatarFiles[selectedBrandIndex],
-          avatarUrl: avatarUrls[selectedBrandIndex],
+          imageFile: avatarFile,
+          avatarUrl: avatarUrl,
           withBorder: true,
           withCameraBadge: true,
           canOpenInFullScreen: true,
@@ -139,7 +141,7 @@ class _UserAvatarWidget extends StatelessWidget {
                 showPickImageAlert(
                     context: context,
                     setImage: (image) {
-                      // editProfileCubit.setAvatar(image);
+                      editProfileCubit.setAvatar(image);
                     });
               },
               child: Container(

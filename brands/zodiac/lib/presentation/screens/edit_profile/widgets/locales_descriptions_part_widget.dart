@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/app_constants.dart';
-import 'package:shared_advisor_interface/global.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/text_fields/app_text_field.dart';

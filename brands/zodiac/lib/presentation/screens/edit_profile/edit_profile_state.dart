@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:zodiac/data/models/edit_profile/brand_model.dart';
+import 'package:zodiac/data/models/edit_profile/profile_avatar_model.dart';
 import 'package:zodiac/data/models/user_info/category_info.dart';
 
 part 'edit_profile_state.freezed.dart';
@@ -17,6 +16,6 @@ class EditProfileState with _$EditProfileState {
     @Default(true) bool canRefresh,
     List<BrandModel>? brands,
     @Default(0) int selectedBrandIndex,
-    @Default([]) List<File?> avatars,
+    @Default([]) List<ProfileAvatarModel> avatars,
   }) = _EditProfileState;
 }

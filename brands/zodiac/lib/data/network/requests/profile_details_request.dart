@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:zodiac/data/models/user_info/locale_descriptions.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
 
 part 'profile_details_request.g.dart';

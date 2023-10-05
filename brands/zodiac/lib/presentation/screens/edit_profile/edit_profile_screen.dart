@@ -6,11 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
-import 'package:shared_advisor_interface/services/connectivity_service.dart';
-import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/edit_profile/brand_model.dart';
-import 'package:zodiac/domain/repositories/zodiac_edit_profile_repository.dart';
-import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/scrollable_appbar/scrollable_appbar.dart';
@@ -25,12 +21,7 @@ class EditProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final ZodiacMainCubit zodiacMainCubit = context.read<ZodiacMainCubit>();
     return BlocProvider(
-      create: (_) => EditProfileCubit(
-        zodiacGetIt.get<ZodiacCachingManager>(),
-        zodiacGetIt.get<ZodiacUserRepository>(),
-        zodiacGetIt.get<ConnectivityService>(),
-        zodiacGetIt.get<ZodiacEditProfileRepository>(),
-      ),
+      create: (_) => zodiacGetIt.get<EditProfileCubit>(),
       child: Builder(builder: (context) {
         final EditProfileCubit editProfileCubit =
             context.read<EditProfileCubit>();
@@ -112,9 +103,9 @@ class EditProfileScreen extends StatelessWidget {
     EditProfileCubit editProfileCubit,
     ZodiacMainCubit zodiacMainCubit,
   ) async {
-    final bool isSaved = await editProfileCubit.saveInfo();
+    final bool? isSaved = await editProfileCubit.saveInfo();
 
-    if (isSaved) {
+    if (isSaved == true) {
       final bool? isOk = await showOkCancelAlert(
         context: context,
         title: SZodiac.of(context).saveZodiac,

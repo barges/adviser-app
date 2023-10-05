@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
@@ -13,28 +13,20 @@ import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/edit_profile/brand_locale_model.dart';
 import 'package:zodiac/data/models/edit_profile/brand_model.dart';
+import 'package:zodiac/data/models/edit_profile/profile_avatar_model.dart';
 import 'package:zodiac/data/models/edit_profile/saved_brand_locales_model.dart';
 import 'package:zodiac/data/models/edit_profile/saved_brand_model.dart';
 import 'package:zodiac/data/models/edit_profile/saved_locale_model.dart';
-import 'package:zodiac/data/models/enums/brands.dart';
+
 import 'package:zodiac/data/models/enums/profile_field.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
 import 'package:zodiac/data/models/user_info/category_info.dart';
-import 'package:zodiac/data/models/user_info/detailed_user_info.dart';
-import 'package:zodiac/data/models/user_info/locale_descriptions.dart';
 import 'package:zodiac/data/models/user_info/locale_model.dart';
-import 'package:zodiac/data/network/requests/add_remove_locale_request.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
-import 'package:zodiac/data/network/requests/change_advisor_specializations_request.dart';
-import 'package:zodiac/data/network/requests/change_main_specialization_request.dart';
-import 'package:zodiac/data/network/requests/locale_descriptions_request.dart';
 import 'package:zodiac/data/network/requests/save_brand_locales_request.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/responses/brand_locales_response.dart';
-import 'package:zodiac/data/network/responses/locale_descriptions_response.dart';
-import 'package:zodiac/data/network/responses/main_specialization_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_edit_profile_repository.dart';
-import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/screens/edit_profile/edit_profile_state.dart';
 
@@ -45,9 +37,9 @@ int aboutIndex = ProfileField.aboutIndex;
 int experienceIndex = ProfileField.experienceIndex;
 int helloMessageIndex = ProfileField.helloMessageIndex;
 
+@injectable
 class EditProfileCubit extends Cubit<EditProfileState> {
   final ZodiacCachingManager _cachingManager;
-  final ZodiacUserRepository _userRepository;
   final ConnectivityService _connectivityService;
   final ZodiacEditProfileRepository _editProfileRepository;
 
@@ -75,7 +67,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   EditProfileCubit(
     this._cachingManager,
-    this._userRepository,
     this._connectivityService,
     this._editProfileRepository,
   ) : super(const EditProfileState()) {
@@ -177,7 +168,10 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           emit(
             state.copyWith(
               brands: brands,
-              avatars: response.result?.map((e) => null).toList() ?? [],
+              avatars: response.result
+                      ?.map((e) => const ProfileAvatarModel())
+                      .toList() ??
+                  [],
               advisorCategories:
                   brands?.map((e) => e.fields?.categories ?? []).toList() ?? [],
               advisorMethods:
@@ -263,7 +257,15 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   }
 
   void setAvatar(File avatar) {
-    // emit(state.copyWith(avatar: avatar));
+    List<ProfileAvatarModel> avatars = List.of(state.avatars);
+
+    int selectedBrandIndex = state.selectedBrandIndex;
+
+    avatars[selectedBrandIndex] = ProfileAvatarModel(
+        brandId: state.brands?[selectedBrandIndex].id, image: avatar);
+
+    logger.d('${avatars[selectedBrandIndex].brandId} ---- $selectedBrandIndex');
+    emit(state.copyWith(avatars: avatars));
   }
 
   String localeNativeName(String code) {
@@ -540,8 +542,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     return isValid;
   }
 
-  Future<bool> saveInfo() async {
-    bool isOk;
+  Future<bool?> saveInfo() async {
+    bool? isOk;
 
     try {
       final bool isOnline = await _connectivityService.checkConnection();
@@ -552,25 +554,27 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         List<SavedBrandLocalesModel> brandLocales = [];
 
         List<BrandModel>? brands = state.brands;
-        List<List<CategoryInfo>> advisorCategories = state.advisorCategories;
-        List<List<CategoryInfo>> advisorMethods = state.advisorMethods;
+        List<List<CategoryInfo>> advisorCategories =
+            List.from(state.advisorCategories);
+        List<List<CategoryInfo>> advisorMethods =
+            List.from(state.advisorMethods);
 
         brands?.forEachIndexed((index, element) {
           if (element.id != null) {
             List<int> categoryIds = [];
             List<int> methodIds = [];
 
-            advisorCategories[index].forEach((element) {
+            for (var element in advisorCategories[index]) {
               if (element.id != null) {
                 categoryIds.add(element.id!);
               }
-            });
+            }
 
-            advisorMethods[index].forEach((element) {
+            for (var element in advisorMethods[index]) {
               if (element.id != null) {
                 methodIds.add(element.id!);
               }
-            });
+            }
 
             SavedBrandModel brand = SavedBrandModel(
                 brandId: element.id!,
@@ -592,7 +596,26 @@ class EditProfileCubit extends Cubit<EditProfileState> {
             SaveBrandLocalesRequest(brandLocales: brandLocales));
 
         if (response.status == true) {
-          isOk = true;
+          List<ProfileAvatarModel> avatars = List.from(state.avatars);
+
+          for (ProfileAvatarModel element in avatars) {
+            File? avatarFile = element.image;
+            int? brandId = element.brandId;
+
+            logger.d('Avatar: $avatarFile --- Id: $brandId');
+
+            if (avatarFile != null && brandId != null) {
+              BaseResponse response = await _editProfileRepository.uploadAvatar(
+                  request: AuthorizedRequest(),
+                  brandId: brandId,
+                  avatar: avatarFile);
+
+              if (response.status != true) {
+                isOk = false;
+                break;
+              }
+            }
+          }
         } else {
           isOk = false;
         }
