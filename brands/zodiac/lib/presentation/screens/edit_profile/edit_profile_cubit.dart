@@ -17,6 +17,7 @@ import 'package:zodiac/data/models/edit_profile/profile_avatar_model.dart';
 import 'package:zodiac/data/models/edit_profile/saved_brand_locales_model.dart';
 import 'package:zodiac/data/models/edit_profile/saved_brand_model.dart';
 import 'package:zodiac/data/models/edit_profile/saved_locale_model.dart';
+import 'package:zodiac/data/models/enums/approval_status.dart';
 
 import 'package:zodiac/data/models/enums/profile_field.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
@@ -51,6 +52,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   final List<Map<String, List<FocusNode>>> focusNodesMap = [];
   final List<Map<String, List<ValueNotifier>>> hasFocusNotifiersMap = [];
   final List<Map<String, List<ValidationErrorType>>> errorTextsMap = [];
+  final List<Map<String, List<ApprovalStatus>>> approvalStatusMap = [];
 
   final GlobalKey profileAvatarKey = GlobalKey();
 
@@ -141,18 +143,12 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           List<List<String>> brandLocales = [];
 
           locales?.forEachIndexed((brandIndex, locales) {
-            // mainLocales.add('');
-            brandLocales.add(locales.map((e) {
-              // if (e.locale?.isDefault == true) {
-              //   mainLocales[brandIndex] = e.locale?.code ?? '';
-              // }
-
-              return e.locale?.code ?? '';
-            }).toList());
+            brandLocales.add(locales.map((e) => e.locale?.code ?? '').toList());
             textControllersMap.add({});
             focusNodesMap.add({});
             hasFocusNotifiersMap.add({});
             errorTextsMap.add({});
+            approvalStatusMap.add({});
             localesGlobalKeys.add([]);
 
             mainLocales.add('');
@@ -335,6 +331,14 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         });
         return node;
       }).toList();
+
+      approvalStatusMap[brandIndex][locale] =
+          List.generate(_textFieldsCount, (index) => ApprovalStatus.approved);
+
+      brandLocaleModel.pendingApproval?.forEach((element) {
+        approvalStatusMap[brandIndex][locale]?[element.index] =
+            ApprovalStatus.newStatus;
+      });
 
       localesGlobalKeys[brandIndex].add(GlobalKey());
     }
@@ -601,8 +605,6 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           for (ProfileAvatarModel element in avatars) {
             File? avatarFile = element.image;
             int? brandId = element.brandId;
-
-            logger.d('Avatar: $avatarFile --- Id: $brandId');
 
             if (avatarFile != null && brandId != null) {
               BaseResponse response = await _editProfileRepository.uploadAvatar(

@@ -60,9 +60,6 @@ class LocalesDescriptionsPartWidget extends StatelessWidget {
                               [entry.key]![nickNameIndex],
                       builder: (context, value, child) {
                         return AppTextField(
-                          // key: entry.key == locales.firstOrNull
-                          //     ? editProfileCubit.firstNicknameGlobalKey
-                          //     : null,
                           controller: entry.value[nickNameIndex],
                           focusNode: editProfileCubit.focusNodesMap[brandIndex]
                               [entry.key]![nickNameIndex],
@@ -70,6 +67,9 @@ class LocalesDescriptionsPartWidget extends StatelessWidget {
                           errorType: editProfileCubit.errorTextsMap[brandIndex]
                                   [entry.key]?[nickNameIndex] ??
                               ValidationErrorType.empty,
+                          approvalStatus:
+                              editProfileCubit.approvalStatusMap[brandIndex]
+                                  [entry.key]?[nickNameIndex],
                         );
                       }),
                   const SizedBox(
@@ -90,6 +90,9 @@ class LocalesDescriptionsPartWidget extends StatelessWidget {
                           label: SZodiac.of(context).aboutZodiac,
                           textInputType: TextInputType.multiline,
                           isBig: true,
+                          approvalStatus:
+                              editProfileCubit.approvalStatusMap[brandIndex]
+                                  [entry.key]?[aboutIndex],
                         );
                       }),
                   const SizedBox(
@@ -110,6 +113,9 @@ class LocalesDescriptionsPartWidget extends StatelessWidget {
                           label: SZodiac.of(context).experienceZodiac,
                           textInputType: TextInputType.multiline,
                           isBig: true,
+                          approvalStatus:
+                              editProfileCubit.approvalStatusMap[brandIndex]
+                                  [entry.key]?[experienceIndex],
                         );
                       }),
                   const SizedBox(
@@ -130,6 +136,9 @@ class LocalesDescriptionsPartWidget extends StatelessWidget {
                           label: SZodiac.of(context).chatStartGreetingZodiac,
                           textInputType: TextInputType.multiline,
                           isBig: true,
+                          approvalStatus:
+                              editProfileCubit.approvalStatusMap[brandIndex]
+                                  [entry.key]?[helloMessageIndex],
                         );
                       }),
                 ],
