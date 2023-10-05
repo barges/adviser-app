@@ -38,6 +38,8 @@ class EditProfileScreen extends StatelessWidget {
               child: Builder(builder: (context) {
                 final bool canRefresh = context
                     .select((EditProfileCubit cubit) => cubit.state.canRefresh);
+                final List<BrandModel>? brands = context
+                    .select((EditProfileCubit cubit) => cubit.state.brands);
 
                 return RefreshIndicator(
                   onRefresh: editProfileCubit.getData,
@@ -50,13 +52,15 @@ class EditProfileScreen extends StatelessWidget {
                       ScrollableAppBar(
                         title: SZodiac.of(context).editProfileZodiac,
                         needShowError: true,
-                        actionOnClick: () async {
-                          await _confirmChanges(
-                            context,
-                            editProfileCubit,
-                            zodiacMainCubit,
-                          );
-                        },
+                        actionOnClick: brands != null
+                            ? () async {
+                                await _confirmChanges(
+                                  context,
+                                  editProfileCubit,
+                                  zodiacMainCubit,
+                                );
+                              }
+                            : null,
                         backOnTap: () {
                           if (editProfileCubit.needUpdateAccount) {
                             zodiacMainCubit.updateAccount();
@@ -65,8 +69,6 @@ class EditProfileScreen extends StatelessWidget {
                       ),
                       SliverToBoxAdapter(
                         child: Builder(builder: (context) {
-                          final List<BrandModel>? brands = context.select(
-                              (EditProfileCubit cubit) => cubit.state.brands);
                           final int selectedBrandIndex = context.select(
                               (EditProfileCubit cubit) =>
                                   cubit.state.selectedBrandIndex);

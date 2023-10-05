@@ -609,6 +609,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
             SaveBrandLocalesRequest(brandLocales: brandLocales));
 
         if (response.status == true) {
+          isOk = true;
+
           List<ProfileAvatarModel> avatars = List.from(state.avatars);
 
           for (int i = 0; i < avatars.length; i++) {
