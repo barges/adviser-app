@@ -119,6 +119,8 @@ class _UserAvatarWidget extends StatelessWidget {
 
     final File? avatarFile = context.select((EditProfileCubit cubit) =>
         cubit.state.avatars[selectedBrandIndex].image);
+    final int? brandIndexWithAvatarError = context.select(
+        (EditProfileCubit cubit) => cubit.state.brandIndexWithAvatarError);
 
     return Padding(
       padding: const EdgeInsets.only(
@@ -126,12 +128,13 @@ class _UserAvatarWidget extends StatelessWidget {
       ),
       child: Stack(children: [
         UserAvatar(
-          // key: editProfileCubit.profileAvatarKey,
+          key: editProfileCubit.profileAvatarKeys[selectedBrandIndex],
           imageFile: avatarFile,
           avatarUrl: avatarUrl,
           withBorder: true,
           withCameraBadge: true,
           canOpenInFullScreen: true,
+          withError: brandIndexWithAvatarError == selectedBrandIndex,
         ),
         Positioned(
             right: 0.0,

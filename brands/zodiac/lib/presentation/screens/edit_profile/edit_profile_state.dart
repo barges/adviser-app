@@ -17,5 +17,6 @@ class EditProfileState with _$EditProfileState {
     List<BrandModel>? brands,
     @Default(0) int selectedBrandIndex,
     @Default([]) List<ProfileAvatarModel> avatars,
+    int? brandIndexWithAvatarError,
   }) = _EditProfileState;
 }

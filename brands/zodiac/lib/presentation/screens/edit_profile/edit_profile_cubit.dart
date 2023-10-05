@@ -54,7 +54,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   final List<Map<String, List<ValidationErrorType>>> errorTextsMap = [];
   final List<Map<String, List<ApprovalStatus>>> approvalStatusMap = [];
 
-  final GlobalKey profileAvatarKey = GlobalKey();
+  final List<GlobalKey> profileAvatarKeys = [];
 
   ////////
   final List<int?> _mainCategoryIds = [];
@@ -121,6 +121,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         hasFocusNotifiersMap.clear();
         errorTextsMap.clear();
         mainLocales.clear();
+        localesGlobalKeys.clear();
+        profileAvatarKeys.clear();
 
         final BrandLocalesResponse response =
             await _editProfileRepository.getBrandLocales(AuthorizedRequest());
@@ -137,6 +139,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
             (element) {
               _mainCategoryIds.add(element.fields?.mainCategoryId);
               _mainMethodIds.add(element.fields?.mainMethodId);
+              profileAvatarKeys.add(GlobalKey());
             },
           );
 
@@ -260,8 +263,14 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     avatars[selectedBrandIndex] = ProfileAvatarModel(
         brandId: state.brands?[selectedBrandIndex].id, image: avatar);
 
-    logger.d('${avatars[selectedBrandIndex].brandId} ---- $selectedBrandIndex');
-    emit(state.copyWith(avatars: avatars));
+    int? brandIndexWithAvatarError = state.brandIndexWithAvatarError;
+
+    emit(state.copyWith(
+      avatars: avatars,
+      brandIndexWithAvatarError: selectedBrandIndex == brandIndexWithAvatarError
+          ? null
+          : brandIndexWithAvatarError,
+    ));
   }
 
   String localeNativeName(String code) {
@@ -602,9 +611,9 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         if (response.status == true) {
           List<ProfileAvatarModel> avatars = List.from(state.avatars);
 
-          for (ProfileAvatarModel element in avatars) {
-            File? avatarFile = element.image;
-            int? brandId = element.brandId;
+          for (int i = 0; i < avatars.length; i++) {
+            File? avatarFile = avatars[i].image;
+            int? brandId = avatars[i].brandId;
 
             if (avatarFile != null && brandId != null) {
               BaseResponse response = await _editProfileRepository.uploadAvatar(
@@ -614,6 +623,13 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
               if (response.status != true) {
                 isOk = false;
+                emit(state.copyWith(
+                    brandIndexWithAvatarError: i, selectedBrandIndex: i));
+                BuildContext? context = profileAvatarKeys[i].currentContext;
+                if (context != null) {
+                  // ignore: use_build_context_synchronously
+                  Scrollable.ensureVisible(context, alignment: 1.0);
+                }
                 break;
               }
             }
