@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
-import 'package:zodiac/data/models/enums/service_status.dart';
 import 'package:zodiac/data/models/services/service_item.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
@@ -11,12 +10,6 @@ import 'package:zodiac/presentation/screens/services_messages/list_of_filters_wi
 import 'package:zodiac/presentation/screens/services_messages/services/services_cubit.dart';
 import 'package:zodiac/presentation/screens/services_messages/services/widgets/service_card.dart';
 import 'package:zodiac/presentation/screens/services_messages/services_messages_screen.dart';
-
-const List<ServiceStatus> listOfFilters = [
-  ServiceStatus.approved,
-  ServiceStatus.pending,
-  ServiceStatus.rejected
-];
 
 class ServicesScreen extends StatelessWidget {
   const ServicesScreen({Key? key}) : super(key: key);
@@ -58,18 +51,14 @@ class ServicesScreen extends StatelessWidget {
                   child: ListOfFiltersWidget(
                     currentFilterIndex: selectedStatusIndex,
                     onTapToFilter: (index) {
-                      if (index != null) {
-                        servicesCubit.getServices(
-                          status: index == 0
-                              ? null
-                              : listOfFilters[index - 1].toInt,
-                          index: index,
-                        );
-                      }
+                      servicesCubit.getServices(
+                        index: index,
+                      );
                     },
                     filters: [
                       SZodiac.of(context).allZodiac,
-                      ...listOfFilters.map((e) => e.getTitle(context))
+                      ...ServicesCubit.listOfFilters
+                          .map((e) => e.getTitle(context))
                     ],
                     padding: AppConstants.horizontalScreenPadding,
                   ),
