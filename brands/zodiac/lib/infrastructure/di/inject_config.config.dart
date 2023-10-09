@@ -65,21 +65,22 @@ import '../../domain/repositories/zodiac_sessions_repository.dart' as _i25;
 import '../../domain/repositories/zodiac_sevices_repository.dart' as _i23;
 import '../../domain/repositories/zodiac_user_repository.dart' as _i27;
 import '../../presentation/screens/add_service/add_service_cubit.dart' as _i29;
+import '../../presentation/screens/auto_reply/auto_reply_cubit.dart' as _i50;
 import '../../presentation/screens/chat/chat_cubit.dart' as _i34;
 import '../../presentation/screens/edit_service/edit_service_cubit.dart'
     as _i36;
 import '../../presentation/screens/phone_number/phone_number_cubit.dart'
     as _i37;
 import '../../presentation/screens/services_messages/canned_messages/canned_messages_cubit.dart'
-    as _i50;
+    as _i51;
 import '../../presentation/screens/services_messages/services/services_cubit.dart'
     as _i39;
 import '../../services/websocket_manager/websocket_manager.dart' as _i16;
 import '../../services/websocket_manager/websocket_manager_impl.dart' as _i17;
 import '../../zodiac_main_cubit.dart' as _i15;
 import 'dio_interceptors/app_interceptor.dart' as _i18;
-import 'modules/api_module.dart' as _i52;
-import 'modules/services_module.dart' as _i51;
+import 'modules/api_module.dart' as _i53;
+import 'modules/services_module.dart' as _i52;
 
 // initializes the registration of main-scope dependencies inside of GetIt
 Future<_i1.GetIt> $initGetIt(
@@ -199,11 +200,13 @@ Future<_i1.GetIt> $initGetIt(
       () => _i47.ZodiacChatRepositoryImpl(gh<_i33.ChatApi>()));
   gh.factory<_i48.ZodiacCouponsRepository>(
       () => _i49.ZodiacCouponsRepositoryImpl(gh<_i35.CouponsApi>()));
-  gh.factory<_i50.CannedMessagesCubit>(() =>
-      _i50.CannedMessagesCubit(gh<_i44.ZodiacCannedMessagesRepository>()));
+  gh.factory<_i50.AutoReplyCubit>(
+      () => _i50.AutoReplyCubit(gh<_i46.ZodiacChatRepository>()));
+  gh.factory<_i51.CannedMessagesCubit>(() =>
+      _i51.CannedMessagesCubit(gh<_i44.ZodiacCannedMessagesRepository>()));
   return getIt;
 }
 
-class _$ServicesModule extends _i51.ServicesModule {}
+class _$ServicesModule extends _i52.ServicesModule {}
 
-class _$ApiModule extends _i52.ApiModule {}
+class _$ApiModule extends _i53.ApiModule {}

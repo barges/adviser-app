@@ -81,6 +81,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "articlesZodiac": MessageLookupByLibrary.simpleMessage("Articles"),
         "audioMessageZodiac":
             MessageLookupByLibrary.simpleMessage("Audio message"),
+        "autoReplyZodiac": MessageLookupByLibrary.simpleMessage("Auto-reply"),
         "avgDailyEarningsZodiac":
             MessageLookupByLibrary.simpleMessage("Avg Daily Earnings"),
         "balanceTransactionsZodiac":

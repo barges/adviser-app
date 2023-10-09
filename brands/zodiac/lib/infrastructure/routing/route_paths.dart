@@ -33,4 +33,5 @@ class RoutePathsZodiac {
   static const duplicateService = '${ZodiacBrand.alias}DuplicateService';
   static const editService = '${ZodiacBrand.alias}EditService';
   static const completeService = '${ZodiacBrand.alias}CompleteService';
+  static const autoReply = '${ZodiacBrand.alias}AutoReply';
 }

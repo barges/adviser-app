@@ -145,6 +145,16 @@ class ReviewsPartWidget extends StatelessWidget {
                 route: ZodiacServicesMessages(),
               ),
             ),
+            const Divider(
+              height: 1.0,
+            ),
+            TileWidget(
+              title: SZodiac.of(context).autoReplyZodiac,
+              iconSVGPath: Assets.zodiac.vectors.autoreplyIcon.path,
+              onTap: () => context.push(
+                route: const ZodiacAutoReply(),
+              ),
+            ),
           ],
         ),
       ),

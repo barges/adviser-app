@@ -5,6 +5,7 @@ import 'package:zodiac/data/network/api/chat_api.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/requests/base_audio_message_request.dart';
 import 'package:zodiac/data/network/requests/create_audio_message_request.dart';
+import 'package:zodiac/data/network/responses/auto_reply_list_response.dart';
 import 'package:zodiac/data/network/responses/create_audio_message_response.dart';
 import 'package:zodiac/data/network/responses/send_image_response.dart';
 import 'package:zodiac/data/network/responses/upload_audio_message_response.dart';
@@ -52,5 +53,11 @@ class ZodiacChatRepositoryImpl implements ZodiacChatRepository {
       entityId: entityId,
       audioFile: audioFile,
     );
+  }
+
+  @override
+  Future<AutoReplyListResponse> getAutoReplyList(
+      AuthorizedRequest request) async {
+    return await _chatApi.getAutoReplyList(request);
   }
 }

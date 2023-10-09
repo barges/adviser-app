@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:zodiac/infrastructure/routing/route_paths.dart';
 import 'package:zodiac/presentation/screens/add_service/add_service_screen.dart';
 import 'package:zodiac/presentation/screens/article_details_screen/article_details_screen.dart';
+import 'package:zodiac/presentation/screens/auto_reply/auto_reply_screen.dart';
 import 'package:zodiac/presentation/screens/balance_and_transactions/balance_and_transactions_screen.dart';
 import 'package:zodiac/presentation/screens/brand_screen/zodiac_brand_screen.dart';
 import 'package:zodiac/presentation/screens/chat/chat_screen.dart';
@@ -175,6 +176,11 @@ const zodiacRoute = AutoRoute(
       page: CompleteServiceScreen,
       path: RoutePathsZodiac.completeService,
       name: RoutePathsZodiac.completeService,
+    ),
+    AutoRoute(
+      page: AutoReplyScreen,
+      path: RoutePathsZodiac.autoReply,
+      name: RoutePathsZodiac.autoReply,
     ),
   ],
 );

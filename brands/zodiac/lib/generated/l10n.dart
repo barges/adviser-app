@@ -2455,6 +2455,16 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Auto-reply`
+  String get autoReplyZodiac {
+    return Intl.message(
+      'Auto-reply',
+      name: 'autoReplyZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {
