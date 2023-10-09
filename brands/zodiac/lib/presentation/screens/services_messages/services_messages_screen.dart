@@ -60,9 +60,7 @@ class ServicesMessagesScreen extends StatelessWidget {
                                     child: ListOfFiltersWidget(
                                       currentFilterIndex: value,
                                       onTapToFilter: (index) {
-                                        if (index != null) {
-                                          _indexNotifier.value = index;
-                                        }
+                                        _indexNotifier.value = index;
                                       },
                                       filters: [
                                         SZodiac.of(context).servicesZodiac,
