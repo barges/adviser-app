@@ -1,6 +1,8 @@
+import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:zodiac/data/models/chat/private_message_model.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/responses/auto_reply_list_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_chat_repository.dart';
@@ -31,5 +33,22 @@ class AutoReplyCubit extends Cubit<AutoReplyState> {
 
   void selectMessage(int? id) {
     emit(state.copyWith(selectedMessageId: id));
+  }
+
+  void setSingleTime(String time) {
+    List<PrivateMessageModel>? messages = List.of(state.messages ?? []);
+
+    PrivateMessageModel? privateMessage = messages.firstWhereOrNull(
+        (element) => element.message?.contains(state.time) == true);
+    if (privateMessage != null) {
+      int? messageIndex = messages.indexOf(privateMessage);
+
+      String message =
+          privateMessage.message?.replaceFirst(state.time, time) ?? '';
+
+      messages[messageIndex] = privateMessage.copyWith(message: message);
+
+      emit(state.copyWith(messages: messages, time: time));
+    }
   }
 }

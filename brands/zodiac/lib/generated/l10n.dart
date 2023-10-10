@@ -2465,6 +2465,16 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Done`
+  String get doneZodiac {
+    return Intl.message(
+      'Done',
+      name: 'doneZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

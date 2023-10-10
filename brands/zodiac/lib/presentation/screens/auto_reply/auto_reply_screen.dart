@@ -6,6 +6,7 @@ import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/wide_app_bar.dart';
 import 'package:zodiac/presentation/screens/auto_reply/auto_reply_cubit.dart';
 import 'package:zodiac/presentation/screens/auto_reply/widgets/auto_reply_list_widget.dart';
+import 'package:zodiac/presentation/screens/auto_reply/widgets/select_time_button_widget.dart';
 
 class AutoReplyScreen extends StatelessWidget {
   const AutoReplyScreen({Key? key}) : super(key: key);
@@ -28,7 +29,15 @@ class AutoReplyScreen extends StatelessWidget {
             padding: EdgeInsets.symmetric(
                 vertical: 16.0,
                 horizontal: AppConstants.horizontalScreenPadding),
-            child: AutoReplyListWidget(),
+            child: Column(
+              children: [
+                AutoReplyListWidget(),
+                SizedBox(
+                  height: 24.0,
+                ),
+                SelectTimeButtonWidget(title: 'Time')
+              ],
+            ),
           ),
         );
       }),

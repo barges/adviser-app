@@ -239,5 +239,6 @@
   "completeZodiac": "Complete",
   "activateZodiac": "Activate",
   "showLessZodiac": "Show less",
-  "autoReplyZodiac": "Auto-reply"
+  "autoReplyZodiac": "Auto-reply",
+  "doneZodiac": "Done"
 }

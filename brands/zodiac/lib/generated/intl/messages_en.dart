@@ -156,6 +156,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "doYouWantToDeleteThisMessageZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Do you want to delete this message?"),
+        "doneZodiac": MessageLookupByLibrary.simpleMessage("Done"),
         "duplicateAnExistingServiceZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Duplicate an existing service"),

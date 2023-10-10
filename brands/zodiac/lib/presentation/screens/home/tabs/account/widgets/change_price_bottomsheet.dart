@@ -34,7 +34,7 @@ Future<void> changePriceBottomsheet({
                   GestureDetector(
                     onTap: () => Navigator.of(context).pop(),
                     child: Text(
-                      S.of(context).cancel,
+                      SZodiac.of(context).cancelZodiac,
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.primaryColor,
                       ),
@@ -54,7 +54,7 @@ Future<void> changePriceBottomsheet({
                       Navigator.of(context).pop();
                     },
                     child: Text(
-                      S.of(context).done,
+                      SZodiac.of(context).doneZodiac,
                       style: theme.textTheme.labelMedium?.copyWith(
                         fontSize: 15.0,
                         color: theme.primaryColor,

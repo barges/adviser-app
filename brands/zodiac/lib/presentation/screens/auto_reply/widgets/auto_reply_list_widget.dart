@@ -14,6 +14,7 @@ class AutoReplyListWidget extends StatelessWidget {
 
     if (messages != null) {
       return ListView.separated(
+        shrinkWrap: true,
         itemCount: messages.length,
         itemBuilder: (context, index) => AutoReplyListItemWidget(
           message: messages[index].message ?? '',
