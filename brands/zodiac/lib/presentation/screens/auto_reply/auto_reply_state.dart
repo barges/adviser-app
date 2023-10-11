@@ -13,5 +13,6 @@ class AutoReplyState with _$AutoReplyState {
     List<PrivateMessageModel>? messages,
     bool? replyEnabled,
     int? selectedMessageId,
+    @Default(false) bool dataFetched,
   }) = _AutoReplyState;
 }

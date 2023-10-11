@@ -28,6 +28,8 @@ class AutoReplyCubit extends Cubit<AutoReplyState> {
       }
     } catch (e) {
       logger.d(e);
+    } finally {
+      emit(state.copyWith(dataFetched: state.messages != null));
     }
   }
 
@@ -49,6 +51,40 @@ class AutoReplyCubit extends Cubit<AutoReplyState> {
       messages[messageIndex] = privateMessage.copyWith(message: message);
 
       emit(state.copyWith(messages: messages, time: time));
+    }
+  }
+
+  void setTimeFrom(String time) {
+    List<PrivateMessageModel>? messages = List.of(state.messages ?? []);
+
+    PrivateMessageModel? privateMessage = messages.firstWhereOrNull(
+        (element) => element.message?.contains(state.timeFrom) == true);
+    if (privateMessage != null) {
+      int? messageIndex = messages.indexOf(privateMessage);
+
+      String message =
+          privateMessage.message?.replaceFirst(state.timeFrom, time) ?? '';
+
+      messages[messageIndex] = privateMessage.copyWith(message: message);
+
+      emit(state.copyWith(messages: messages, timeFrom: time));
+    }
+  }
+
+  void setTimeTo(String time) {
+    List<PrivateMessageModel>? messages = List.of(state.messages ?? []);
+
+    PrivateMessageModel? privateMessage = messages.firstWhereOrNull(
+        (element) => element.message?.contains(state.timeTo) == true);
+    if (privateMessage != null) {
+      int? messageIndex = messages.indexOf(privateMessage);
+
+      String message =
+          privateMessage.message?.replaceFirst(state.timeTo, time) ?? '';
+
+      messages[messageIndex] = privateMessage.copyWith(message: message);
+
+      emit(state.copyWith(messages: messages, timeTo: time));
     }
   }
 }

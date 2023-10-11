@@ -361,6 +361,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "sessionsZodiac": MessageLookupByLibrary.simpleMessage("Sessions"),
         "setAsMainLanguageZodiac":
             MessageLookupByLibrary.simpleMessage("Set as main language"),
+        "setTimeFromZodiac":
+            MessageLookupByLibrary.simpleMessage("Set time from"),
+        "setTimeToZodiac": MessageLookupByLibrary.simpleMessage("Set time to"),
+        "setTimeZodiac": MessageLookupByLibrary.simpleMessage("Set time"),
         "setUpSuccessfulZodiac":
             MessageLookupByLibrary.simpleMessage("Set up successful"),
         "showDailyCouponsZodiac":

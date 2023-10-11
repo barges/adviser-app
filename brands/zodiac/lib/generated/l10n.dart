@@ -2475,6 +2475,36 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Set time`
+  String get setTimeZodiac {
+    return Intl.message(
+      'Set time',
+      name: 'setTimeZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Set time from`
+  String get setTimeFromZodiac {
+    return Intl.message(
+      'Set time from',
+      name: 'setTimeFromZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Set time to`
+  String get setTimeToZodiac {
+    return Intl.message(
+      'Set time to',
+      name: 'setTimeToZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

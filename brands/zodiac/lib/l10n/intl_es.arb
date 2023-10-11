@@ -240,5 +240,8 @@
   "activateZodiac": "Activar",
   "showLessZodiac": "Muestra menos",
   "autoReplyZodiac": "Respuesta automática",
-  "doneZodiac": "Listo"
+  "doneZodiac": "Listo",
+  "setTimeZodiac": "Fijar tiempo",
+  "setTimeFromZodiac": "Establecer tiempo desde",
+  "setTimeToZodiac": "Establecer tiempo para"
 }
