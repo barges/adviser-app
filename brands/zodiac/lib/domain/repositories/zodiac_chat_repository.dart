@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:zodiac/data/network/requests/authorized_request.dart';
+import 'package:zodiac/data/network/requests/auto_reply_settings_request.dart';
 import 'package:zodiac/data/network/requests/base_audio_message_request.dart';
 import 'package:zodiac/data/network/requests/create_audio_message_request.dart';
 import 'package:zodiac/data/network/responses/auto_reply_list_response.dart';
+import 'package:zodiac/data/network/responses/auto_reply_settings_response.dart';
 import 'package:zodiac/data/network/responses/create_audio_message_response.dart';
 import 'package:zodiac/data/network/responses/send_image_response.dart';
 import 'package:zodiac/data/network/responses/upload_audio_message_response.dart';
@@ -26,4 +28,7 @@ abstract class ZodiacChatRepository {
   });
 
   Future<AutoReplyListResponse> getAutoReplyList(AuthorizedRequest request);
+
+  Future<AutoReplySettingsResponse> autoReplySettings(
+      AutoReplySettingsRequest request);
 }

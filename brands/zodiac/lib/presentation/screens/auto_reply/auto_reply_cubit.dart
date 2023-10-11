@@ -4,8 +4,11 @@ import 'package:injectable/injectable.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:zodiac/data/models/chat/private_message_model.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
+import 'package:zodiac/data/network/requests/auto_reply_settings_request.dart';
 import 'package:zodiac/data/network/responses/auto_reply_list_response.dart';
+import 'package:zodiac/data/network/responses/auto_reply_settings_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_chat_repository.dart';
+import 'package:zodiac/presentation/screens/auto_reply/auto_reply_constants.dart';
 import 'package:zodiac/presentation/screens/auto_reply/auto_reply_state.dart';
 
 @injectable
@@ -20,11 +23,39 @@ class AutoReplyCubit extends Cubit<AutoReplyState> {
 
   Future<void> _getInitialData() async {
     try {
-      final AutoReplyListResponse response =
+      final AutoReplyListResponse listResponse =
           await _chatRepository.getAutoReplyList(AuthorizedRequest());
 
-      if (response.status == true) {
-        emit(state.copyWith(messages: response.result));
+      if (listResponse.status == true) {
+        List<PrivateMessageModel>? messages = listResponse.result;
+
+        final AutoReplySettingsResponse settingsResponse =
+            await _chatRepository.autoReplySettings(AutoReplySettingsRequest());
+
+        if (settingsResponse.status == true) {
+          PrivateMessageModel? messageModel = settingsResponse.result;
+
+          logger.d(messageModel);
+
+          if (messageModel != null) {
+            int? messageIndex = messages
+                ?.indexWhere((element) => element.id == messageModel.messageId);
+
+            if (messageIndex != null && messageIndex != -1) {
+              messages![messageIndex] = messageModel;
+            }
+          }
+
+          emit(
+            state.copyWith(
+              autoReplyEnabled: messageModel?.autoreplied == true,
+              messages: messages,
+              time: messageModel?.time ?? AutoReplyConstants.time,
+              timeFrom: messageModel?.timeFrom ?? AutoReplyConstants.timeFrom,
+              timeTo: messageModel?.timeTo ?? AutoReplyConstants.timeTo,
+            ),
+          );
+        }
       }
     } catch (e) {
       logger.d(e);
