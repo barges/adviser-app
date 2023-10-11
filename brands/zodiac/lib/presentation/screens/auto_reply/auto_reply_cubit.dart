@@ -118,4 +118,8 @@ class AutoReplyCubit extends Cubit<AutoReplyState> {
       emit(state.copyWith(messages: messages, timeTo: time));
     }
   }
+
+  void onAutoReplyEnabledChange(bool value) {
+    emit(state.copyWith(autoReplyEnabled: value));
+  }
 }

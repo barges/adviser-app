@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
@@ -13,10 +14,15 @@ class AutoReplyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return BlocProvider(
       create: (context) => zodiacGetIt.get<AutoReplyCubit>(),
       child: Builder(builder: (context) {
         final AutoReplyCubit autoReplyCubit = context.read<AutoReplyCubit>();
+
+        final bool autoReplyEnabled = context
+            .select((AutoReplyCubit cubit) => cubit.state.autoReplyEnabled);
 
         final bool dataFetched =
             context.select((AutoReplyCubit cubit) => cubit.state.dataFetched);
@@ -25,22 +31,36 @@ class AutoReplyScreen extends StatelessWidget {
           appBar: WideAppBar(
             bottomWidget: Text(
               SZodiac.of(context).autoReplyZodiac,
-              style: Theme.of(context).textTheme.headlineMedium,
+              style: theme.textTheme.headlineMedium,
             ),
+            bottomRightWidget: dataFetched
+                ? CupertinoSwitch(
+                    value: autoReplyEnabled,
+                    onChanged: autoReplyCubit.onAutoReplyEnabledChange,
+                    activeColor: theme.primaryColor,
+                    trackColor: theme.hintColor,
+                  )
+                : null,
           ),
           body: dataFetched
-              ? const Padding(
-                  padding: EdgeInsets.symmetric(
-                      vertical: 16.0,
-                      horizontal: AppConstants.horizontalScreenPadding),
-                  child: Column(
-                    children: [
-                      AutoReplyListWidget(),
-                      SizedBox(
-                        height: 24.0,
+              ? IgnorePointer(
+                  ignoring: !autoReplyEnabled,
+                  child: Opacity(
+                    opacity: autoReplyEnabled ? 1.0 : 0.6,
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 16.0,
+                          horizontal: AppConstants.horizontalScreenPadding),
+                      child: Column(
+                        children: [
+                          AutoReplyListWidget(),
+                          SizedBox(
+                            height: 24.0,
+                          ),
+                          SelectTimeButtonsPartWidget(),
+                        ],
                       ),
-                      SelectTimeButtonsPartWidget(),
-                    ],
+                    ),
                   ),
                 )
               : const SizedBox.shrink(),
