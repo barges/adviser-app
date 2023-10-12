@@ -69,6 +69,8 @@ import '../../presentation/screens/auto_reply/auto_reply_cubit.dart' as _i50;
 import '../../presentation/screens/chat/chat_cubit.dart' as _i34;
 import '../../presentation/screens/edit_service/edit_service_cubit.dart'
     as _i36;
+import '../../presentation/screens/home/tabs/account/zodiac_account_cubit.dart'
+    as _i52;
 import '../../presentation/screens/phone_number/phone_number_cubit.dart'
     as _i37;
 import '../../presentation/screens/services_messages/canned_messages/canned_messages_cubit.dart'
@@ -79,8 +81,8 @@ import '../../services/websocket_manager/websocket_manager.dart' as _i16;
 import '../../services/websocket_manager/websocket_manager_impl.dart' as _i17;
 import '../../zodiac_main_cubit.dart' as _i15;
 import 'dio_interceptors/app_interceptor.dart' as _i18;
-import 'modules/api_module.dart' as _i53;
-import 'modules/services_module.dart' as _i52;
+import 'modules/api_module.dart' as _i54;
+import 'modules/services_module.dart' as _i53;
 
 // initializes the registration of main-scope dependencies inside of GetIt
 Future<_i1.GetIt> $initGetIt(
@@ -204,9 +206,24 @@ Future<_i1.GetIt> $initGetIt(
       () => _i50.AutoReplyCubit(gh<_i46.ZodiacChatRepository>()));
   gh.factory<_i51.CannedMessagesCubit>(() =>
       _i51.CannedMessagesCubit(gh<_i44.ZodiacCannedMessagesRepository>()));
+  gh.factoryParam<_i52.ZodiacAccountCubit, _i52.FutureBoolSetter, dynamic>((
+    _handlePermission,
+    _,
+  ) =>
+      _i52.ZodiacAccountCubit(
+        gh<_i5.BrandManager>(),
+        gh<_i15.ZodiacMainCubit>(),
+        gh<_i27.ZodiacUserRepository>(),
+        gh<_i13.ZodiacCachingManager>(),
+        gh<_i7.ConnectivityService>(),
+        gh<_i11.PushNotificationManager>(),
+        gh<_i48.ZodiacCouponsRepository>(),
+        gh<_i46.ZodiacChatRepository>(),
+        _handlePermission,
+      ));
   return getIt;
 }
 
-class _$ServicesModule extends _i52.ServicesModule {}
+class _$ServicesModule extends _i53.ServicesModule {}
 
-class _$ApiModule extends _i53.ApiModule {}
+class _$ApiModule extends _i54.ApiModule {}

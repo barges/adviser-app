@@ -243,5 +243,7 @@
   "doneZodiac": "Listo",
   "setTimeZodiac": "Fijar tiempo",
   "setTimeFromZodiac": "Establecer tiempo desde",
-  "setTimeToZodiac": "Establecer tiempo para"
+  "setTimeToZodiac": "Establecer tiempo para",
+  "onZodiac": "En",
+  "offZodiac": "Apagado"
 }

@@ -243,5 +243,7 @@
   "done": "Feito",
   "setTimeZodiac": "Definir tempo",
   "setTimeFromZodiac": "Definir hora de",
-  "setTimeToZodiac": "Defina o horário para"
+  "setTimeToZodiac": "Defina o horário para",
+  "onZodiac": "Sobre",
+  "offZodiac": "Desligado"
 }

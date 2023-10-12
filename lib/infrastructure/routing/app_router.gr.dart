@@ -502,7 +502,7 @@ class MainAppRouter extends _i51.RootStackRouter {
       );
     },
     ZodiacAutoReply.name: (routeData) {
-      return _i51.AdaptivePage<dynamic>(
+      return _i51.AdaptivePage<bool?>(
         routeData: routeData,
         child: const _i45.AutoReplyScreen(),
       );

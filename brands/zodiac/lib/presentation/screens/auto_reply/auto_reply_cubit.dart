@@ -182,7 +182,7 @@ class AutoReplyCubit extends Cubit<AutoReplyState> {
 
           if (response.status == true) {
             // ignore: use_build_context_synchronously
-            context.pop();
+            context.pop(autoReplyEnabled);
           }
         }
       } catch (e) {

@@ -2505,6 +2505,26 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `On`
+  String get onZodiac {
+    return Intl.message(
+      'On',
+      name: 'onZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Off`
+  String get offZodiac {
+    return Intl.message(
+      'Off',
+      name: 'offZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

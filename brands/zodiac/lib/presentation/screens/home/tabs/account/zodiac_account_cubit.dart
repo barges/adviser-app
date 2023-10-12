@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
@@ -20,6 +21,7 @@ import 'package:zodiac/data/models/user_info/detailed_user_info.dart';
 import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/data/models/user_info/user_details.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
+import 'package:zodiac/data/network/requests/auto_reply_settings_request.dart';
 import 'package:zodiac/data/network/requests/notifications_request.dart';
 import 'package:zodiac/data/network/requests/price_settings_request.dart';
 import 'package:zodiac/data/network/requests/send_push_token_request.dart';
@@ -28,6 +30,7 @@ import 'package:zodiac/data/network/requests/settings_request.dart';
 import 'package:zodiac/data/network/requests/update_enabled_request.dart';
 import 'package:zodiac/data/network/requests/update_random_call_enabled_request.dart';
 import 'package:zodiac/data/network/requests/update_user_status_request.dart';
+import 'package:zodiac/data/network/responses/auto_reply_settings_response.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/responses/daily_coupons_response.dart';
 import 'package:zodiac/data/network/responses/expert_details_response.dart';
@@ -35,12 +38,16 @@ import 'package:zodiac/data/network/responses/notifications_response.dart';
 import 'package:zodiac/data/network/responses/price_settings_response.dart';
 import 'package:zodiac/data/network/responses/settings_response.dart';
 import 'package:zodiac/data/network/responses/specializations_response.dart';
+import 'package:zodiac/domain/repositories/zodiac_chat_repository.dart';
 import 'package:zodiac/domain/repositories/zodiac_coupons_repository.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/presentation/screens/home/tabs/account/zodiac_account_state.dart';
 import 'package:zodiac/zodiac.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
+typedef FutureBoolSetter = Future<bool> Function(bool needShowSettingsAlert);
+
+@injectable
 class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
   final BrandManager _brandManager;
   final ZodiacMainCubit _mainCubit;
@@ -48,8 +55,9 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
   final ZodiacCachingManager _cacheManager;
   final ConnectivityService _connectivityService;
   final PushNotificationManager _pushNotificationManager;
-  final Future<bool> Function(bool needShowSettingsAlert) _handlePermission;
+  final FutureBoolSetter _handlePermission;
   final ZodiacCouponsRepository _couponsRepository;
+  final ZodiacChatRepository _chatRepository;
 
   StreamSubscription? _currentBrandSubscription;
   StreamSubscription<bool>? _pushTokenConnectivitySubscription;
@@ -74,7 +82,8 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
     this._connectivityService,
     this._pushNotificationManager,
     this._couponsRepository,
-    this._handlePermission,
+    this._chatRepository,
+    @factoryParam this._handlePermission,
   ) : super(const ZodiacAccountState()) {
     if (_brandManager.getCurrentBrand().brandAlias == ZodiacBrand.alias) {
       refreshUserInfo();
@@ -154,6 +163,7 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
   Future<void> refreshUserInfo() async {
     try {
       _getSettings();
+      _getAutoReplySettings();
       if (await _connectivityService.checkConnection()) {
         isPushNotificationPermissionGranted = await _handlePermission(false);
 
@@ -269,6 +279,19 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
           }
         });
       }
+    }
+  }
+
+  Future<void> _getAutoReplySettings() async {
+    try {
+      final AutoReplySettingsResponse response =
+          await _chatRepository.autoReplySettings(AutoReplySettingsRequest());
+
+      if (response.status == true && response.result?.autoreplied != null) {
+        emit(state.copyWith(autoReplyEnabled: response.result?.autoreplied));
+      }
+    } catch (e) {
+      logger.d(e);
     }
   }
 
@@ -537,5 +560,15 @@ class ZodiacAccountCubit extends Cubit<ZodiacAccountState> {
       }
     }
     return couponsCountIsZero;
+  }
+
+  Future<void> goToAutoReply(BuildContext context) async {
+    bool? autoReplyEnabled = await context.push<bool?>(
+      route: const ZodiacAutoReply(),
+    );
+
+    if (autoReplyEnabled != null) {
+      emit(state.copyWith(autoReplyEnabled: autoReplyEnabled));
+    }
   }
 }

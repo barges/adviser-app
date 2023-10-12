@@ -266,12 +266,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "nowYouCanReceiveCallsZodiac": MessageLookupByLibrary.simpleMessage(
             "Ahora puedes recibir llamadas"),
         "objectsZodiac": MessageLookupByLibrary.simpleMessage("Objetos"),
+        "offZodiac": MessageLookupByLibrary.simpleMessage("Apagado"),
         "offlineServiceTabZodiac":
             MessageLookupByLibrary.simpleMessage("Servicio fuera de línea"),
         "offlineServiceZodiac":
             MessageLookupByLibrary.simpleMessage("Servicio fuera de línea:"),
         "offlineZodiac": MessageLookupByLibrary.simpleMessage("Desconectado"),
         "okZodiac": MessageLookupByLibrary.simpleMessage("Ok"),
+        "onZodiac": MessageLookupByLibrary.simpleMessage("En"),
         "onlineServiceTabZodiac":
             MessageLookupByLibrary.simpleMessage("Servicio en línea"),
         "onlineServicesZodiac":

@@ -177,7 +177,7 @@ const zodiacRoute = AutoRoute(
       path: RoutePathsZodiac.completeService,
       name: RoutePathsZodiac.completeService,
     ),
-    AutoRoute(
+    AutoRoute<bool?>(
       page: AutoReplyScreen,
       path: RoutePathsZodiac.autoReply,
       name: RoutePathsZodiac.autoReply,

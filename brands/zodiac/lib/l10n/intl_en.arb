@@ -243,5 +243,7 @@
   "doneZodiac": "Done",
   "setTimeZodiac": "Set time",
   "setTimeFromZodiac": "Set time from",
-  "setTimeToZodiac": "Set time to"
+  "setTimeToZodiac": "Set time to",
+  "onZodiac": "On",
+  "offZodiac": "Off"
 }

@@ -241,5 +241,7 @@
   "doneZodiac": "Fertig",
   "setTimeZodiac": "Zeit einstellen",
   "setTimeFromZodiac": "Stellen Sie die Zeit ein von",
-  "setTimeToZodiac": "Stellen Sie die Zeit ein"
+  "setTimeToZodiac": "Stellen Sie die Zeit ein",
+  "onZodiac": "An",
+  "offZodiac": "Aus"
 }

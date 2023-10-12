@@ -148,13 +148,28 @@ class ReviewsPartWidget extends StatelessWidget {
             const Divider(
               height: 1.0,
             ),
-            TileWidget(
-              title: SZodiac.of(context).autoReplyZodiac,
-              iconSVGPath: Assets.zodiac.vectors.autoreplyIcon.path,
-              onTap: () => context.push(
-                route: const ZodiacAutoReply(),
-              ),
-            ),
+            Builder(builder: (context) {
+              final bool? autoReplyEnabled = context.select(
+                  (ZodiacAccountCubit cubit) => cubit.state.autoReplyEnabled);
+
+              if (autoReplyEnabled != null) {
+                return TileWidget(
+                  title: SZodiac.of(context).autoReplyZodiac,
+                  iconSVGPath: Assets.zodiac.vectors.autoreplyIcon.path,
+                  widget: Text(
+                    autoReplyEnabled
+                        ? SZodiac.of(context).onZodiac
+                        : SZodiac.of(context).offZodiac,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).shadowColor,
+                        ),
+                  ),
+                  onTap: () => zodiacAccountCubit.goToAutoReply(context),
+                );
+              }
+
+              return const SizedBox.shrink();
+            }),
           ],
         ),
       ),
