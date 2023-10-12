@@ -152,8 +152,6 @@ class EditServiceBodyWidget extends StatelessWidget {
                                     state.selectedLanguageIndex]]
                             ?[ZodiacConstants.serviceDescriptionIndex],
                         price: state.price,
-                        discount: state.discount,
-                        discountEnabled: state.discountEnabled,
                         serviceType: state.serviceType,
                         deliveryTime: state.deliveryTime,
                         deliveryTimeType: state.deliveryTimeType
