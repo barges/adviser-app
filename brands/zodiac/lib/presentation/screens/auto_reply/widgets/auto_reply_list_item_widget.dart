@@ -33,7 +33,8 @@ class AutoReplyListItemWidget extends StatelessWidget {
 
       return (state.time, state.timeFrom, state.timeTo);
     });
-    final List<String> splittedMessage = _splitMessage(timeRecord);
+    final List<String> splittedMessage =
+        _splitMessage(timeRecord, autoReplyCubit);
 
     return GestureDetector(
       onTap: () => autoReplyCubit.selectMessage(id),
@@ -81,13 +82,14 @@ class AutoReplyListItemWidget extends StatelessWidget {
     );
   }
 
-  List<String> _splitMessage((String, String, String) record) {
+  List<String> _splitMessage(
+      (String, String, String) record, AutoReplyCubit autoReplyCubit) {
     final String time = record.$1;
     final String timeFrom = record.$2;
     final String timeTo = record.$3;
 
     final List<String> splittedMessage = [];
-    if (message.contains(time)) {
+    if (autoReplyCubit.isSingleTimeMessage(message)) {
       final int timeIndex = message.indexOf(time);
 
       splittedMessage.add(message.substring(0, timeIndex));
@@ -95,7 +97,7 @@ class AutoReplyListItemWidget extends StatelessWidget {
       splittedMessage.add(message.substring(timeIndex + time.length));
     }
 
-    if (message.contains(timeFrom) && message.contains(timeTo)) {
+    if (autoReplyCubit.isMultiTimeMessage(message)) {
       final int timeFromIndex = message.indexOf(timeFrom);
       final int timeToIndex = message.indexOf(timeTo);
 

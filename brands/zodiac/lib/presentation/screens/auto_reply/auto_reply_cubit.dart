@@ -1,7 +1,9 @@
 import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_advisor_interface/global.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:zodiac/data/models/chat/private_message_model.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/requests/auto_reply_settings_request.dart';
@@ -14,6 +16,8 @@ import 'package:zodiac/presentation/screens/auto_reply/auto_reply_state.dart';
 @injectable
 class AutoReplyCubit extends Cubit<AutoReplyState> {
   final ZodiacChatRepository _chatRepository;
+
+  bool _savingInProgress = false;
 
   AutoReplyCubit(
     this._chatRepository,
@@ -42,7 +46,8 @@ class AutoReplyCubit extends Cubit<AutoReplyState> {
                 ?.indexWhere((element) => element.id == messageModel.messageId);
 
             if (messageIndex != null && messageIndex != -1) {
-              messages![messageIndex] = messageModel;
+              messages![messageIndex] =
+                  messageModel.copyWith(id: messageModel.messageId);
             }
           }
 
@@ -53,6 +58,7 @@ class AutoReplyCubit extends Cubit<AutoReplyState> {
               time: messageModel?.time ?? AutoReplyConstants.time,
               timeFrom: messageModel?.timeFrom ?? AutoReplyConstants.timeFrom,
               timeTo: messageModel?.timeTo ?? AutoReplyConstants.timeTo,
+              selectedMessageId: messageModel?.messageId,
             ),
           );
         }
@@ -71,8 +77,8 @@ class AutoReplyCubit extends Cubit<AutoReplyState> {
   void setSingleTime(String time) {
     List<PrivateMessageModel>? messages = List.of(state.messages ?? []);
 
-    PrivateMessageModel? privateMessage = messages.firstWhereOrNull(
-        (element) => element.message?.contains(state.time) == true);
+    PrivateMessageModel? privateMessage = messages
+        .firstWhereOrNull((element) => isSingleTimeMessage(element.message));
     if (privateMessage != null) {
       int? messageIndex = messages.indexOf(privateMessage);
 
@@ -86,40 +92,113 @@ class AutoReplyCubit extends Cubit<AutoReplyState> {
   }
 
   void setTimeFrom(String time) {
-    List<PrivateMessageModel>? messages = List.of(state.messages ?? []);
+    if (time != state.timeTo) {
+      List<PrivateMessageModel>? messages = List.of(state.messages ?? []);
 
-    PrivateMessageModel? privateMessage = messages.firstWhereOrNull(
-        (element) => element.message?.contains(state.timeFrom) == true);
-    if (privateMessage != null) {
-      int? messageIndex = messages.indexOf(privateMessage);
+      PrivateMessageModel? privateMessage = messages.firstWhereOrNull(
+          (element) => element.message?.contains(state.timeFrom) == true);
+      if (privateMessage != null) {
+        int? messageIndex = messages.indexOf(privateMessage);
 
-      String message =
-          privateMessage.message?.replaceFirst(state.timeFrom, time) ?? '';
+        String message =
+            privateMessage.message?.replaceFirst(state.timeFrom, time) ?? '';
 
-      messages[messageIndex] = privateMessage.copyWith(message: message);
+        messages[messageIndex] = privateMessage.copyWith(message: message);
 
-      emit(state.copyWith(messages: messages, timeFrom: time));
+        emit(state.copyWith(messages: messages, timeFrom: time));
+      }
     }
   }
 
   void setTimeTo(String time) {
-    List<PrivateMessageModel>? messages = List.of(state.messages ?? []);
+    if (time != state.timeFrom) {
+      List<PrivateMessageModel>? messages = List.of(state.messages ?? []);
 
-    PrivateMessageModel? privateMessage = messages.firstWhereOrNull(
-        (element) => element.message?.contains(state.timeTo) == true);
-    if (privateMessage != null) {
-      int? messageIndex = messages.indexOf(privateMessage);
+      PrivateMessageModel? privateMessage = messages.firstWhereOrNull(
+          (element) => element.message?.contains(state.timeTo) == true);
+      if (privateMessage != null) {
+        int? messageIndex = messages.indexOf(privateMessage);
 
-      String message =
-          privateMessage.message?.replaceFirst(state.timeTo, time) ?? '';
+        String message =
+            privateMessage.message?.replaceFirst(state.timeTo, time) ?? '';
 
-      messages[messageIndex] = privateMessage.copyWith(message: message);
+        messages[messageIndex] = privateMessage.copyWith(message: message);
 
-      emit(state.copyWith(messages: messages, timeTo: time));
+        emit(state.copyWith(messages: messages, timeTo: time));
+      }
     }
   }
 
   void onAutoReplyEnabledChange(bool value) {
     emit(state.copyWith(autoReplyEnabled: value));
+  }
+
+  Future<void> saveChanges(BuildContext context) async {
+    if (!_savingInProgress) {
+      try {
+        _savingInProgress = true;
+        final bool autoReplyEnabled = state.autoReplyEnabled;
+        AutoReplySettingsRequest? request;
+        if (autoReplyEnabled) {
+          PrivateMessageModel? selectedMessage = state.messages
+              ?.firstWhereOrNull(
+                  (element) => element.id == state.selectedMessageId);
+
+          if (selectedMessage?.message != null && selectedMessage?.id != null) {
+            if (isSingleTimeMessage(selectedMessage!.message!) &&
+                state.time != AutoReplyConstants.time) {
+              request = AutoReplySettingsRequest(
+                autoreplied: autoReplyEnabled,
+                saveForm: 1,
+                messageId: selectedMessage.id,
+                time: state.time,
+              );
+            } else if (isMultiTimeMessage(selectedMessage.message) &&
+                state.timeFrom != AutoReplyConstants.timeFrom &&
+                state.timeTo != AutoReplyConstants.timeTo) {
+              request = AutoReplySettingsRequest(
+                autoreplied: autoReplyEnabled,
+                saveForm: 1,
+                messageId: selectedMessage.id,
+                timeFrom: state.timeFrom,
+                timeTo: state.timeTo,
+              );
+            } else {
+              request = AutoReplySettingsRequest(
+                autoreplied: autoReplyEnabled,
+                saveForm: 1,
+                messageId: selectedMessage.id,
+              );
+            }
+          }
+        } else {
+          request = AutoReplySettingsRequest(
+              autoreplied: autoReplyEnabled, saveForm: 1);
+        }
+
+        if (request != null) {
+          final AutoReplySettingsResponse response =
+              await _chatRepository.autoReplySettings(request);
+
+          if (response.status == true) {
+            // ignore: use_build_context_synchronously
+            context.pop();
+          }
+        }
+      } catch (e) {
+        logger.d(e);
+      } finally {
+        _savingInProgress = false;
+      }
+    }
+  }
+
+  bool isSingleTimeMessage(String? message) {
+    return message?.contains(state.time) == true;
+  }
+
+  bool isMultiTimeMessage(String? message) {
+    return message?.contains(state.timeFrom) == true &&
+        message?.contains(state.timeTo) == true;
   }
 }

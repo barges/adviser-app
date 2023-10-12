@@ -45,15 +45,14 @@ class _SelectTimeButtonsPartWidgetState
           ?.message;
     });
 
-    if (selectedMessage?.contains(timeRecord.$1) == true) {
+    if (autoReplyCubit.isSingleTimeMessage(selectedMessage)) {
       return SelectTimeButtonWidget(
         title: timeRecord.$1 == AutoReplyConstants.time
             ? SZodiac.of(context).setTimeZodiac
             : timeRecord.$1,
         setTime: autoReplyCubit.setSingleTime,
       );
-    } else if (selectedMessage?.contains(timeRecord.$2) == true &&
-        selectedMessage?.contains(timeRecord.$3) == true) {
+    } else if (autoReplyCubit.isMultiTimeMessage(selectedMessage)) {
       return Row(
         children: [
           Expanded(
