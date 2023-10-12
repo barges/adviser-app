@@ -15,5 +15,6 @@ class AutoReplyState with _$AutoReplyState {
     int? selectedMessageId,
     @Default(false) bool dataFetched,
     @Default(false) bool autoReplyEnabled,
+    @Default(false) bool alreadyTriedToFetchData,
   }) = _AutoReplyState;
 }

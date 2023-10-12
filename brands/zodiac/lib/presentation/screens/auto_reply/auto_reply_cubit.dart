@@ -22,10 +22,10 @@ class AutoReplyCubit extends Cubit<AutoReplyState> {
   AutoReplyCubit(
     this._chatRepository,
   ) : super(const AutoReplyState()) {
-    _getInitialData();
+    getInitialData();
   }
 
-  Future<void> _getInitialData() async {
+  Future<void> getInitialData() async {
     try {
       final AutoReplyListResponse listResponse =
           await _chatRepository.getAutoReplyList(AuthorizedRequest());
@@ -66,7 +66,10 @@ class AutoReplyCubit extends Cubit<AutoReplyState> {
     } catch (e) {
       logger.d(e);
     } finally {
-      emit(state.copyWith(dataFetched: state.messages != null));
+      emit(state.copyWith(
+        dataFetched: state.messages != null,
+        alreadyTriedToFetchData: true,
+      ));
     }
   }
 
