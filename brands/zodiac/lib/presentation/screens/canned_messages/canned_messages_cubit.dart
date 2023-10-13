@@ -11,8 +11,7 @@ import 'package:zodiac/data/network/requests/canned_messages/canned_messages_req
 import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/responses/canned_messages/canned_messages_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_canned_messages_repository.dart';
-
-import 'package:zodiac/presentation/screens/services_messages/canned_messages/canned_messages_state.dart';
+import 'package:zodiac/presentation/screens/canned_messages/canned_messages_state.dart';
 
 const maximumMessageSymbols = 280;
 
