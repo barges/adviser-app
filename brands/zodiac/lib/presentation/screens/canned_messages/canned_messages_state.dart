@@ -11,6 +11,7 @@ class CannedMessagesState with _$CannedMessagesState {
     List<CannedMessage>? messages,
     @Default(0) int selectedCategoryIndex,
     @Default(false) bool isSaveTemplateButtonEnabled,
-    @Default(false) bool showErrorData,
+    @Default(false) bool alreadyTriedToFetchData,
+    @Default(false) bool dataFetched,
   }) = _CannedMessagesState;
 }

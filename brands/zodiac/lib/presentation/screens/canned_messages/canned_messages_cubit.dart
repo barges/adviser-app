@@ -45,11 +45,13 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
       await _getCannedMessages();
       emit(state.copyWith(
         selectedCategoryIndex: 0,
-        showErrorData: false,
       ));
     } catch (e) {
+      logger.d(e);
+    } finally {
       emit(state.copyWith(
-        showErrorData: true,
+        alreadyTriedToFetchData: true,
+        dataFetched: state.categories != null && state.messages != null,
       ));
     }
   }
