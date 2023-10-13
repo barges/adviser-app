@@ -78,6 +78,8 @@ class ServicesCubit extends Cubit<ServicesState> {
       }
     } catch (e) {
       logger.d(e);
+    } finally {
+      emit(state.copyWith(alreadyTriedToFetchData: true));
     }
   }
 
