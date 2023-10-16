@@ -175,8 +175,6 @@ class AddServiceBodyWidget extends StatelessWidget {
                               state.languagesList?[state.selectedLanguageIndex]]
                           ?[ZodiacConstants.serviceDescriptionIndex],
                       price: state.price,
-                      discount: state.discount,
-                      discountEnabled: state.discountEnabled,
                       serviceType: state.selectedTab,
                       deliveryTime: state.deliveryTime,
                       deliveryTimeType: state.selectedDeliveryTimeTab,
