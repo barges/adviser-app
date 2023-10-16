@@ -11,7 +11,7 @@ import 'package:zodiac/data/network/requests/delete_service_request.dart';
 import 'package:zodiac/data/network/requests/services_list_request.dart';
 import 'package:zodiac/data/network/responses/services_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_sevices_repository.dart';
-import 'package:zodiac/presentation/screens/services_messages/services/services_state.dart';
+import 'package:zodiac/presentation/screens/services/services_state.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 @injectable
@@ -78,6 +78,8 @@ class ServicesCubit extends Cubit<ServicesState> {
       }
     } catch (e) {
       logger.d(e);
+    } finally {
+      emit(state.copyWith(alreadyTriedToFetchData: true));
     }
   }
 

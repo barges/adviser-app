@@ -12,7 +12,7 @@ import 'package:zodiac/data/models/services/service_item.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/app_image_widget.dart';
 import 'package:zodiac/presentation/common_widgets/blackout_widget.dart';
-import 'package:zodiac/presentation/screens/services_messages/services/services_cubit.dart';
+import 'package:zodiac/presentation/screens/services/services_cubit.dart';
 import 'package:zodiac/zodiac_extensions.dart';
 
 class ServiceCard extends StatelessWidget {

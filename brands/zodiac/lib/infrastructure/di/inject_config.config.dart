@@ -65,6 +65,8 @@ import '../../domain/repositories/zodiac_sessions_repository.dart' as _i25;
 import '../../domain/repositories/zodiac_sevices_repository.dart' as _i23;
 import '../../domain/repositories/zodiac_user_repository.dart' as _i27;
 import '../../presentation/screens/add_service/add_service_cubit.dart' as _i29;
+import '../../presentation/screens/canned_messages/canned_messages_cubit.dart'
+    as _i51;
 import '../../presentation/screens/chat/chat_cubit.dart' as _i34;
 import '../../presentation/screens/edit_service/edit_service_cubit.dart'
     as _i37;
@@ -72,10 +74,7 @@ import '../../presentation/screens/home/tabs/dashboard/dashboard_cubit.dart'
     as _i36;
 import '../../presentation/screens/phone_number/phone_number_cubit.dart'
     as _i38;
-import '../../presentation/screens/services_messages/canned_messages/canned_messages_cubit.dart'
-    as _i51;
-import '../../presentation/screens/services_messages/services/services_cubit.dart'
-    as _i40;
+import '../../presentation/screens/services/services_cubit.dart' as _i40;
 import '../../services/websocket_manager/websocket_manager.dart' as _i16;
 import '../../services/websocket_manager/websocket_manager_impl.dart' as _i17;
 import '../../zodiac_main_cubit.dart' as _i15;
