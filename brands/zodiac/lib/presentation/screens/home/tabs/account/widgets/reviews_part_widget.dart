@@ -139,10 +139,20 @@ class ReviewsPartWidget extends StatelessWidget {
               height: 1.0,
             ),
             TileWidget(
-              title: SZodiac.of(context).servicesMessagesZodiac,
+              title: SZodiac.of(context).servicesZodiac,
               iconSVGPath: Assets.zodiac.vectors.serviceMessages.path,
               onTap: () => context.push(
-                route: ZodiacServicesMessages(),
+                route: ZodiacServices(),
+              ),
+            ),
+            const Divider(
+              height: 1.0,
+            ),
+            TileWidget(
+              title: SZodiac.of(context).cannedMessagesZodiac,
+              iconSVGPath: Assets.zodiac.vectors.chatsIcon.path,
+              onTap: () => context.push(
+                route: ZodiacCannedMessages(),
               ),
             ),
           ],

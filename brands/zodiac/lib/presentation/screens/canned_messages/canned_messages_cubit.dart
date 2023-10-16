@@ -11,8 +11,7 @@ import 'package:zodiac/data/network/requests/canned_messages/canned_messages_req
 import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/responses/canned_messages/canned_messages_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_canned_messages_repository.dart';
-
-import 'package:zodiac/presentation/screens/services_messages/canned_messages/canned_messages_state.dart';
+import 'package:zodiac/presentation/screens/canned_messages/canned_messages_state.dart';
 
 const maximumMessageSymbols = 280;
 
@@ -46,11 +45,13 @@ class CannedMessagesCubit extends Cubit<CannedMessagesState> {
       await _getCannedMessages();
       emit(state.copyWith(
         selectedCategoryIndex: 0,
-        showErrorData: false,
       ));
     } catch (e) {
+      logger.d(e);
+    } finally {
       emit(state.copyWith(
-        showErrorData: true,
+        alreadyTriedToFetchData: true,
+        dataFetched: state.categories != null && state.messages != null,
       ));
     }
   }

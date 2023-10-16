@@ -5,9 +5,9 @@ import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app
 import 'package:zodiac/data/models/canned_messages/canned_category.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/presentation/common_widgets/text_fields/app_text_field.dart';
-import 'package:zodiac/presentation/screens/services_messages/canned_messages/canned_messages_cubit.dart';
-import 'package:zodiac/presentation/screens/services_messages/canned_messages/widgets/categories_widget.dart';
-import 'package:zodiac/presentation/screens/services_messages/services_messages_screen.dart';
+import 'package:zodiac/presentation/screens/canned_messages/canned_messages_cubit.dart';
+import 'package:zodiac/presentation/screens/canned_messages/canned_messages_screen.dart';
+import 'package:zodiac/presentation/screens/canned_messages/widgets/categories_widget.dart';
 import 'package:zodiac/zodiac_constants.dart';
 
 class EditCannedMessageWidget extends StatefulWidget {

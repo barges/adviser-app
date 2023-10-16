@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
 import 'package:zodiac/generated/l10n.dart';
-import 'package:zodiac/presentation/screens/services_messages/box_decoration_widget.dart';
+import 'package:zodiac/presentation/common_widgets/box_decoration_widget.dart';
 
 class InfoWidget extends StatelessWidget {
   const InfoWidget({super.key});
