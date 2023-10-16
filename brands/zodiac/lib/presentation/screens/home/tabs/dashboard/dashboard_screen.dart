@@ -10,6 +10,7 @@ import 'package:zodiac/presentation/common_widgets/messages/app_error_widget.dar
 import 'package:zodiac/presentation/common_widgets/no_connection_widget.dart';
 import 'package:zodiac/presentation/screens/home/tabs/dashboard/dashboard_cubit.dart';
 import 'package:zodiac/presentation/screens/home/tabs/dashboard/widgets/dashboard_body_widget.dart';
+import 'package:zodiac/presentation/screens/home/tabs/dashboard/widgets/skeleton_placeholder_widget.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -26,13 +27,24 @@ class DashboardScreen extends StatelessWidget {
           iconPath: Assets.vectors.items.path,
         ),
         body: Builder(builder: (context) {
+          final DashboardCubit dashboardCubit = context.read<DashboardCubit>();
+
           final bool internetConnectionIsAvailable = context.select(
               (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
 
           if (internetConnectionIsAvailable) {
             return Stack(
               children: [
-                const DashboardBodyWidget(),
+                Builder(builder: (context) {
+                  final bool dataFetched = context.select(
+                      (DashboardCubit cubit) => cubit.state.dataFetched);
+
+                  return RefreshIndicator(
+                      onRefresh: dashboardCubit.refreshDashboard,
+                      child: dataFetched
+                          ? const DashboardBodyWidget()
+                          : const SkeletonPlaceholderWidget());
+                }),
                 Positioned(
                     top: 0.0,
                     right: 0.0,

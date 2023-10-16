@@ -29,44 +29,39 @@ class _DashboardBodyWidgetState extends State<DashboardBodyWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final DashboardCubit dashboardCubit = context.read<DashboardCubit>();
     return SafeArea(
-      child: RefreshIndicator(
-        onRefresh: dashboardCubit.refreshDashboard,
-        child: CustomScrollView(
-          controller: scrollController,
-          physics: const ClampingScrollPhysics()
-              .applyTo(const AlwaysScrollableScrollPhysics()),
-          slivers: [
-            const SliverPadding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: AppConstants.horizontalScreenPadding,
-                  vertical: 16.0),
-              sliver: SliverToBoxAdapter(
-                child: DashboardUserInfoPartWidget(),
-              ),
+      child: CustomScrollView(
+        controller: scrollController,
+        physics: const ClampingScrollPhysics()
+            .applyTo(const AlwaysScrollableScrollPhysics()),
+        slivers: [
+          const SliverPadding(
+            padding: EdgeInsets.symmetric(
+                horizontal: AppConstants.horizontalScreenPadding,
+                vertical: 16.0),
+            sliver: SliverToBoxAdapter(
+              child: DashboardUserInfoPartWidget(),
             ),
-            SliverPadding(
-              padding: const EdgeInsets.fromLTRB(
-                  AppConstants.horizontalScreenPadding,
-                  0.0,
-                  AppConstants.horizontalScreenPadding,
-                  16.0),
-              sliver: Builder(builder: (context) {
-                final List<TransactionUiModel>? transactionsList =
-                    context.select(
-                        (DashboardCubit cubit) => cubit.state.transactionsList);
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(
+                AppConstants.horizontalScreenPadding,
+                0.0,
+                AppConstants.horizontalScreenPadding,
+                16.0),
+            sliver: Builder(builder: (context) {
+              final List<TransactionUiModel>? transactionsList = context.select(
+                  (DashboardCubit cubit) => cubit.state.transactionsList);
 
-                if (transactionsList != null) {
-                  return TransactionsSliverListWidget(
-                      transactionsList: transactionsList);
-                } else {
-                  return const SliverToBoxAdapter(child: SizedBox.shrink());
-                }
-              }),
-            )
-          ],
-        ),
+              if (transactionsList != null) {
+                return TransactionsSliverListWidget(
+                    transactionsList: transactionsList);
+              } else {
+                return const SliverToBoxAdapter(child: SizedBox.shrink());
+              }
+            }),
+          )
+        ],
       ),
     );
   }
