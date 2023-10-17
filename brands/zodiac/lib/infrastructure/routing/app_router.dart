@@ -5,6 +5,7 @@ import 'package:zodiac/presentation/screens/article_details_screen/article_detai
 import 'package:zodiac/presentation/screens/auto_reply/auto_reply_screen.dart';
 import 'package:zodiac/presentation/screens/balance_and_transactions/balance_and_transactions_screen.dart';
 import 'package:zodiac/presentation/screens/brand_screen/zodiac_brand_screen.dart';
+import 'package:zodiac/presentation/screens/canned_messages/canned_messages_screen.dart';
 import 'package:zodiac/presentation/screens/chat/chat_screen.dart';
 import 'package:zodiac/presentation/screens/complete_service/complete_service_screen.dart';
 import 'package:zodiac/presentation/screens/duplicate_service/duplicate_service_screen.dart';
@@ -23,7 +24,7 @@ import 'package:zodiac/presentation/screens/notifications/notifications_screen.d
 import 'package:zodiac/presentation/screens/edit_profile/edit_profile_screen.dart';
 import 'package:zodiac/presentation/screens/phone_number/phone_number_screen.dart';
 import 'package:zodiac/presentation/screens/reviews/reviews_screen.dart';
-import 'package:zodiac/presentation/screens/services_messages/services_messages_screen.dart';
+import 'package:zodiac/presentation/screens/services/services_screen.dart';
 import 'package:zodiac/presentation/screens/sms_verification/sms_verification_screen.dart';
 import 'package:zodiac/presentation/screens/sms_verification/widgets/phone_number_verified_screen.dart';
 import 'package:zodiac/presentation/screens/send_image/send_image_screen.dart';
@@ -113,9 +114,14 @@ const zodiacRoute = AutoRoute(
       name: RoutePathsZodiac.phoneNumberScreen,
     ),
     AutoRoute(
-      page: ServicesMessagesScreen,
-      path: RoutePathsZodiac.servicesMessagesScreen,
-      name: RoutePathsZodiac.servicesMessagesScreen,
+      page: ServicesScreen,
+      path: RoutePathsZodiac.servicesScreen,
+      name: RoutePathsZodiac.servicesScreen,
+    ),
+    AutoRoute(
+      page: CannedMessagesScreen,
+      path: RoutePathsZodiac.cannedMessages,
+      name: RoutePathsZodiac.cannedMessages,
     ),
     AutoRoute(
       page: SMSVerificationScreen,

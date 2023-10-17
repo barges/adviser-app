@@ -5,10 +5,10 @@ import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:zodiac/data/models/canned_messages/canned_category.dart';
 import 'package:zodiac/data/models/canned_messages/canned_message.dart';
 import 'package:zodiac/generated/l10n.dart';
-import 'package:zodiac/presentation/screens/services_messages/canned_messages/canned_messages_cubit.dart';
-import 'package:zodiac/presentation/screens/services_messages/list_of_filters_widget.dart';
-import 'package:zodiac/presentation/screens/services_messages/canned_messages/widgets/canned_message_card.dart';
-import 'package:zodiac/presentation/screens/services_messages/services_messages_screen.dart';
+import 'package:zodiac/presentation/common_widgets/list_of_filters_widget.dart';
+import 'package:zodiac/presentation/screens/canned_messages/canned_messages_cubit.dart';
+import 'package:zodiac/presentation/screens/canned_messages/canned_messages_screen.dart';
+import 'package:zodiac/presentation/screens/canned_messages/widgets/canned_message_card.dart';
 
 class CannedMessageManagerWidget extends StatelessWidget {
   const CannedMessageManagerWidget({super.key});
@@ -47,12 +47,8 @@ class CannedMessageManagerWidget extends StatelessWidget {
                               cubit.state.selectedCategoryIndex);
                       return ListOfFiltersWidget(
                         currentFilterIndex: selectedCategoryIndex,
-                        onTapToFilter: (index) {
-                          if (index != null) {
-                            cannedMessagesCubit
-                                .getCannedMessagesByCategory(index);
-                          }
-                        },
+                        onTapToFilter:
+                            cannedMessagesCubit.getCannedMessagesByCategory,
                         filters: [SZodiac.of(context).allZodiac, ...filters],
                         padding: AppConstants.horizontalScreenPadding,
                       );

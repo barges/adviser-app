@@ -80,7 +80,7 @@ class ServicePreviewWidget extends StatelessWidget {
                       ),
                       Text(
                         '${SZodiac.of(context).buyZodiac}'
-                        ' \$${(dto.price * (dto.discountEnabled ? (1 - dto.discount / 100) : 1)).toStringAsFixed(2)}',
+                        ' \$${dto.price.toStringAsFixed(2)}',
                         style: theme.textTheme.labelMedium?.copyWith(
                           fontSize: 17.0,
                           color: theme.backgroundColor,

@@ -99,6 +99,7 @@ class ChatCubit extends BaseCubit<ChatState> {
 
   Timer? _answerTimer;
   Timer? _attachingPictureTimer;
+  Timer? _attachingPictureRequestFocusTimer;
   bool _counterMessageCleared = false;
   bool _isStartAnswerSending = false;
   bool _isAttachingPicture = false;
@@ -212,7 +213,7 @@ class ChatCubit extends BaseCubit<ChatState> {
     textInputFocusNode.addListener(() {
       final bool isFocused = textInputFocusNode.hasFocus;
 
-      if (!isFocused) {
+      if (!isFocused && !_isAttachingPicture) {
         setTextInputFocus(false);
       }
       getBottomTextAreaHeight();
@@ -241,6 +242,7 @@ class ChatCubit extends BaseCubit<ChatState> {
 
     _answerTimer?.cancel();
     _attachingPictureTimer?.cancel();
+    _attachingPictureRequestFocusTimer?.cancel();
 
     _refreshChatInfoSubscription.cancel();
 
@@ -667,6 +669,7 @@ class ChatCubit extends BaseCubit<ChatState> {
 
   void attachPicture(File? image) {
     _attachingPictureTimer?.cancel();
+    _attachingPictureRequestFocusTimer?.cancel();
     _isAttachingPicture = true;
     _tryStartAnswerSend();
 
@@ -687,10 +690,12 @@ class ChatCubit extends BaseCubit<ChatState> {
                   (_checkRecordedAudioIsOk() || _checkTextLengthIsOk())),
     );
 
-    textInputFocusNode.requestFocus();
-
-    getBottomTextAreaHeight();
-    _scrollTextFieldToEnd();
+    _attachingPictureRequestFocusTimer =
+        Timer(const Duration(milliseconds: 600), () {
+      textInputFocusNode.requestFocus();
+      getBottomTextAreaHeight();
+      _scrollTextFieldToEnd();
+    });
 
     _attachingPictureTimer = Timer(
         const Duration(milliseconds: 1200), () => _isAttachingPicture = false);
