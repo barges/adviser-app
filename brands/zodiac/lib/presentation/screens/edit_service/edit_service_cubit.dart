@@ -7,6 +7,7 @@ import 'package:shared_advisor_interface/utils/utils.dart';
 import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/enums/approval_status.dart';
 import 'package:zodiac/data/models/enums/validation_error_type.dart';
+import 'package:zodiac/data/models/services/approval_service_language_model.dart';
 import 'package:zodiac/data/models/services/image_sample_model.dart';
 import 'package:zodiac/data/models/services/service_info_item.dart';
 import 'package:zodiac/data/models/services/service_language_model.dart';
@@ -38,6 +39,8 @@ class EditServiceCubit extends Cubit<EditServiceState> {
   final Map<String, List<ValueNotifier>> hasFocusNotifiersMap = {};
   final Map<String, List<ValidationErrorType>> errorTextsMap = {};
   final Map<String, List<ApprovalStatus?>> approvalStatusMap = {};
+
+  List<ServiceLanguageModel> approvedFields = [];
 
   bool _wasFocusRequest = false;
 
@@ -116,26 +119,53 @@ class EditServiceCubit extends Cubit<EditServiceState> {
       final ServiceInfoItem? serviceInfo = response.result;
 
       final List<String> _newLanguagesList = [];
-      serviceInfo?.translations?.forEach((element) {
-        if (element.code != null) {
+
+      List<ServiceLanguageModel>? translations = serviceInfo?.translations;
+      List<ApprovalServiceLanguageModel>? approval = serviceInfo?.approval;
+
+      if (approval?.isNotEmpty == true) {
+        approval?.forEach((element) {
+          if (element.code != null) {
+            String? waitingForApprovalTitle = element.title?.value;
+            String? waitingForApprovalDescription = element.description?.value;
+
+            String? approvedTitle = translations
+                ?.firstWhere((item) => element.code == item.code)
+                .title;
+            String? approvedDescription = translations
+                ?.firstWhere((item) => element.code == item.code)
+                .description;
+
+            approvedFields.add(ServiceLanguageModel(
+              code: element.code,
+              title: waitingForApprovalTitle == null ? approvedTitle : null,
+              description: waitingForApprovalDescription == null
+                  ? approvedDescription
+                  : null,
+            ));
+
+            _newLanguagesList.add(element.code!);
+            _setLocaleProperties(element.code!);
+
+            _setupLanguageTexts(
+              element.code!,
+              waitingForApprovalTitle ?? approvedTitle ?? '',
+              waitingForApprovalDescription ?? approvedDescription ?? '',
+              approvalStatusTitle: element.title?.status,
+              approvalStatusDescription: element.description?.status,
+            );
+          }
+        });
+      }
+
+      translations?.forEach((element) {
+        if (element.code != null && !_newLanguagesList.contains(element.code)) {
+          approvedFields.add(element);
+
           _newLanguagesList.add(element.code!);
           _setLocaleProperties(element.code!);
           _setupLanguageTexts(
               element.code!, element.title ?? '', element.description ?? '');
-        }
-      });
-
-      serviceInfo?.approval?.forEach((element) {
-        if (element.code != null) {
-          _newLanguagesList.add(element.code!);
-          _setLocaleProperties(element.code!);
-          _setupLanguageTexts(
-            element.code!,
-            element.title?.value ?? '',
-            element.description?.value ?? '',
-            approvalStatusTitle: element.title?.status,
-            approvalStatusDescription: element.description?.status,
-          );
         }
       });
 
@@ -300,17 +330,35 @@ class EditServiceCubit extends Cubit<EditServiceState> {
     if (isChecked && images != null && state.languagesList != null) {
       final List<ServiceLanguageModel> translations = [];
       for (String element in state.languagesList!) {
-        translations.add(
-          ServiceLanguageModel(
-            code: element,
-            title: textControllersMap[element]
-                    ?[ZodiacConstants.serviceTitleIndex]
-                .text,
-            description: textControllersMap[element]
-                    ?[ZodiacConstants.serviceDescriptionIndex]
-                .text,
-          ),
-        );
+        final String? newTitle = textControllersMap[element]
+                ?[ZodiacConstants.serviceTitleIndex]
+            .text;
+        final String? newDescription = textControllersMap[element]
+                ?[ZodiacConstants.serviceDescriptionIndex]
+            .text;
+
+        int oldApprovedIndex =
+            approvedFields.indexWhere((item) => item.code == element);
+
+        String? sendedTitle = oldApprovedIndex != -1 &&
+                approvedFields[oldApprovedIndex].title == newTitle
+            ? null
+            : newTitle;
+
+        String? sendedDescription = oldApprovedIndex != -1 &&
+                approvedFields[oldApprovedIndex].description == newDescription
+            ? null
+            : newDescription;
+
+        if (sendedTitle != null || sendedDescription != null) {
+          translations.add(
+            ServiceLanguageModel(
+              code: element,
+              title: sendedTitle, // ?? newTitle,
+              description: sendedDescription, // ?? newDescription,
+            ),
+          );
+        }
       }
       final EditServiceRequest request = EditServiceRequest(
         imageAlias: images[state.selectedImageIndex].imageAlias ?? '',

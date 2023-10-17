@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class ListOfFiltersWidget extends StatelessWidget {
   final List<String> filters;
-  final ValueChanged<int?> onTapToFilter;
+  final ValueChanged<int> onTapToFilter;
   final int? currentFilterIndex;
   final double? itemWidth;
   final double padding;
@@ -38,7 +38,7 @@ class ListOfFiltersWidget extends StatelessWidget {
                 title: element,
                 isSelected: isSelected,
                 onTap: () => onTapToFilter(
-                  isSelected ? null : index,
+                  index,
                 ),
                 width: itemWidth,
               ),

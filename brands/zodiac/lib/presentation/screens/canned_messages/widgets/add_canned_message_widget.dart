@@ -4,12 +4,12 @@ import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
 import 'package:zodiac/data/models/canned_messages/canned_category.dart';
 import 'package:zodiac/generated/l10n.dart';
+import 'package:zodiac/presentation/common_widgets/box_decoration_widget.dart';
 import 'package:zodiac/presentation/common_widgets/text_fields/app_text_field.dart';
-import 'package:zodiac/presentation/screens/services_messages/box_decoration_widget.dart';
-import 'package:zodiac/presentation/screens/services_messages/canned_messages/canned_messages_cubit.dart';
-import 'package:zodiac/presentation/screens/services_messages/canned_messages/widgets/categories_widget.dart';
-import 'package:zodiac/presentation/screens/services_messages/canned_messages/widgets/info_widget.dart';
-import 'package:zodiac/presentation/screens/services_messages/services_messages_screen.dart';
+import 'package:zodiac/presentation/screens/canned_messages/canned_messages_cubit.dart';
+import 'package:zodiac/presentation/screens/canned_messages/canned_messages_screen.dart';
+import 'package:zodiac/presentation/screens/canned_messages/widgets/categories_widget.dart';
+import 'package:zodiac/presentation/screens/canned_messages/widgets/info_widget.dart';
 import 'package:zodiac/zodiac_constants.dart';
 
 class AddCannedMessageWidget extends StatefulWidget {
@@ -64,6 +64,7 @@ class _AddCannedMessageWidgetState extends State<AddCannedMessageWidget> {
             isBig: true,
             showCounter: true,
             maxLength: ZodiacConstants.cannedMessageMaxLength,
+            minLength: 1,
           ),
           const SizedBox(
             height: verticalInterval,

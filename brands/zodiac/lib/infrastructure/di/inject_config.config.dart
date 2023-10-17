@@ -69,6 +69,8 @@ import '../../domain/repositories/zodiac_sessions_repository.dart' as _i28;
 import '../../domain/repositories/zodiac_sevices_repository.dart' as _i26;
 import '../../domain/repositories/zodiac_user_repository.dart' as _i30;
 import '../../presentation/screens/add_service/add_service_cubit.dart' as _i32;
+import '../../presentation/screens/canned_messages/canned_messages_cubit.dart'
+    as _i54;
 import '../../presentation/screens/chat/chat_cubit.dart' as _i37;
 import '../../presentation/screens/edit_profile/edit_profile_cubit.dart'
     as _i39;
@@ -76,10 +78,7 @@ import '../../presentation/screens/edit_service/edit_service_cubit.dart'
     as _i40;
 import '../../presentation/screens/phone_number/phone_number_cubit.dart'
     as _i41;
-import '../../presentation/screens/services_messages/canned_messages/canned_messages_cubit.dart'
-    as _i54;
-import '../../presentation/screens/services_messages/services/services_cubit.dart'
-    as _i43;
+import '../../presentation/screens/services/services_cubit.dart' as _i43;
 import '../../services/websocket_manager/websocket_manager.dart' as _i16;
 import '../../services/websocket_manager/websocket_manager_impl.dart' as _i17;
 import '../../zodiac_main_cubit.dart' as _i15;
@@ -119,6 +118,7 @@ Future<_i1.GetIt> $initGetIt(
   gh.singleton<_i16.WebSocketManager>(_i17.WebSocketManagerImpl(
     gh<_i15.ZodiacMainCubit>(),
     gh<_i13.ZodiacCachingManager>(),
+    gh<_i7.ConnectivityService>(),
   ));
   gh.singleton<_i18.AppInterceptor>(_i18.AppInterceptor(
     gh<_i10.MainCubit>(),

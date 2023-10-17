@@ -7,6 +7,7 @@ part 'services_state.freezed.dart';
 class ServicesState with _$ServicesState {
   const factory ServicesState({
     List<ServiceItem>? services,
-    @Default(0) int? selectedStatusIndex,
+    @Default(0) int selectedStatusIndex,
+    @Default(false) bool alreadyTriedToFetchData,
   }) = _ServicesState;
 }

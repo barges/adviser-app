@@ -6,11 +6,12 @@ import 'package:injectable/injectable.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.gr.dart';
+import 'package:zodiac/data/models/enums/service_status.dart';
 import 'package:zodiac/data/network/requests/delete_service_request.dart';
 import 'package:zodiac/data/network/requests/services_list_request.dart';
 import 'package:zodiac/data/network/responses/services_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_sevices_repository.dart';
-import 'package:zodiac/presentation/screens/services_messages/services/services_state.dart';
+import 'package:zodiac/presentation/screens/services/services_state.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 @injectable
@@ -18,6 +19,12 @@ class ServicesCubit extends Cubit<ServicesState> {
   final ZodiacMainCubit _mainCubit;
   final ZodiacServicesRepository _zodiacServicesRepository;
   late final StreamSubscription<bool> _updateServicesSubscription;
+
+  static const List<ServiceStatus> listOfFilters = [
+    ServiceStatus.approved,
+    ServiceStatus.pending,
+    ServiceStatus.rejected
+  ];
 
   ServicesCubit(
     this._mainCubit,
@@ -42,17 +49,24 @@ class ServicesCubit extends Cubit<ServicesState> {
   }
 
   Future<void> getServices({
-    int? status,
     int? index,
     bool refresh = false,
   }) async {
     if (!refresh) {
-      emit(state.copyWith(
-        selectedStatusIndex: index,
-      ));
+      if (index != null) {
+        emit(state.copyWith(
+          selectedStatusIndex: index,
+        ));
+      }
     }
 
     try {
+      int selectedStatusIndex = state.selectedStatusIndex;
+
+      int? status = selectedStatusIndex > 0
+          ? listOfFilters[selectedStatusIndex - 1].toInt
+          : null;
+
       final ServiceResponse response = await _zodiacServicesRepository
           .getServices(ServiceListRequest(status: status));
 
@@ -64,6 +78,8 @@ class ServicesCubit extends Cubit<ServicesState> {
       }
     } catch (e) {
       logger.d(e);
+    } finally {
+      emit(state.copyWith(alreadyTriedToFetchData: true));
     }
   }
 

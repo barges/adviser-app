@@ -54,6 +54,12 @@ class _AppTextFieldState extends State<AppTextField> {
   void initState() {
     super.initState();
     currentLength = widget.controller?.text.length ?? 0;
+
+    widget.controller?.addListener(() {
+      setState(() {
+        currentLength = widget.controller!.text.length;
+      });
+    });
   }
 
   @override
@@ -125,8 +131,11 @@ class _AppTextFieldState extends State<AppTextField> {
                     onSubmitted: (_) {
                       FocusScope.of(context).requestFocus(widget.nextFocusNode);
                     },
-                    onChanged: (value) =>
-                        setState(() => currentLength = value.length),
+                    onChanged: (value) {
+                      if (widget.controller == null) {
+                        setState(() => currentLength = value.length);
+                      }
+                    },
                     decoration: InputDecoration(
                       hintText: widget.hintText,
                       hintStyle: theme.textTheme.bodyMedium
