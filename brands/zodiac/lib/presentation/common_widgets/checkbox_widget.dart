@@ -16,9 +16,7 @@ class CheckboxWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (onChanged != null) {
-          onChanged!(!value);
-        }
+        onChanged?.call(!value);
       },
       child: value
           ? Utils.isDarkMode(context)

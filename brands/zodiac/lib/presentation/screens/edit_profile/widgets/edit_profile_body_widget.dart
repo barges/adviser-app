@@ -117,10 +117,11 @@ class _UserAvatarWidget extends StatelessWidget {
 
     final EditProfileCubit editProfileCubit = context.read<EditProfileCubit>();
 
-    final File? avatarFile = context.select((EditProfileCubit cubit) =>
-        cubit.state.avatars[selectedBrandIndex].image);
-    final int? brandIndexWithAvatarError = context.select(
-        (EditProfileCubit cubit) => cubit.state.brandIndexWithAvatarError);
+    final (File? avatarFile, int? brandIndexWithAvatarError) =
+        context.select((EditProfileCubit cubit) => (
+              cubit.state.avatars[selectedBrandIndex].image,
+              cubit.state.brandIndexWithAvatarError
+            ));
 
     return Padding(
       padding: const EdgeInsets.only(

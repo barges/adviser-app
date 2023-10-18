@@ -19,11 +19,9 @@ class MainMethodButton extends StatelessWidget {
     final SelectMethodsCubit selectMethodsCubit =
         context.read<SelectMethodsCubit>();
 
-    final List<int> selectedIds =
-        context.select((SelectMethodsCubit cubit) => cubit.state.selectedIds);
-
-    final int? mainMethodId =
-        context.select((SelectMethodsCubit cubit) => cubit.state.mainMethodId);
+    final (List<int> selectedIds, int? mainMethodId) = context.select(
+        (SelectMethodsCubit cubit) =>
+            (cubit.state.selectedIds, cubit.state.mainMethodId));
 
     final bool mainMethodIsNull = mainMethodId == null;
     final bool selectedIdsEmpty = selectedIds.isEmpty;

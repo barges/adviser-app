@@ -33,6 +33,8 @@ import 'package:zodiac/presentation/screens/edit_profile/edit_profile_state.dart
 
 const int _textFieldsCount = 4;
 
+const int _longFieldMaxLength = 65000;
+
 int nickNameIndex = ProfileField.nicknameIndex;
 int aboutIndex = ProfileField.aboutIndex;
 int experienceIndex = ProfileField.experienceIndex;
@@ -540,7 +542,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     final String text =
         textControllersMap[brandIndex][localeCode]?[index].text.trim() ?? '';
     final bool isShort = text.isEmpty;
-    final bool isLong = text.length > 65000;
+    final bool isLong = text.length > _longFieldMaxLength;
     if (isShort || isLong) {
       isValid = false;
 
