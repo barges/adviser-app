@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/data/models/app_success/ui_success_type.dart';
+import 'ui_success_type.dart';
 
 abstract class AppSuccess {
-  final UISuccessType? uiSuccessType;
+  final UISuccessMessagesType? uiSuccessType;
   final String? argument;
 
   const AppSuccess(this.uiSuccessType, this.argument);
@@ -20,8 +20,8 @@ class EmptySuccess extends AppSuccess {
 }
 
 class UISuccess extends AppSuccess {
-  UISuccess(UISuccessType uiSuccessType) : super(uiSuccessType, null);
-  UISuccess.withArguments(UISuccessType uiSuccessType, String? argument)
+  UISuccess(UISuccessMessagesType uiSuccessType) : super(uiSuccessType, null);
+  UISuccess.withArguments(UISuccessMessagesType uiSuccessType, String? argument)
       : super(uiSuccessType, argument);
 
   @override

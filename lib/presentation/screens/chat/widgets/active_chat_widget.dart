@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
-import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_messages_widget.dart';
+
+import '../../../../app_constants.dart';
+import '../../../../data/models/chats/chat_item.dart';
+import '../../../../data/models/enums/chat_item_status_type.dart';
+import '../../../../generated/l10n.dart';
+import '../../../common_widgets/buttons/app_elevated_button.dart';
+import '../chat_cubit.dart';
+import 'active_chat_messages_widget.dart';
 
 class ActiveChatWidget extends StatelessWidget {
   const ActiveChatWidget({
@@ -49,7 +50,7 @@ class ActiveChatWidget extends StatelessWidget {
                       width: MediaQuery.of(context).size.width -
                           AppConstants.horizontalScreenPadding * 2,
                       child: AppElevatedButton(
-                        title: S.of(context).takeQuestion,
+                        title: SFortunica.of(context).takeQuestionFortunica,
                         onPressed: chatCubit.takeQuestion,
                       ),
                     ),

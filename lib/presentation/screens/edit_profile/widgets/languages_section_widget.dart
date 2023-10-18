@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/validation_error_type.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/error_badge.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/app_text_field.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/edit_profile/edit_profile_cubit.dart';
+
+import '../../../../app_constants.dart';
+import '../../../../data/models/enums/markets_type.dart';
+import '../../../../data/models/enums/validation_error_type.dart';
+import '../../../../generated/l10n.dart';
+import '../../../common_widgets/error_badge.dart';
+import '../../../common_widgets/text_fields/app_text_field.dart';
+import '../edit_profile_cubit.dart';
 
 class LanguageSectionWidget extends StatelessWidget {
   const LanguageSectionWidget({Key? key}) : super(key: key);
@@ -74,7 +75,7 @@ class LanguageSectionWidget extends StatelessWidget {
                           errorType: editProfileCubit
                                   .errorTextsMap[entry.key]?.first ??
                               ValidationErrorType.empty,
-                          label: S.of(context).statusText,
+                          label: SFortunica.of(context).statusTextFortunica,
                           textInputType: TextInputType.multiline,
                           isBig: true,
                         );
@@ -93,7 +94,7 @@ class LanguageSectionWidget extends StatelessWidget {
                           errorType:
                               editProfileCubit.errorTextsMap[entry.key]?.last ??
                                   ValidationErrorType.empty,
-                          label: S.of(context).profileText,
+                          label: SFortunica.of(context).profileTextFortunica,
                           textInputType: TextInputType.multiline,
                           isBig: true,
                         );

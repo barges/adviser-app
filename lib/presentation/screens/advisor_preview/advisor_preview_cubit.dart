@@ -1,33 +1,31 @@
-import 'package:bloc/bloc.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
-import 'package:shared_advisor_interface/data/models/user_info/localized_properties/property_by_language.dart';
-import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
-import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_state.dart';
-import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_constants.dart';
+import 'dart:async';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../data/cache/fortunica_caching_manager.dart';
+import '../../../data/models/enums/markets_type.dart';
+import '../../../data/models/user_info/localized_properties/property_by_language.dart';
+import '../../../data/models/user_info/user_profile.dart';
+import '../../../infrastructure/di/inject_config.dart';
+import '../../../main_cubit.dart';
+import 'advisor_preview_constants.dart';
+import 'advisor_preview_state.dart';
 
 class AdvisorPreviewCubit extends Cubit<AdvisorPreviewState> {
-  final CachingManager cacheManager = getIt.get<CachingManager>();
+  final FortunicaCachingManager cacheManager =
+      fortunicaGetIt.get<FortunicaCachingManager>();
   final MainCubit mainCubit;
   late UserProfile userProfile;
   late List<MarketsType> languages;
-  late bool needRefresh;
 
-  VoidCallback? _listenUserProfile;
+  late final StreamSubscription _userProfileSubscription;
 
-  AdvisorPreviewCubit(this.mainCubit) : super(AdvisorPreviewState()) {
-    AdvisorPreviewScreenArguments arguments =
-        Get.arguments as AdvisorPreviewScreenArguments;
-    needRefresh = arguments.isAccountTimeout;
-
+  AdvisorPreviewCubit(
+    this.mainCubit,
+  ) : super(AdvisorPreviewState()) {
     userProfile = cacheManager.getUserProfile() ?? const UserProfile();
     languages = userProfile.activeLanguages ?? const [];
-    _listenUserProfile = cacheManager.listenUserProfile((value) {
+    _userProfileSubscription = cacheManager.listenUserProfileStream((value) {
       userProfile = value;
       languages = userProfile.activeLanguages ?? const [];
       emit(state.copyWith(updateInfo: !state.updateInfo));
@@ -36,7 +34,7 @@ class AdvisorPreviewCubit extends Cubit<AdvisorPreviewState> {
 
   @override
   Future<void> close() async {
-    _listenUserProfile?.call();
+    _userProfileSubscription.cancel();
     return super.close();
   }
 
@@ -46,7 +44,6 @@ class AdvisorPreviewCubit extends Cubit<AdvisorPreviewState> {
 
   void onApply() {
     emit(state.copyWith(currentIndex: state.oldIndex));
-    Get.back();
   }
 
   void onOpen() {

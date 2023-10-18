@@ -1,26 +1,23 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:get/get.dart';
 import 'package:mime/mime.dart';
-import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
-import 'package:shared_advisor_interface/data/network/requests/update_profile_image_request.dart';
-import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
-import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
+
+import '../../../data/cache/fortunica_caching_manager.dart';
+import '../../../data/models/user_info/user_profile.dart';
+import '../../../data/network/requests/update_profile_image_request.dart';
+import '../../../domain/repositories/fortunica_user_repository.dart';
+import '../../../services/connectivity_service.dart';
 
 part 'add_gallery_pictures_state.dart';
 part 'add_gallery_pictures_cubit.freezed.dart';
 
 class AddGalleryPicturesCubit extends Cubit<AddGalleryPicturesState> {
-  final UserRepository _userRepository;
+  final FortunicaUserRepository _userRepository;
   final ConnectivityService _connectivityService;
-  final CachingManager _cacheManager;
+  final FortunicaCachingManager _cacheManager;
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
@@ -64,19 +61,5 @@ class AddGalleryPicturesCubit extends Cubit<AddGalleryPicturesState> {
 
       emit(state.copyWith(coverPictures: coverPictures));
     }
-  }
-
-  void openDrawer() {
-    scaffoldKey.currentState?.openDrawer();
-  }
-
-  void goToGallery(int pictureIndex) {
-    Get.toNamed(
-      AppRoutes.galleryPictures,
-      arguments: GalleryPicturesScreenArguments(
-        pictures: state.coverPictures,
-        initPage: pictureIndex.toDouble(),
-      ),
-    );
   }
 }

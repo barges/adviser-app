@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
-import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/list_tile_content_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/small_list_tile_badge.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/customer_sessions/customer_sessions_cubit.dart';
+
+import '../../../../fortunica_extensions.dart';
+import '../../../../app_constants.dart';
+import '../../../../data/models/chats/chat_item.dart';
+import '../../../common_widgets/list_tile_content_widget.dart';
+import '../../../common_widgets/small_list_tile_badge.dart';
+import '../customer_sessions_cubit.dart';
 
 class CustomerSessionListTileWidget extends StatelessWidget {
+  final ChatItem question;
+
   const CustomerSessionListTileWidget({Key? key, required this.question})
       : super(key: key);
-
-  final ChatItem question;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class CustomerSessionListTileWidget extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        customerSessionsCubit.goToChat(question);
+        customerSessionsCubit.goToChat(context, question);
       },
       child: SizedBox(
         height: 62.0,
@@ -71,15 +72,16 @@ class CustomerSessionListTileWidget extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Text(
-                        question.createdAt?.chatListTime ??
-                            question.updatedAt?.chatListTime ??
-                            DateTime.now().toUtc().chatListTime,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.shadowColor,
-                          fontSize: 12.0,
-                        ),
-                      )
+                      if (question.createdAt != null ||
+                          question.updatedAt != null)
+                        Text(
+                          question.createdAt?.chatListTime ??
+                              question.updatedAt!.chatListTime,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: theme.shadowColor,
+                            fontSize: 12.0,
+                          ),
+                        )
                     ],
                   ),
                   const SizedBox(height: 4.0),

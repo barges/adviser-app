@@ -1,10 +1,11 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:shared_advisor_interface/data/models/chats/rirual_card_info.dart';
-import 'package:shared_advisor_interface/data/models/chats/story.dart';
-import 'package:shared_advisor_interface/data/models/enums/gender.dart';
-import 'package:shared_advisor_interface/data/models/enums/ritual_info_card_field_data.dart';
-import 'package:shared_advisor_interface/data/models/enums/ritual_info_card_field_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/sessions_types.dart';
+
+import '../../models/chats/rirual_card_info.dart';
+import '../../models/chats/story.dart';
+import '../../models/enums/gender.dart';
+import '../../models/enums/ritual_info_card_field_data.dart';
+import '../../models/enums/ritual_info_card_field_type.dart';
+import '../../models/enums/sessions_types.dart';
 
 part 'rituals_response.g.dart';
 

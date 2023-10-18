@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+
+import '../../../../app_constants.dart';
 
 class InfoWidget extends StatelessWidget {
   final String title;

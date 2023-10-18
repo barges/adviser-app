@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/drawer/drawer_cubit.dart';
+
+import '../../../../infrastructure/routing/app_router.dart';
+import '../../../../app_constants.dart';
+import '../../../../generated/assets/assets.gen.dart';
+import '../../../../generated/l10n.dart';
+import '../../../../main_cubit.dart';
+import '../drawer_cubit.dart';
 
 class BottomSection extends StatelessWidget {
   const BottomSection({Key? key}) : super(key: key);
@@ -26,8 +29,11 @@ class BottomSection extends StatelessWidget {
             children: [
               _BottomSectionItem(
                 icon: Assets.vectors.questionMark.path,
-                text: S.of(context).customerSupport,
-                onTap: cubit.goToCustomerSupport,
+                text: SFortunica.of(context).customerSupport,
+                onTap: () {
+                  context.pop();
+                  context.read<MainCubit>().goToSupport();
+                },
               ),
               const SizedBox(
                 height: 16.0,
@@ -40,11 +46,11 @@ class BottomSection extends StatelessWidget {
 
                 return _BottomSectionItem(
                   icon: Assets.vectors.packageOpen.path,
-                  text: '${S.of(context).version} ${version ?? ''}',
+                  text: '${SFortunica.of(context).version} ${version ?? ''}',
                   bottomText: copyButtonTapped
-                      ? S.of(context).copied
-                      : S.of(context).tapToCopy,
-                  onTap: cubit.tapToCopy,
+                      ? SFortunica.of(context).copied
+                      : SFortunica.of(context).tapToCopy,
+                  onTap: () => cubit.tapToCopy,
                 );
               }),
             ],

@@ -1,12 +1,12 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
-import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/user_avatar.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard_v1/dashboard_v1_cubit.dart';
+
+import '../../../../../../fortunica_extensions.dart';
+import '../../../../../../app_constants.dart';
+import '../../../../../../data/models/user_info/user_profile.dart';
+import '../../../../../../generated/l10n.dart';
+import '../../../../../common_widgets/user_avatar.dart';
+import '../dashboard_v1_cubit.dart';
 
 class PersonalInformationWidget extends StatelessWidget {
   const PersonalInformationWidget({super.key});
@@ -22,6 +22,7 @@ class PersonalInformationWidget extends StatelessWidget {
           context.select((DashboardV1Cubit cubit) => cubit.state.monthAmount);
       final String currencySymbol = context
           .select((DashboardV1Cubit cubit) => cubit.state.currencySymbol);
+
       return Container(
           padding: const EdgeInsets.all(AppConstants.horizontalScreenPadding),
           width: MediaQuery.of(context).size.width,
@@ -50,7 +51,7 @@ class PersonalInformationWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    S.of(context).earnedThisMonth,
+                    SFortunica.of(context).earnedThisMonthFortunica,
                     style: theme.textTheme.bodySmall?.copyWith(
                       fontSize: 14.0,
                       color: theme.shadowColor,

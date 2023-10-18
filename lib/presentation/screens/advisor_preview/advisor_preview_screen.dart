@@ -1,29 +1,36 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
-import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/user_avatar.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/advisor_preview/widgets/about_me_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/advisor_preview/widgets/advisor_preview_app_bar.dart';
-import 'package:shared_advisor_interface/presentation/screens/advisor_preview/widgets/cover_picture_widget.dart';
-import 'package:shared_advisor_interface/presentation/themes/app_colors_light.dart';
+
+import '../../../app_constants.dart';
+import '../../../data/models/app_error/app_error.dart';
+import '../../../data/models/enums/markets_type.dart';
+import '../../../generated/assets/assets.gen.dart';
+import '../../../generated/l10n.dart';
+import '../../../infrastructure/di/inject_config.dart';
+import '../../../main_cubit.dart';
+import '../../../themes/app_colors_light.dart';
+import '../../common_widgets/messages/app_error_widget.dart';
+import '../../common_widgets/user_avatar.dart';
+import 'advisor_preview_constants.dart';
+import 'advisor_preview_cubit.dart';
+import 'widgets/about_me_widget.dart';
+import 'widgets/advisor_preview_app_bar.dart';
+import 'widgets/cover_picture_widget.dart';
 
 class AdvisorPreviewScreen extends StatelessWidget {
-  const AdvisorPreviewScreen({Key? key}) : super(key: key);
+  final bool isAccountTimeout;
+
+  const AdvisorPreviewScreen({
+    Key? key,
+    required this.isAccountTimeout,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => AdvisorPreviewCubit(getIt.get<MainCubit>()),
+      create: (_) => AdvisorPreviewCubit(
+        fortunicaGetIt.get<MainCubit>(),
+      ),
       child: Builder(builder: (context) {
         final AdvisorPreviewCubit advisorPreviewCubit =
             context.read<AdvisorPreviewCubit>();
@@ -37,7 +44,7 @@ class AdvisorPreviewScreen extends StatelessWidget {
             children: [
               RefreshIndicator(
                 onRefresh: advisorPreviewCubit.refreshInfo,
-                notificationPredicate: (_) => advisorPreviewCubit.needRefresh,
+                notificationPredicate: (_) => isAccountTimeout,
                 child: ListView(
                     physics: const AlwaysScrollableScrollPhysics()
                         .applyTo(const ClampingScrollPhysics()),
@@ -126,14 +133,18 @@ class AdvisorPreviewScreen extends StatelessWidget {
                                               width: 2.0),
                                         ),
                                       ),
-                                      child: Text(S.of(context).aboutMe,
+                                      child: Text(
+                                          SFortunica.of(context)
+                                              .aboutMeFortunica,
                                           style: AdvisorPreviewConstants
                                               .displayLarge),
                                     ),
                                   ),
                                   Expanded(
                                     child: Center(
-                                      child: Text(S.of(context).quickAnswers,
+                                      child: Text(
+                                          SFortunica.of(context)
+                                              .quickAnswersFortunica,
                                           style: AdvisorPreviewConstants
                                               .displayLarge),
                                     ),

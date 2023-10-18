@@ -1,8 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+
+import '../../../../app_constants.dart';
+import '../../../../generated/assets/assets.gen.dart';
+import '../../../../generated/l10n.dart';
 
 class AddMoreImagesFromGalleryWidget extends StatelessWidget {
   final VoidCallback? onTap;
@@ -40,7 +41,7 @@ class AddMoreImagesFromGalleryWidget extends StatelessWidget {
                 maxHeight:
                     constraints.maxHeight - AppConstants.iconSize - 4.0 - 24.0,
                 child: AutoSizeText(
-                  S.of(context).addMore,
+                  SFortunica.of(context).addMoreFortunica,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w500,
                         color: Theme.of(context).primaryColor,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/data/models/chats/history.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_widget.dart';
+
+import '../../../../../../data/models/chats/history.dart';
+import '../../chat_item_widget.dart';
 
 class QuestionAndAnswerPairWidget extends StatelessWidget {
   final History historyItem;

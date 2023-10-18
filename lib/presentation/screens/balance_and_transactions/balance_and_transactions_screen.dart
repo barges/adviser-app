@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_month.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_statistics.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/main_state.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/appbar/scrollable_appbar/scrollable_appbar.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/no_connection_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/statistics/empty_statistics_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/statistics/statistics_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/balance_and_transactions/balance_and_transactions_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/drawer/app_drawer.dart';
+
+import '../../../data/cache/fortunica_caching_manager.dart';
+import '../../../data/models/reports_endpoint/reports_month.dart';
+import '../../../data/models/reports_endpoint/reports_statistics.dart';
+import '../../../domain/repositories/fortunica_user_repository.dart';
+import '../../../generated/l10n.dart';
+import '../../../infrastructure/di/inject_config.dart';
+import '../../../main_cubit.dart';
+import '../../../main_state.dart';
+import '../../common_widgets/appbar/scrollable_appbar/scrollable_appbar.dart';
+import '../../common_widgets/no_connection_widget.dart';
+import '../../common_widgets/statistics/empty_statistics_widget.dart';
+import '../../common_widgets/statistics/statistics_widget.dart';
+import 'balance_and_transactions_cubit.dart';
 
 class BalanceAndTransactionsScreen extends StatelessWidget {
   const BalanceAndTransactionsScreen({Key? key}) : super(key: key);
@@ -18,13 +21,16 @@ class BalanceAndTransactionsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => BalanceAndTransactionsCubit(),
+      create: (_) => BalanceAndTransactionsCubit(
+        fortunicaGetIt.get<FortunicaCachingManager>(),
+        fortunicaGetIt.get<FortunicaUserRepository>(),
+        fortunicaGetIt.get<MainCubit>(),
+      ),
       child: Builder(builder: (context) {
         final BalanceAndTransactionsCubit balanceAndTransactionsCubit =
             context.read<BalanceAndTransactionsCubit>();
         return Scaffold(
           key: balanceAndTransactionsCubit.scaffoldKey,
-          drawer: const AppDrawer(),
           body: SafeArea(
             top: false,
             child: BlocListener<MainCubit, MainState>(
@@ -57,8 +63,8 @@ class BalanceAndTransactionsScreen extends StatelessWidget {
                       : null,
                   slivers: [
                     ScrollableAppBar(
-                      title: S.of(context).balanceTransactions,
-                      openDrawer: balanceAndTransactionsCubit.openDrawer,
+                      title:
+                          SFortunica.of(context).balanceTransactionsFortunica,
                     ),
                     Builder(builder: (context) {
                       final bool isOnline = context.select((MainCubit cubit) =>

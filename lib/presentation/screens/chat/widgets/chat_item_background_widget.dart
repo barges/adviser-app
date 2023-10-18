@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
+
+import '../../../../app_constants.dart';
+import '../../../../generated/assets/assets.gen.dart';
+import '../../../../generated/l10n.dart';
+import '../chat_cubit.dart';
 
 class ChatItemBackgroundWidget extends StatelessWidget {
   final bool isBorder;
@@ -94,7 +95,7 @@ class _TryAgain extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              S.of(context).tryAgain,
+              SFortunica.of(context).tryAgainFortunica,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).primaryColor,
                     fontSize: 12.0,
@@ -133,7 +134,7 @@ class _CancelSending extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              S.of(context).cancelSending,
+              SFortunica.of(context).cancelSendingFortunica,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).errorColor,
                     fontSize: 12.0,

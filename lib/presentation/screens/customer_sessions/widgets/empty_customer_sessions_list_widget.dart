@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/empty_list_widget.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/customer_sessions/customer_sessions_cubit.dart';
+
+import '../../../../app_constants.dart';
+import '../../../../generated/l10n.dart';
+import '../../../common_widgets/empty_list_widget.dart';
+import '../customer_sessions_cubit.dart';
 
 class EmptyCustomerSessionsListWidget extends StatelessWidget {
   const EmptyCustomerSessionsListWidget({Key? key}) : super(key: key);
@@ -28,8 +29,9 @@ class EmptyCustomerSessionsListWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   EmptyListWidget(
-                    title: S.of(context).weDidntFindAnything,
-                    label: S.of(context).noSessionsFoundWithThisFilter,
+                    title: SFortunica.of(context).weDidntFindAnythingFortunica,
+                    label: SFortunica.of(context)
+                        .noSessionsFoundWithThisFilterFortunica,
                   ),
                 ],
               ),

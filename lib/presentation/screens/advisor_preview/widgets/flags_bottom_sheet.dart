@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
-import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_constants.dart';
-import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
+
+import '../../../../infrastructure/routing/app_router.dart';
+import '../../../../app_constants.dart';
+import '../../../../data/models/enums/markets_type.dart';
+import '../../../../generated/assets/assets.gen.dart';
+import '../../../../generated/l10n.dart';
+import '../../../../themes/app_colors.dart';
+import '../advisor_preview_constants.dart';
+import '../advisor_preview_cubit.dart';
 
 Future<void> flagsBottomSheet(
     {required BuildContext context,
@@ -62,10 +63,10 @@ class _FlagBottomSheetHeader extends StatelessWidget {
         EdgeInsets.symmetric(vertical: 20.0, horizontal: 24.0);
     return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
       GestureDetector(
-        onTap: Get.back,
+        onTap: context.pop,
         child: Padding(
           padding: padding,
-          child: Text(S.of(context).cancel,
+          child: Text(SFortunica.of(context).cancelFortunica,
               style: AdvisorPreviewConstants.appBarTitleStyle.copyWith(
                   fontWeight: FontWeight.w500,
                   color: AdvisorPreviewConstants.primary)),
@@ -75,7 +76,7 @@ class _FlagBottomSheetHeader extends StatelessWidget {
         onTap: onApply,
         child: Padding(
           padding: padding,
-          child: Text(S.of(context).done,
+          child: Text(SFortunica.of(context).doneFortunica,
               style: AdvisorPreviewConstants.appBarTitleStyle.copyWith(
                   fontWeight: FontWeight.w500,
                   color: AdvisorPreviewConstants.primary)),

@@ -1,7 +1,8 @@
 // ignore_for_file: invalid_annotation_target
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shared_advisor_interface/data/models/enums/sessions_types.dart';
+
+import '../enums/sessions_types.dart';
 
 part 'reports_unit.freezed.dart';
 
@@ -12,8 +13,7 @@ class ReportsUnit with _$ReportsUnit {
   @JsonSerializable(includeIfNull: false)
   const factory ReportsUnit({
     String? group,
-    @JsonKey(unknownEnumValue: SessionsTypes.undefined)
-    SessionsTypes? type,
+    @JsonKey(unknownEnumValue: SessionsTypes.undefined) SessionsTypes? type,
     int? number,
     double? amount,
     int? numberCancelled,

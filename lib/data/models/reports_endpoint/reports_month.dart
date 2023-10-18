@@ -1,9 +1,10 @@
 // ignore_for_file: invalid_annotation_target
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_statistics.dart';
+import '../../../../extensions.dart';
+
+import 'reports_statistics.dart';
 
 part 'reports_month.freezed.dart';
 
@@ -29,12 +30,15 @@ class ReportsMonth with _$ReportsMonth {
   String get nameFromDate {
     final List<String>? yearMonth = monthDate?.split('-');
     if ((yearMonth?.length == 2) == true) {
-      return DateFormat.MMMM().format(
-        DateTime(
-          int.parse(yearMonth!.first),
-          int.parse(yearMonth.last),
-        ),
-      ).capitalize ?? 'Month Name';
+      return DateFormat.MMMM()
+              .format(
+                DateTime(
+                  int.parse(yearMonth!.first),
+                  int.parse(yearMonth.last),
+                ),
+              )
+              .capitalize ??
+          'Month Name';
     }
     return 'Month Name';
   }

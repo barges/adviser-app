@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/empty_list_widget.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+
+import '../../../../../../app_constants.dart';
+import '../../../../../../generated/l10n.dart';
+import '../../../../../common_widgets/empty_list_widget.dart';
 
 class EmptyHistoryListWidget extends StatelessWidget {
   const EmptyHistoryListWidget({Key? key}) : super(key: key);
@@ -23,10 +24,9 @@ class EmptyHistoryListWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   EmptyListWidget(
-                    title: S.of(context).noSessionsYet,
-                    label: S
-                        .of(context)
-                        .whenYouHelpYourFirstClientYouWillSeeYourSessionHistoryHere,
+                    title: SFortunica.of(context).noSessionsYetFortunica,
+                    label: SFortunica.of(context)
+                        .whenYouHelpYourFirstClientYouWillSeeYourSessionHistoryHereFortunica,
                   ),
                 ],
               ),

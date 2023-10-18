@@ -1,16 +1,17 @@
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
-import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
-import 'package:shared_advisor_interface/presentation/screens/splash/splash_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/splash/splash_state.dart';
-import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
-import 'package:shared_advisor_interface/presentation/utils/utils.dart';
+
+import '../../../infrastructure/routing/app_router.dart';
+import '../../../data/cache/fortunica_caching_manager.dart';
+import '../../../generated/assets/assets.gen.dart';
+import '../../../global.dart';
+import '../../../infrastructure/di/inject_config.dart';
+import '../../../infrastructure/routing/app_router.gr.dart';
+import '../../../services/check_permission_service.dart';
+import '../../../services/fresh_chat_service.dart';
+import '../../../utils/utils.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -31,41 +32,34 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
+    globalGetIt
+        .get<FreshChatService>()
+        .initFreshChat(Utils.isDarkMode(context));
+    await Future.delayed(const Duration(milliseconds: 700));
+    await AppTrackingTransparency.requestTrackingAuthorization();
+    // ignore: use_build_context_synchronously
+    await globalGetIt.get<CheckPermissionService>().handlePermission(
+        context, PermissionType.notification,
+        needShowSettings: false);
+
+    Future.delayed(const Duration(seconds: 2)).then((_) {
+      if (fortunicaGetIt.get<FortunicaCachingManager>().isAuth) {
+        context.replaceAll([FortunicaHome()]);
+      } else {
+        context.replaceAll([const FortunicaLogin()]);
+      }
+    });
+
     FlutterNativeSplash.remove();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) {
-        return SplashCubit(
-          getIt.get<CachingManager>(),
-          getIt.get<CheckPermissionService>(),
-          Utils.isDarkMode(context),
-          context,
-        );
-      },
-      child: Builder(
-        builder: (context) {
-          return BlocListener<SplashCubit, SplashState>(
-            listener: (prev, current) {
-              if (current.isLogged == true) {
-                Get.offNamed(AppRoutes.home);
-              } else {
-                Get.offNamed(AppRoutes.login);
-              }
-            },
-            child: Scaffold(
-              backgroundColor: Theme.of(context).primaryColor,
-              body: Center(
-                // height: size.height,
-                // width: size.width,
-                child: splashLogo,
-              ),
-            ),
-          );
-        },
+    return Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
+      body: Center(
+        child: splashLogo,
       ),
-    );
+    ); //,
   }
 }

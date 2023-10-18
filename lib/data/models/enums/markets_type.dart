@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+
+import '../../../app_constants.dart';
+import '../../../generated/assets/assets.gen.dart';
+import '../../../generated/l10n.dart';
 
 enum MarketsType {
   de,
@@ -28,19 +29,19 @@ enum MarketsType {
   String languageName(BuildContext context) {
     switch (this) {
       case MarketsType.de:
-        return AppConstants.deBrandName;
+        return AppConstants.deLanguageName;
       case MarketsType.en:
-        return AppConstants.enBrandName;
+        return AppConstants.enLanguageName;
       case MarketsType.es:
-        return AppConstants.esBrandName;
+        return AppConstants.esLanguageName;
       case MarketsType.pt:
-        return AppConstants.ptBrandName;
+        return AppConstants.ptLanguageName;
       case MarketsType.all:
-        return S.of(context).allMarkets;
+        return SFortunica.of(context).allMarketsFortunica;
     }
   }
 
- static const List<String> actualMarkets = [
+  static const List<String> actualMarkets = [
     'en',
     'es',
     'de',

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_constants.dart';
+
+import '../advisor_preview_constants.dart';
 
 class AboutMeWidget extends StatelessWidget {
   final String title;

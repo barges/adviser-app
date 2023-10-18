@@ -2,15 +2,16 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/data/models/enums/attachment_type.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_gradient_button.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/attached_pictures.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/audio_players/chat_audio_player_cubit.dart';
-import 'package:shared_advisor_interface/presentation/services/audio/audio_player_service.dart';
+
+import '../../../../../app_constants.dart';
+import '../../../../../data/models/enums/attachment_type.dart';
+import '../../../../../generated/assets/assets.gen.dart';
+import '../../../../../services/audio/audio_player_service.dart';
+import '../../../../common_widgets/buttons/app_icon_gradient_button.dart';
+import '../../../../common_widgets/show_pick_image_alert.dart';
+import '../../chat_cubit.dart';
+import '../attached_pictures.dart';
+import 'chat_audio_player_cubit.dart';
 
 class ChatRecordedPlayerWidget extends StatelessWidget {
   final AudioPlayerService player;

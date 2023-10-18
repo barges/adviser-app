@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
+
+import '../../../generated/assets/assets.gen.dart';
+import '../../../generated/l10n.dart';
 
 enum ChatItemType {
   @JsonValue("PRIVATE")
@@ -19,14 +20,14 @@ enum ChatItemType {
   String filterName(BuildContext context) {
     switch (this) {
       case ChatItemType.private:
-        return S.of(context).privateQuestions;
+        return SFortunica.of(context).privateQuestionsFortunica;
       case ChatItemType.ritual:
-        return S.of(context).onlyPremiumProducts;
+        return SFortunica.of(context).onlyPremiumProductsFortunica;
       case ChatItemType.history:
       case ChatItemType.public:
       case ChatItemType.textAnswer:
       case ChatItemType.all:
-        return S.of(context).all;
+        return SFortunica.of(context).allFortunica;
     }
   }
 
@@ -60,11 +61,11 @@ enum ChatItemType {
   String typeName(BuildContext context) {
     switch (this) {
       case ChatItemType.private:
-        return S.of(context).privateQuestion;
+        return SFortunica.of(context).privateQuestionFortunica;
       case ChatItemType.ritual:
-        return '${S.of(context).ritual} ${S.of(context).session}';
+        return '${SFortunica.of(context).ritualFortunica} ${SFortunica.of(context).sessionFortunica}';
       case ChatItemType.public:
-        return S.of(context).publicQuestion;
+        return SFortunica.of(context).publicQuestionFortunica;
       default:
         return '';
     }
@@ -73,9 +74,9 @@ enum ChatItemType {
   String unAnsweredMessage(BuildContext context) {
     switch (this) {
       case ChatItemType.private:
-        return S.of(context).youHaveAPrivateMessage;
+        return SFortunica.of(context).youHaveAPrivateMessageFortunica;
       case ChatItemType.ritual:
-        return S.of(context).youHaveAnActiveSession;
+        return SFortunica.of(context).youHaveAnActiveSessionFortunica;
       default:
         return '';
     }

@@ -2,39 +2,43 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
-import 'package:shared_advisor_interface/configuration.dart';
-import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
-import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/appbar/simple_app_bar.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/no_connection_widget.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/forgot_password/widgets/email_part_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/forgot_password/widgets/reset_password_input_part.dart';
-import 'package:shared_advisor_interface/presentation/screens/forgot_password/widgets/success_reset.dart';
-import 'package:shared_advisor_interface/presentation/screens/login/login_cubit.dart';
-import 'package:shared_advisor_interface/presentation/services/dynamic_link_service.dart';
-import 'package:shared_advisor_interface/presentation/utils/utils.dart';
+
+import '../../../app_constants.dart';
+import '../../../data/models/app_error/app_error.dart';
+import '../../../domain/repositories/fortunica_auth_repository.dart';
+import '../../../generated/assets/assets.gen.dart';
+import '../../../generated/l10n.dart';
+import '../../../infrastructure/di/inject_config.dart';
+import '../../../main_cubit.dart';
+import '../../../services/dynamic_link_service.dart';
+import '../../../utils/utils.dart';
+import '../../common_widgets/appbars/simple_app_bar.dart';
+import '../../common_widgets/buttons/app_elevated_button.dart';
+import '../../common_widgets/messages/app_error_widget.dart';
+import '../../common_widgets/no_connection_widget.dart';
+import '../login/login_cubit.dart';
+import 'forgot_password_cubit.dart';
+import 'widgets/email_part_widget.dart';
+import 'widgets/reset_password_input_part.dart';
+import 'widgets/success_reset.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
-  const ForgotPasswordScreen({Key? key}) : super(key: key);
+  final String? resetToken;
+
+  const ForgotPasswordScreen({
+    Key? key,
+    this.resetToken,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final MainCubit mainCubit = context.read<MainCubit>();
     return BlocProvider(
       create: (_) => ForgotPasswordCubit(
-        getIt.get<AuthRepository>(),
-        getIt.get<DynamicLinkService>(),
-        mainCubit,
-        getIt.get<LoginCubit>(),
+        authRepository: fortunicaGetIt.get<FortunicaAuthRepository>(),
+        dynamicLinkService: fortunicaGetIt.get<DynamicLinkService>(),
+        loginCubit: fortunicaGetIt.get<LoginCubit>(),
+        resetToken: resetToken,
+        mainCubit: fortunicaGetIt.get<MainCubit>(),
       ),
       child: Builder(builder: (context) {
         final ForgotPasswordCubit cubit = context.read<ForgotPasswordCubit>();
@@ -42,7 +46,7 @@ class ForgotPasswordScreen extends StatelessWidget {
             (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
         return Scaffold(
           appBar: SimpleAppBar(
-            title: S.of(context).forgotPassword,
+            title: SFortunica.of(context).forgotPasswordFortunica,
           ),
           body: SafeArea(
             child: isOnline
@@ -106,16 +110,16 @@ class ForgotPasswordScreen extends StatelessWidget {
                                                 );
                                                 return AppElevatedButton(
                                                   title: resetToken == null
-                                                      ? S
-                                                          .of(context)
-                                                          .resetPassword
-                                                      : S
-                                                          .of(context)
-                                                          .changePassword,
+                                                      ? SFortunica.of(context)
+                                                          .resetPasswordFortunica
+                                                      : SFortunica.of(context)
+                                                          .changePasswordFortunica,
                                                   onPressed: isActive
                                                       ? () =>
                                                           cubit.resetPassword(
-                                                              resetToken)
+                                                            context,
+                                                            resetToken,
+                                                          )
                                                       : null,
                                                 );
                                               }),
@@ -148,9 +152,9 @@ class ForgotPasswordScreen extends StatelessWidget {
                             ),
                           );
                   })
-                : Column(
+                : const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       NoConnectionWidget(),
                     ],
                   ),
@@ -168,8 +172,6 @@ class _BrandLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Brand brand = context
-        .select((ForgotPasswordCubit cubit) => cubit.state.selectedBrand);
     return GestureDetector(
       onDoubleTap: () {
         if (kDebugMode) {
@@ -185,11 +187,13 @@ class _BrandLogo extends StatelessWidget {
           borderRadius: BorderRadius.circular(
             AppConstants.buttonRadius,
           ),
-          color: Get.theme.canvasColor,
+          color: Theme.of(context).canvasColor,
         ),
         child: Center(
           child: SvgPicture.asset(
-            brand.icon,
+            // TODO ?
+            //FortunicaBrand().iconPath,
+            Assets.vectors.fortunica.path,
             height: 72.0,
           ),
         ),

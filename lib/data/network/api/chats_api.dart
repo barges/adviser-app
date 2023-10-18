@@ -1,18 +1,24 @@
 import 'package:dio/dio.dart';
+import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
-import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
-import 'package:shared_advisor_interface/data/network/responses/answer_validation_response.dart';
-import 'package:shared_advisor_interface/data/network/responses/conversations_response.dart';
-import 'package:shared_advisor_interface/data/network/responses/conversations_story_response.dart';
-import 'package:shared_advisor_interface/data/network/responses/history_response.dart';
-import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
-import 'package:shared_advisor_interface/data/network/responses/rituals_response.dart';
+
+import '../../models/chats/chat_item.dart';
+import '../requests/answer_request.dart';
+import '../responses/answer_validation_response.dart';
+import '../responses/conversations_response.dart';
+import '../responses/conversations_story_response.dart';
+import '../responses/history_response.dart';
+import '../responses/questions_list_response.dart';
+import '../responses/rituals_response.dart';
 
 part 'chats_api.g.dart';
 
+const String startAnswerUrl = '/questions/answer/start';
+
 @RestApi()
+@injectable
 abstract class ChatsApi {
+  @factoryMethod
   factory ChatsApi(Dio dio) = _ChatsApi;
 
   @GET('/experts/questions/public')
@@ -84,7 +90,7 @@ abstract class ChatsApi {
   @GET('/experts/validation/answer')
   Future<AnswerValidationResponse> getAnswerValidation();
 
-  @POST('/questions/answer/start')
+  @POST(startAnswerUrl)
   Future<ChatItem> startAnswer(
     @Body() AnswerRequest request,
   );

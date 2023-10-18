@@ -2,14 +2,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
-import 'package:shared_advisor_interface/data/models/customer_info/note.dart';
-import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/customer_profile_cubit.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/empty_list_widget.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+
+import '../../../../fortunica_extensions.dart';
+import '../../../../app_constants.dart';
+import '../../../../data/models/customer_info/note.dart';
+import '../../../../generated/assets/assets.gen.dart';
+import '../../../../generated/l10n.dart';
+import '../../empty_list_widget.dart';
+import '../customer_profile_cubit.dart';
 
 class NotesWidget extends StatelessWidget {
   final List<Note>? notes;
@@ -37,18 +37,9 @@ class NotesWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    S.of(context).note,
+                    SFortunica.of(context).noteFortunica,
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
-                  /**
-                      Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text('${texts.length}',
-                      style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).shadowColor)),
-                      )
-                   */
                 ],
               ),
               notes?.isEmpty == true
@@ -58,9 +49,10 @@ class NotesWidget extends StatelessWidget {
                         Assets.vectors.plus.svg(),
                         const SizedBox(width: 4.0),
                         GestureDetector(
-                          onTap: customerProfileCubit.createNewNote,
+                          onTap: () =>
+                              customerProfileCubit.createNewNote(context),
                           child: Text(
-                            S.of(context).addNew,
+                            SFortunica.of(context).addNewFortunica,
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium
@@ -86,9 +78,10 @@ class NotesWidget extends StatelessWidget {
                       itemBuilder: (_, index) {
                         final Note note = notes![index];
                         return _OneNoteWidget(
-                            onTap: () => customerProfileCubit.updateNote(note),
+                            onTap: () =>
+                                customerProfileCubit.updateNote(context, note),
                             text: note.content ?? '',
-                            updatedAt: note.updatedAt ?? DateTime.now(),
+                            updatedAt: note.updatedAt,
                             images:
                                 images.isNotEmpty ? images[index] : const []);
                       },
@@ -96,10 +89,10 @@ class NotesWidget extends StatelessWidget {
                       itemCount: min(notes!.length, images.length),
                     )
                   : EmptyListWidget(
-                      title: S.of(context).youDoNotHaveAnyNotesYet,
-                      label: S
-                          .of(context)
-                          .addAnyInformationYouWantToRememberAboutThisClient,
+                      title: SFortunica.of(context)
+                          .youDoNotHaveAnyNotesYetFortunica,
+                      label: SFortunica.of(context)
+                          .addAnyInformationYouWantToRememberAboutThisClientFortunica,
                     )
               : const SizedBox.shrink(),
         ],
@@ -112,7 +105,7 @@ class _OneNoteWidget extends StatelessWidget {
   final String text;
   final List<String> images;
   final VoidCallback? onTap;
-  final DateTime updatedAt;
+  final DateTime? updatedAt;
 
   const _OneNoteWidget(
       {Key? key,
@@ -152,8 +145,10 @@ class _OneNoteWidget extends StatelessWidget {
                       color: Theme.of(context).shadowColor),
                   child: Row(
                     children: [
-                      Text(
-                          DateFormat(datePattern6).format(updatedAt.toLocal())),
+                      if (updatedAt != null)
+                        Text(
+                          updatedAt!.noteTime,
+                        ),
                       if (images.isNotEmpty)
                         Row(
                           mainAxisSize: MainAxisSize.min,

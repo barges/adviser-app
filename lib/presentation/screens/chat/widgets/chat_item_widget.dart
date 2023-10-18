@@ -1,14 +1,15 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
-import 'package:shared_advisor_interface/data/models/enums/attachment_type.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/audio_players/chat_audio_player_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_background_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_item_footer_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_area_widget.dart';
+
+import '../../../../data/models/chats/chat_item.dart';
+import '../../../../data/models/enums/attachment_type.dart';
+import '../../../common_widgets/app_image_widget.dart';
+import '../chat_cubit.dart';
+import 'audio_players/chat_audio_player_widget.dart';
+import 'chat_item_background_widget.dart';
+import 'chat_item_footer_widget.dart';
+import 'chat_text_area_widget.dart';
 
 class ChatItemWidget extends StatefulWidget {
   final ChatItem item;
@@ -80,17 +81,17 @@ class _ChatItemWidgetState extends State<ChatItemWidget>
                 return const SizedBox();
               }).toList(),
             ),
-          Builder(builder: (context) {
-            final int? isAudio = widget.item.attachments
-                ?.indexWhere((element) => element.type == AttachmentType.audio);
-            return SizedBox(
-              height: widget.item.attachments?.isNotEmpty == true &&
-                      isAudio != null &&
-                      isAudio != -1
-                  ? 14.0
-                  : 5.0,
-            );
-          }),
+          SizedBox(
+            height: widget.item.attachments?.isNotEmpty == true &&
+                    widget.item.attachments?.indexWhere((element) =>
+                            element.type == AttachmentType.audio) !=
+                        null &&
+                    widget.item.attachments?.indexWhere((element) =>
+                            element.type == AttachmentType.audio) !=
+                        -1
+                ? 14.0
+                : 5.0,
+          ),
         ]),
         Positioned(
           right: 0.0,

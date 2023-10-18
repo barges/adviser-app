@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/open_email_button.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+
+import '../../../app_constants.dart';
+import '../../../generated/assets/assets.gen.dart';
+import '../buttons/open_email_button.dart';
 
 class AppSuccessWidget extends StatelessWidget {
   final String message;

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/utils/utils.dart';
+
+import '../../app_constants.dart';
+import '../../generated/assets/assets.gen.dart';
+import '../../utils/utils.dart';
 
 class EmptyListWidget extends StatelessWidget {
   final String title;

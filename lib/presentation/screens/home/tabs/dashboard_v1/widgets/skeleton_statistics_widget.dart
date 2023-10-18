@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:skeleton_loader/skeleton_loader.dart';
+import 'package:shimmer/shimmer.dart';
+
+import '../../../../../../app_constants.dart';
 
 class SkeletonStatisticsWidget extends StatelessWidget {
   const SkeletonStatisticsWidget({Key? key}) : super(key: key);
@@ -14,10 +15,10 @@ class SkeletonStatisticsWidget extends StatelessWidget {
           horizontal: AppConstants.horizontalScreenPadding, vertical: 16.0),
       child: Column(
         children: [
-          SkeletonLoader(
+          Shimmer.fromColors(
             baseColor: theme.hintColor,
             highlightColor: theme.canvasColor,
-            builder: Container(
+            child: Container(
               height: 48.0,
               width: MediaQuery.of(context).size.width,
               padding: const EdgeInsets.all(
@@ -34,10 +35,10 @@ class SkeletonStatisticsWidget extends StatelessWidget {
           const SizedBox(
             height: 16.0,
           ),
-          SkeletonLoader(
+          Shimmer.fromColors(
             baseColor: theme.hintColor,
             highlightColor: theme.canvasColor,
-            builder: Container(
+            child: Container(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
               padding: const EdgeInsets.all(

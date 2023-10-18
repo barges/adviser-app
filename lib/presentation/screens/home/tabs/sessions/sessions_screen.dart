@@ -1,41 +1,83 @@
+import 'dart:async';
+
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
-import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
-import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/appbar/home_app_bar.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/choose_option_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/no_connection_widget.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/list_of_questions.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/search/search_list_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/status_not_live_widget.dart';
-import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
 
-class SessionsScreen extends StatelessWidget {
+import '../../../../../app_constants.dart';
+import '../../../../../data/cache/fortunica_caching_manager.dart';
+import '../../../../../data/models/enums/fortunica_user_status.dart';
+import '../../../../../data/models/user_info/user_status.dart';
+import '../../../../../domain/repositories/fortunica_chats_repository.dart';
+import '../../../../../generated/assets/assets.gen.dart';
+import '../../../../../generated/l10n.dart';
+import '../../../../../infrastructure/di/inject_config.dart';
+import '../../../../../main_cubit.dart';
+import '../../../../../services/connectivity_service.dart';
+import '../../../../common_widgets/appbar/home_app_bar.dart';
+import '../../../../common_widgets/buttons/app_icon_button.dart';
+import '../../../../common_widgets/buttons/choose_option_widget.dart';
+import '../../../../common_widgets/no_connection_widget.dart';
+import '../../home_cubit.dart';
+import 'sessions_cubit.dart';
+import 'widgets/list_of_questions.dart';
+import 'widgets/search/search_list_widget.dart';
+import 'widgets/status_not_live_widget.dart';
+
+class SessionsScreen extends StatefulWidget {
   const SessionsScreen({
     Key? key,
   }) : super(key: key);
 
   @override
+  State<SessionsScreen> createState() => _SessionsScreenState();
+}
+
+class _SessionsScreenState extends State<SessionsScreen> {
+  final ScrollController publicQuestionsScrollController = ScrollController();
+  final ScrollController conversationsScrollController = ScrollController();
+
+  late final StreamSubscription<bool> _updateSessionsSubscription;
+
+  @override
   Widget build(BuildContext context) {
-    final MainCubit mainCubit = context.read<MainCubit>();
+    final double screenHeight = MediaQuery.of(context).size.height;
+
     return BlocProvider(
-      create: (BuildContext context) => SessionsCubit(
-        getIt.get<CachingManager>(),
-        context,
-        getIt.get<ConnectivityService>(),
-        getIt.get<ChatsRepository>(),
-        mainCubit,
-      ),
+      create: (_) {
+        final MainCubit mainCubit = fortunicaGetIt.get<MainCubit>();
+        final SessionsCubit sessionsCubit = SessionsCubit(
+          cacheManager: fortunicaGetIt.get<FortunicaCachingManager>(),
+          connectivityService: fortunicaGetIt.get<ConnectivityService>(),
+          chatsRepository: fortunicaGetIt.get<FortunicaChatsRepository>(),
+          mainCubit: mainCubit,
+        );
+
+        _updateSessionsSubscription = mainCubit.sessionsUpdateTrigger.listen(
+          (value) {
+            sessionsCubit.getQuestions().then((value) => SchedulerBinding
+                .instance.endOfFrame
+                .then((value) => publicQuestionsScrollController.jumpTo(0.0)));
+          },
+        );
+
+        publicQuestionsScrollController.addListener(() {
+          if (!sessionsCubit.isPublicLoading &&
+              publicQuestionsScrollController.position.extentAfter <=
+                  screenHeight) {
+            sessionsCubit.getPublicQuestions();
+          }
+        });
+        conversationsScrollController.addListener(() {
+          if (!sessionsCubit.isConversationsLoading &&
+              conversationsScrollController.position.extentAfter <=
+                  screenHeight) {
+            sessionsCubit.getConversations();
+          }
+        });
+
+        return sessionsCubit;
+      },
       child: Builder(builder: (BuildContext context) {
         final SessionsCubit sessionsCubit = context.read<SessionsCubit>();
 
@@ -74,8 +116,8 @@ class SessionsScreen extends StatelessWidget {
                           Expanded(
                             child: ChooseOptionWidget(
                               options: [
-                                S.of(context).public,
-                                S.of(context).private,
+                                SFortunica.of(context).publicFortunica,
+                                SFortunica.of(context).privateFortunica,
                               ],
                               currentIndex: currentIndex,
                               disabledIndexes: disabledIndexes,
@@ -106,21 +148,26 @@ class SessionsScreen extends StatelessWidget {
               body: Builder(builder: (context) {
                 if (isOnline) {
                   if (statusIsLive) {
-                    return const ListOfQuestions();
+                    return ListOfQuestions(
+                      publicQuestionsScrollController:
+                          publicQuestionsScrollController,
+                      conversationsScrollController:
+                          conversationsScrollController,
+                    );
                   } else {
                     return NotLiveStatusWidget(
                       status: userStatus?.status ?? FortunicaUserStatus.offline,
                     );
                   }
                 } else {
-                  return CustomScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
+                  return const CustomScrollView(
+                    physics: AlwaysScrollableScrollPhysics(),
                     slivers: [
                       SliverFillRemaining(
                         hasScrollBody: false,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             NoConnectionWidget(),
                           ],
                         ),
@@ -145,5 +192,13 @@ class SessionsScreen extends StatelessWidget {
         );
       }),
     );
+  }
+
+  @override
+  void dispose() {
+    publicQuestionsScrollController.dispose();
+    conversationsScrollController.dispose();
+    _updateSessionsSubscription.cancel();
+    super.dispose();
   }
 }

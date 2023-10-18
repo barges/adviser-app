@@ -1,7 +1,7 @@
 // ignore_for_file: invalid_annotation_target
-
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
+
+import '../enums/fortunica_user_status.dart';
 
 part 'user_status.freezed.dart';
 
@@ -13,7 +13,7 @@ class UserStatus with _$UserStatus {
   const factory UserStatus({
     @JsonKey(name: 'profile')
     @Default(FortunicaUserStatus.offline)
-        FortunicaUserStatus? status,
+    FortunicaUserStatus? status,
     String? messaging,
     String? calling,
     DateTime? profileUpdatedAt,

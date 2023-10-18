@@ -1,12 +1,13 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
+
+import '../../../../app_constants.dart';
+import '../../../../generated/assets/assets.gen.dart';
+import '../../../../generated/l10n.dart';
+import '../../../common_widgets/app_image_widget.dart';
+import '../../../common_widgets/show_delete_alert.dart';
+import '../chat_cubit.dart';
 
 class AttachedPictures extends StatelessWidget {
   const AttachedPictures({super.key});
@@ -27,7 +28,9 @@ class AttachedPictures extends StatelessWidget {
                     file,
                     onDeletePressed: () async {
                       final bool? isDelete = await showDeleteAlert(
-                          context, S.of(context).doYouWantToDeleteImage);
+                        context,
+                        SFortunica.of(context).doYouWantToDeleteImageFortunica,
+                      );
                       if (isDelete == true) {
                         chatCubit.deletePicture(file);
                       }

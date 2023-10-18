@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/appbar/transparrent_app_bar.dart';
-import 'package:shared_advisor_interface/presentation/screens/gallery/gallery_pictures_cubit.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../common_widgets/app_image_widget.dart';
+import '../../common_widgets/appbar/transparrent_app_bar.dart';
+import 'gallery_pictures_cubit.dart';
+
 class GalleryPicturesScreen extends StatelessWidget {
+  final GalleryPicturesScreenArguments galleryPicturesScreenArguments;
   const GalleryPicturesScreen({
     Key? key,
+    required this.galleryPicturesScreenArguments,
   }) : super(key: key);
 
   @override
@@ -17,7 +20,8 @@ class GalleryPicturesScreen extends StatelessWidget {
       child: Builder(builder: (context) {
         final GalleryPicturesCubit galleryPicturesCubit =
             context.read<GalleryPicturesCubit>();
-        final List<String> coverPictures = galleryPicturesCubit.coverPictures;
+        final List<String> coverPictures =
+            galleryPicturesScreenArguments.pictures;
         return Scaffold(
           body: Stack(
             children: [
@@ -29,7 +33,7 @@ class GalleryPicturesScreen extends StatelessWidget {
                   itemCount: coverPictures.length,
                   controller: galleryPicturesCubit.pageController,
                   onPageChanged: (page) {
-                    galleryPicturesCubit.editProfilePageController
+                    galleryPicturesScreenArguments.editProfilePageController
                         ?.jumpToPage(page);
                   },
                   itemBuilder: (context, index) {
@@ -46,7 +50,7 @@ class GalleryPicturesScreen extends StatelessWidget {
                   },
                 ),
               ),
-              if (galleryPicturesCubit.coverPictures.length > 1)
+              if (galleryPicturesScreenArguments.pictures.length > 1)
                 Positioned(
                   bottom: 80.0,
                   child: SizedBox(
@@ -77,4 +81,16 @@ class GalleryPicturesScreen extends StatelessWidget {
       }),
     );
   }
+}
+
+class GalleryPicturesScreenArguments {
+  final List<String> pictures;
+  final PageController? editProfilePageController;
+  final double? initPage;
+
+  GalleryPicturesScreenArguments({
+    required this.pictures,
+    this.editProfilePageController,
+    this.initPage,
+  });
 }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_unit.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+
+import '../../../../app_constants.dart';
+import '../../../../data/models/reports_endpoint/reports_unit.dart';
+import '../../../../generated/assets/assets.gen.dart';
+import '../../../../generated/l10n.dart';
 
 class ReportsUnitWidget extends StatelessWidget {
   final ReportsUnit reportsUnit;
@@ -167,7 +168,7 @@ class _ReportsUnit extends StatelessWidget {
                     SizedBox(
                       height: 14.0,
                       child: Text(
-                        S.of(context).cancelled,
+                        SFortunica.of(context).cancelledFortunica,
                         style: theme.textTheme.bodySmall?.copyWith(
                           fontSize: 12.0,
                           color: theme.shadowColor,
@@ -200,7 +201,7 @@ class _ReportsUnit extends StatelessWidget {
                 SizedBox(
                   height: 14.0,
                   child: Text(
-                    S.of(context).earned,
+                    SFortunica.of(context).earnedFortunica,
                     style: theme.textTheme.bodySmall?.copyWith(
                       fontSize: 12.0,
                       color: theme.shadowColor,

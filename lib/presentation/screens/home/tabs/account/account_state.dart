@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
+
+import '../../../../../data/models/user_info/user_profile.dart';
 
 part 'account_state.freezed.dart';
 

@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
-import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
-import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/list_tile_content_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/small_list_tile_badge.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/user_avatar.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
+
+import '../../../../../../../fortunica_extensions.dart';
+import '../../../../../../../app_constants.dart';
+import '../../../../../../../data/models/chats/chat_item.dart';
+import '../../../../../../../data/models/enums/chat_item_status_type.dart';
+import '../../../../../../../data/models/enums/chat_item_type.dart';
+import '../../../../../../../generated/assets/assets.gen.dart';
+import '../../../../../../../generated/l10n.dart';
+import '../../../../../../common_widgets/list_tile_content_widget.dart';
+import '../../../../../../common_widgets/small_list_tile_badge.dart';
+import '../../../../../../common_widgets/user_avatar.dart';
+import '../../sessions_cubit.dart';
 
 class PublicChatsListTileWidget extends StatelessWidget {
   final ChatItem question;
@@ -43,10 +44,10 @@ class PublicChatsListTileWidget extends StatelessWidget {
               onTap: () {
                 if (needCheckTakenStatus) {
                   if (isTaken) {
-                    sessionsCubit.goToCustomerProfile(question);
+                    sessionsCubit.goToCustomerProfile(context, question);
                   }
                 } else {
-                  sessionsCubit.goToCustomerProfile(question);
+                  sessionsCubit.goToCustomerProfile(context, question);
                 }
               },
               child: SizedBox(
@@ -84,10 +85,10 @@ class PublicChatsListTileWidget extends StatelessWidget {
                 onTap: () {
                   if (needCheckTakenStatus) {
                     if (isTaken) {
-                      sessionsCubit.goToChatForPublic(question);
+                      sessionsCubit.goToChatForPublic(context, question);
                     }
                   } else {
-                    sessionsCubit.goToChatForPublic(question);
+                    sessionsCubit.goToChatForPublic(context, question);
                   }
                 },
                 child: Column(
@@ -98,21 +99,22 @@ class PublicChatsListTileWidget extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            question.clientName ?? S.of(context).notSpecified,
+                            question.clientName ??
+                                SFortunica.of(context).notSpecifiedFortunica,
                             overflow: TextOverflow.ellipsis,
                             style: theme.textTheme.labelMedium?.copyWith(
                               fontSize: 15.0,
                             ),
                           ),
                         ),
-                        Text(
-                          question.createdAt?.chatListTime ??
-                              DateTime.now().chatListTime,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.shadowColor,
-                            fontSize: 12.0,
-                          ),
-                        )
+                        if (question.createdAt != null)
+                          Text(
+                            question.createdAt!.chatListTime,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: theme.shadowColor,
+                              fontSize: 12.0,
+                            ),
+                          )
                       ],
                     ),
                     const SizedBox(height: 4.0),

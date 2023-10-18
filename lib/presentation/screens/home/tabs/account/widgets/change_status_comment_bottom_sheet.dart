@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/app_text_field.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_cubit.dart';
+
+import '../../../../../../app_constants.dart';
+import '../../../../../../generated/assets/assets.gen.dart';
+import '../../../../../../generated/l10n.dart';
+import '../../../../../common_widgets/buttons/app_elevated_button.dart';
+import '../../../../../common_widgets/text_fields/app_text_field.dart';
+import '../account_cubit.dart';
 
 Future<void> changeStatusCommentBottomSheet(
     {required BuildContext context,
@@ -43,7 +44,8 @@ Future<void> changeStatusCommentBottomSheet(
                         height: 16.0,
                       ),
                       Text(
-                        S.of(context).areYouSureThatYouWantToChangeYourStatus,
+                        SFortunica.of(context)
+                            .areYouSureThatYouWantToChangeYourStatusFortunica,
                         style: Theme.of(context).textTheme.headlineMedium,
                         textAlign: TextAlign.center,
                       ),
@@ -74,9 +76,8 @@ Future<void> changeStatusCommentBottomSheet(
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    S
-                                        .of(context)
-                                        .youWillBeAbleToChangeYourStatusBackIn,
+                                    SFortunica.of(context)
+                                        .youWillBeAbleToChangeYourStatusBackInFortunica,
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyMedium
@@ -99,7 +100,8 @@ Future<void> changeStatusCommentBottomSheet(
                         return AppTextField(
                           isBig: true,
                           focusNode: context.read<AccountCubit>().commentNode,
-                          label: S.of(context).tellOurTeamWhenYouPlanToReturn,
+                          label: SFortunica.of(context)
+                              .tellOurTeamWhenYouPlanToReturnFortunica,
                           controller: commentController,
                         );
                       }),
@@ -111,7 +113,7 @@ Future<void> changeStatusCommentBottomSheet(
                             (AccountCubit cubit) =>
                                 cubit.state.commentButtonIsActive);
                         return AppElevatedButton(
-                          title: S.of(context).yesImSure,
+                          title: SFortunica.of(context).yesImSureFortunica,
                           onPressed: isActive
                               ? () {
                                   Navigator.pop(context);
@@ -123,7 +125,7 @@ Future<void> changeStatusCommentBottomSheet(
                       CupertinoButton(
                         onPressed: () => Navigator.pop(context),
                         child: Text(
-                          S.of(context).noIChangedMyMind,
+                          SFortunica.of(context).noIChangedMyMindFortunica,
                           textAlign: TextAlign.center,
                           style:
                               Theme.of(context).textTheme.titleMedium?.copyWith(

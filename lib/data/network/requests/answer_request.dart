@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
+
+import '../../models/chats/attachment.dart';
 
 part 'answer_request.g.dart';
 

@@ -1,50 +1,50 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
-import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
-import 'package:shared_advisor_interface/data/models/user_info/localized_properties/property_by_language.dart';
-import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
-import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
-import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
-import 'package:shared_advisor_interface/data/network/requests/push_enable_request.dart';
-import 'package:shared_advisor_interface/data/network/requests/set_push_notification_token_request.dart';
-import 'package:shared_advisor_interface/data/network/requests/update_user_status_request.dart';
-import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_state.dart';
-import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
-import 'package:shared_advisor_interface/presentation/services/push_notification/push_notification_manager.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../../infrastructure/routing/app_router.dart';
+import '../../../../../app_constants.dart';
+import '../../../../../data/cache/fortunica_caching_manager.dart';
+import '../../../../../data/models/enums/fortunica_user_status.dart';
+import '../../../../../data/models/enums/markets_type.dart';
+import '../../../../../data/models/user_info/localized_properties/property_by_language.dart';
+import '../../../../../data/models/user_info/user_info.dart';
+import '../../../../../data/models/user_info/user_profile.dart';
+import '../../../../../data/models/user_info/user_status.dart';
+import '../../../../../data/network/requests/push_enable_request.dart';
+import '../../../../../data/network/requests/set_push_notification_token_request.dart';
+import '../../../../../data/network/requests/update_user_status_request.dart';
+import '../../../../../domain/repositories/fortunica_user_repository.dart';
+import '../../../../../fortunica_constants.dart';
+import '../../../../../global.dart';
+import '../../../../../infrastructure/routing/app_router.gr.dart';
+import '../../../../../main_cubit.dart';
+import '../../../../../services/connectivity_service.dart';
+import '../../../../../services/push_notification/push_notification_manager.dart';
+import 'account_state.dart';
+
 class AccountCubit extends Cubit<AccountState> {
+  final FortunicaCachingManager _cacheManager;
+  final MainCubit _mainCubit;
+  final FortunicaUserRepository _userRepository;
+  final ConnectivityService _connectivityService;
+
   final TextEditingController commentController = TextEditingController();
   final FocusNode commentNode = FocusNode();
 
-  final MainCubit _mainCubit;
-  final UserRepository _userRepository;
-  final ConnectivityService _connectivityService;
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final Future<bool> Function(bool needShowSettingsAlert) _handlePermission;
-
-  final CachingManager _cacheManager;
 
   final PushNotificationManager _pushNotificationManager;
 
-  final Uri _url = Uri.parse(AppConstants.webToolUrlProd);
+  final Uri _url = Uri.parse(FortunicaConstants.webToolUrl);
 
-  late final VoidCallback disposeListen;
+  late final StreamSubscription _userProfileSubscription;
   late final StreamSubscription<bool> _appOnResumeSubscription;
-  StreamSubscription<bool>? _updateAccountSubscription;
+  late final StreamSubscription<bool> _updateAccountSubscription;
   StreamSubscription<bool>? _connectivitySubscription;
+  StreamSubscription? _currentBrandSubscription;
 
   bool? isPushNotificationPermissionGranted;
   Timer? _timer;
@@ -60,10 +60,11 @@ class AccountCubit extends Cubit<AccountState> {
     this._handlePermission,
   ) : super(const AccountState()) {
     final UserProfile? userProfile = _cacheManager.getUserProfile();
-
     emit(state.copyWith(userProfile: userProfile));
 
-    disposeListen = _cacheManager.listenUserProfile((value) {
+    firstGetUserInfo();
+
+    _userProfileSubscription = _cacheManager.listenUserProfileStream((value) {
       emit(state.copyWith(userProfile: value));
     });
 
@@ -98,19 +99,16 @@ class AccountCubit extends Cubit<AccountState> {
         refreshUserinfo();
       },
     );
-
-    _firebaseMessaging.onTokenRefresh.listen((_) => _sendPushToken());
-
-    firstGetUserInfo();
   }
 
   @override
   Future<void> close() async {
     _timer?.cancel();
+    _currentBrandSubscription?.cancel();
     _appOnResumeSubscription.cancel();
     _connectivitySubscription?.cancel();
-    _updateAccountSubscription?.cancel();
-    disposeListen.call();
+    _updateAccountSubscription.cancel();
+    _userProfileSubscription.cancel();
     commentController.dispose();
     commentNode.dispose();
     return super.close();
@@ -128,13 +126,10 @@ class AccountCubit extends Cubit<AccountState> {
         int milliseconds = 0;
 
         isPushNotificationPermissionGranted = await _handlePermission(false);
+        final UserInfo userInfo = await _userRepository.getUserInfo();
 
         if (isPushNotificationPermissionGranted == true) {
           _pushNotificationManager.registerForPushNotifications();
-        }
-
-        final UserInfo userInfo = await _userRepository.getUserInfo();
-        if (isPushNotificationPermissionGranted == true) {
           await _sendPushToken();
         }
 
@@ -205,7 +200,7 @@ class AccountCubit extends Cubit<AccountState> {
       } else {
         if (checkPropertiesMapIfHasEmpty(userInfo) ||
             (userInfo.profile?.profileName?.length ?? 0) <
-                AppConstants.minNickNameLength ||
+                FortunicaConstants.minNickNameLength ||
             userInfo.profile?.profilePictures?.isNotEmpty != true) {
           await _cacheManager.saveUserStatus(userStatus?.copyWith(
             status: FortunicaUserStatus.incomplete,
@@ -286,7 +281,7 @@ class AccountCubit extends Cubit<AccountState> {
   Future<void> _sendPushToken() async {
     if (!_cacheManager.pushTokenIsSent) {
       if (await _connectivityService.checkConnection()) {
-        String? pushToken = await _firebaseMessaging.getToken();
+        String? pushToken = await _pushNotificationManager.getToken();
         if (pushToken != null) {
           final SetPushNotificationTokenRequest request =
               SetPushNotificationTokenRequest(
@@ -313,33 +308,32 @@ class AccountCubit extends Cubit<AccountState> {
     }
   }
 
-  Future<void> goToEditProfile() async {
-    final dynamic needUpdateInfo = await Get.toNamed(
-      AppRoutes.editProfile,
-      arguments: EditProfileScreenArguments(isAccountTimeout: state.isTimeout),
-    );
+  Future<void> goToEditProfile(BuildContext context) async {
+    final dynamic needUpdateInfo = await context.push(
+        route: FortunicaEditProfile(isAccountTimeout: state.isTimeout));
+
     if (needUpdateInfo is bool && needUpdateInfo == true) {
       refreshUserinfo();
     }
   }
 
-  void goToAdvisorPreview() {
-    Get.toNamed(
-      AppRoutes.advisorPreview,
-      arguments:
-          AdvisorPreviewScreenArguments(isAccountTimeout: state.isTimeout),
-    );
+  void goToAdvisorPreview(BuildContext context) {
+    context.push(
+        route: FortunicaAdvisorPreview(isAccountTimeout: state.isTimeout));
   }
 
-  Future<void> openSettingsUrl() async {
+  Future<void> openSettingsUrl(BuildContext context) async {
     if (!await launchUrl(
       _url,
       mode: LaunchMode.externalApplication,
     )) {
-      Get.showSnackbar(GetSnackBar(
-        duration: const Duration(seconds: 2),
-        message: 'Could not launch $_url',
-      ));
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Could not launch $_url'),
+          duration: const Duration(seconds: 2),
+        ),
+      );
     }
   }
 

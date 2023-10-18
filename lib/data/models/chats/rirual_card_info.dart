@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shared_advisor_interface/data/models/enums/gender.dart';
+import '../enums/gender.dart';
 
 part 'rirual_card_info.freezed.dart';
 

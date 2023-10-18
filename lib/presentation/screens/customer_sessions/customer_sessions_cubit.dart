@@ -1,49 +1,50 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:get/get.dart';
-import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
-import 'package:shared_advisor_interface/data/models/customer_info/customer_info.dart';
-import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
-import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
-import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
-import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
-import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
-import 'package:shared_advisor_interface/presentation/screens/customer_sessions/customer_sessions_state.dart';
-import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../infrastructure/routing/app_router.dart';
+
+import '../../../data/cache/fortunica_caching_manager.dart';
+import '../../../data/models/chats/chat_item.dart';
+import '../../../data/models/customer_info/customer_info.dart';
+import '../../../data/models/enums/chat_item_type.dart';
+import '../../../data/models/enums/markets_type.dart';
+import '../../../data/models/user_info/user_profile.dart';
+import '../../../data/network/responses/questions_list_response.dart';
+import '../../../domain/repositories/fortunica_chats_repository.dart';
+import '../../../domain/repositories/fortunica_customer_repository.dart';
+import '../../../fortunica_constants.dart';
+import '../../../global.dart';
+import '../../../infrastructure/routing/app_router.gr.dart';
+import '../../../main_cubit.dart';
+import '../../../services/connectivity_service.dart';
+import '../chat/chat_screen.dart';
+import 'customer_sessions_screen.dart';
+import 'customer_sessions_state.dart';
 
 class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
-  final CachingManager cacheManager;
-  final double _screenHeight;
-  final VoidCallback _showErrorAlert;
+  final FortunicaCachingManager cacheManager;
+  final double screenHeight;
+  final VoidCallback showErrorAlert;
+  final CustomerSessionsScreenArguments arguments;
 
-  final MainCubit _mainCubit = getIt.get<MainCubit>();
-  final ChatsRepository _chatsRepository = getIt.get<ChatsRepository>();
-  final CustomerRepository _customerRepository =
-      getIt.get<CustomerRepository>();
-  final ScrollController questionsScrollController = ScrollController();
-  final ConnectivityService _connectivityService =
-      getIt.get<ConnectivityService>();
+  final MainCubit mainCubit;
+  final FortunicaChatsRepository chatsRepository;
+  final FortunicaCustomerRepository customerRepository;
+
+  final ConnectivityService connectivityService;
 
   final List<ChatItemType> filters = [
     ChatItemType.ritual,
     ChatItemType.private,
   ];
 
+  final ScrollController questionsScrollController = ScrollController();
   final List<ChatItem> _privateQuestionsWithHistory = [];
   final List<String> _excludeIds = [];
 
-  late final CustomerSessionsScreenArguments arguments;
   late final ChatItem argumentsQuestion;
   late final StreamSubscription<bool> _updateSessionsSubscription;
 
@@ -51,12 +52,16 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
   String? _lastItem;
   bool _isLoading = false;
 
-  CustomerSessionsCubit(
-    this.cacheManager,
-    this._screenHeight,
-    this._showErrorAlert,
-  ) : super(const CustomerSessionsState()) {
-    arguments = Get.arguments as CustomerSessionsScreenArguments;
+  CustomerSessionsCubit({
+    required this.chatsRepository,
+    required this.customerRepository,
+    required this.connectivityService,
+    required this.arguments,
+    required this.mainCubit,
+    required this.cacheManager,
+    required this.screenHeight,
+    required this.showErrorAlert,
+  }) : super(const CustomerSessionsState()) {
     argumentsQuestion = arguments.question;
 
     getUserMarkets();
@@ -72,7 +77,7 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
     getData();
 
     questionsScrollController.addListener(() {
-      if (questionsScrollController.position.extentAfter <= _screenHeight &&
+      if (questionsScrollController.position.extentAfter <= screenHeight &&
           !_isLoading) {
         getCustomerHistoryStories(
           excludeIds: _excludeIds,
@@ -80,7 +85,7 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
       }
     });
 
-    _updateSessionsSubscription = _mainCubit.sessionsUpdateTrigger.listen(
+    _updateSessionsSubscription = mainCubit.sessionsUpdateTrigger.listen(
       (value) async {
         getPrivateQuestions(refresh: true);
       },
@@ -102,7 +107,7 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
   }
 
   void closeErrorWidget() {
-    _mainCubit.clearErrorMessage();
+    mainCubit.clearErrorMessage();
   }
 
   void getUserMarkets() {
@@ -134,7 +139,7 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
 
     _isLoading = true;
 
-    if (await _connectivityService.checkConnection()) {
+    if (await connectivityService.checkConnection()) {
       try {
         final ChatItemType? questionsType = state.currentFilterIndex != null
             ? filters[state.currentFilterIndex!]
@@ -148,7 +153,7 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
               marketsType != MarketsType.all ? marketsType.name : null;
         }
         final QuestionsListResponse result =
-            await _chatsRepository.getCustomerQuestions(
+            await chatsRepository.getCustomerQuestions(
           clientId: argumentsQuestion.clientID ?? '',
           filterType: filterType,
           filterLanguage: filtersLanguage,
@@ -175,7 +180,7 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
         );
       } on DioError catch (e) {
         if (e.response?.statusCode == 409) {
-          _showErrorAlert();
+          showErrorAlert();
         }
         logger.d(e);
       } finally {
@@ -193,7 +198,7 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
     if (_hasMore) {
       _isLoading = true;
 
-      if (await _connectivityService.checkConnection()) {
+      if (await connectivityService.checkConnection()) {
         try {
           final ChatItemType? questionsType = state.currentFilterIndex != null
               ? filters[state.currentFilterIndex!]
@@ -209,9 +214,9 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
           }
 
           final QuestionsListResponse result =
-              await _chatsRepository.getCustomerHistoryStories(
+              await chatsRepository.getCustomerHistoryStories(
             id: argumentsQuestion.clientID ?? '',
-            limit: AppConstants.questionsLimit,
+            limit: FortunicaConstants.questionsLimit,
             lastItem: _lastItem,
             filterType: filterType,
             filterLanguage: filtersLanguage,
@@ -231,7 +236,7 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
           );
         } on DioError catch (e) {
           if (e.response?.statusCode == 409) {
-            _showErrorAlert();
+            showErrorAlert();
           }
           logger.d(e);
         } finally {
@@ -253,7 +258,7 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
   }
 
   Future<void> getCustomerInfo() async {
-    CustomerInfo customerInfo = await _customerRepository
+    CustomerInfo customerInfo = await customerRepository
         .getCustomerInfo(argumentsQuestion.clientID ?? '');
 
     final String? firstName = customerInfo.firstName;
@@ -267,30 +272,32 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
     );
   }
 
-  void goToChat(ChatItem question) {
+  void goToChat(BuildContext context, ChatItem question) {
     if (argumentsQuestion.clientID != null) {
       if (question.isActive) {
-        Get.toNamed(
-          AppRoutes.chat,
-          arguments: ChatScreenArguments(
-            privateQuestionId: question.id,
-            ritualID: question.ritualID,
-            question: question.copyWith(
-              clientID: argumentsQuestion.clientID,
-              clientName: argumentsQuestion.clientName,
-              clientInformation: argumentsQuestion.clientInformation,
+        context.push(
+          route: FortunicaChat(
+            chatScreenArguments: ChatScreenArguments(
+              privateQuestionId: question.id,
+              ritualID: question.ritualID,
+              question: question.copyWith(
+                clientID: argumentsQuestion.clientID,
+                clientName: argumentsQuestion.clientName,
+                clientInformation: argumentsQuestion.clientInformation,
+              ),
             ),
           ),
         );
       } else {
-        Get.toNamed(
-          AppRoutes.chat,
-          arguments: ChatScreenArguments(
-            storyIdForHistory: question.id,
-            question: question.copyWith(
-              clientID: argumentsQuestion.clientID,
-              clientName: argumentsQuestion.clientName,
-              clientInformation: argumentsQuestion.clientInformation,
+        context.push(
+          route: FortunicaChat(
+            chatScreenArguments: ChatScreenArguments(
+              storyIdForHistory: question.id,
+              question: question.copyWith(
+                clientID: argumentsQuestion.clientID,
+                clientName: argumentsQuestion.clientName,
+                clientInformation: argumentsQuestion.clientInformation,
+              ),
             ),
           ),
         );

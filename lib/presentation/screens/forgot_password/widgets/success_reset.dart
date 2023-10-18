@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_cubit.dart';
-import 'package:shared_advisor_interface/presentation/utils/utils.dart';
+
+import '../../../../infrastructure/routing/app_router.dart';
+import '../../../../app_constants.dart';
+import '../../../../generated/assets/assets.gen.dart';
+import '../../../../generated/l10n.dart';
+import '../../../../global.dart';
+import '../../../../infrastructure/routing/app_router.gr.dart';
+import '../../../../infrastructure/routing/route_paths_fortunica.dart';
+import '../../../../utils/utils.dart';
+import '../../../common_widgets/buttons/app_elevated_button.dart';
 
 class SuccessResetWidget extends StatelessWidget {
   const SuccessResetWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final ForgotPasswordCubit forgotPasswordCubit =
-        context.read<ForgotPasswordCubit>();
     return CustomScrollView(
       physics: const ClampingScrollPhysics(),
       slivers: [
@@ -38,7 +39,7 @@ class SuccessResetWidget extends StatelessWidget {
                   height: 24.0,
                 ),
                 Text(
-                  S.of(context).useYourNewPasswordToLogin,
+                  SFortunica.of(context).useYourNewPasswordToLoginFortunica,
                   style: Theme.of(context).textTheme.headlineMedium,
                   textAlign: TextAlign.center,
                 ),
@@ -46,8 +47,18 @@ class SuccessResetWidget extends StatelessWidget {
                   height: 24.0,
                 ),
                 AppElevatedButton(
-                  title: S.of(context).login,
-                  onPressed: forgotPasswordCubit.goToLogin,
+                  title: SFortunica.of(context).loginFortunica,
+                  onPressed: () {
+                    logger.d(context.previousRoutePath);
+                    if (context.previousRoutePath ==
+                            RoutePathsFortunica.loginScreen ||
+                        context.previousRoutePath ==
+                            RoutePathsFortunica.authScreen) {
+                      context.pop();
+                    } else {
+                      context.replace(route: const FortunicaLogin());
+                    }
+                  },
                 )
               ],
             ),

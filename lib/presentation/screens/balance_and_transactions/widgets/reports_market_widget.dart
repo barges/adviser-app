@@ -1,12 +1,13 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/data/models/enums/sessions_types.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_market.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_unit.dart';
-import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/balance_and_transactions/widgets/reports_unit_widget.dart';
+
+import '../../../../data/models/reports_endpoint/reports_market.dart';
+import '../../../../app_constants.dart';
+import '../../../../extensions.dart';
+import '../../../../data/models/enums/sessions_types.dart';
+import '../../../../data/models/reports_endpoint/reports_unit.dart';
+import '../../../../generated/l10n.dart';
+import 'reports_unit_widget.dart';
 
 class ReportsMarketWidget extends StatelessWidget {
   final ReportsMarket reportsMarket;
@@ -76,7 +77,7 @@ class ReportsMarketWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '${S.of(context).total}:',
+                            '${SFortunica.of(context).totalFortunica}:',
                             style: Theme.of(context)
                                 .textTheme
                                 .labelMedium

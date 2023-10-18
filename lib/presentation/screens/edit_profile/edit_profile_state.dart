@@ -1,7 +1,8 @@
 import 'dart:io';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shared_advisor_interface/data/models/enums/validation_error_type.dart';
+
+import '../../../data/models/enums/validation_error_type.dart';
 
 part 'edit_profile_state.freezed.dart';
 

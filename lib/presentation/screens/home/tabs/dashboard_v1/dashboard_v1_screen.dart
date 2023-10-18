@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_month.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_statistics.dart';
-import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/appbar/home_app_bar.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/no_connection_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/statistics/empty_statistics_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/statistics/statistics_widget.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard_v1/dashboard_v1_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard_v1/widgets/personal_information_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard_v1/widgets/skeleton_statistics_widget.dart';
-import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
-import 'package:skeleton_loader/skeleton_loader.dart';
+import 'package:shimmer/shimmer.dart';
+
+import '../../../../../app_constants.dart';
+import '../../../../../data/cache/fortunica_caching_manager.dart';
+import '../../../../../data/models/app_error/app_error.dart';
+import '../../../../../data/models/reports_endpoint/reports_month.dart';
+import '../../../../../data/models/reports_endpoint/reports_statistics.dart';
+import '../../../../../domain/repositories/fortunica_user_repository.dart';
+import '../../../../../generated/assets/assets.gen.dart';
+import '../../../../../generated/l10n.dart';
+import '../../../../../infrastructure/di/inject_config.dart';
+import '../../../../../main_cubit.dart';
+import '../../../../../services/connectivity_service.dart';
+import '../../../../common_widgets/appbar/home_app_bar.dart';
+import '../../../../common_widgets/messages/app_error_widget.dart';
+import '../../../../common_widgets/no_connection_widget.dart';
+import '../../../../common_widgets/statistics/empty_statistics_widget.dart';
+import '../../../../common_widgets/statistics/statistics_widget.dart';
+import 'dashboard_v1_cubit.dart';
+import 'widgets/personal_information_widget.dart';
+import 'widgets/skeleton_statistics_widget.dart';
 
 class DashboardV1Screen extends StatelessWidget {
   const DashboardV1Screen({
@@ -33,9 +34,9 @@ class DashboardV1Screen extends StatelessWidget {
 
     return BlocProvider(
         create: (_) => DashboardV1Cubit(
-              getIt.get<CachingManager>(),
-              getIt.get<ConnectivityService>(),
-              getIt.get<UserRepository>(),
+              fortunicaGetIt.get<FortunicaCachingManager>(),
+              fortunicaGetIt.get<ConnectivityService>(),
+              fortunicaGetIt.get<FortunicaUserRepository>(),
               mainCubit,
             ),
         child: Builder(builder: (context) {
@@ -50,7 +51,7 @@ class DashboardV1Screen extends StatelessWidget {
           return Scaffold(
               appBar: HomeAppBar(
                   withBrands: true,
-                  title: S.of(context).dashboard,
+                  title: SFortunica.of(context).dashboardFortunica,
                   iconPath: Assets.vectors.items.path),
               body: Column(
                 children: [
@@ -73,12 +74,12 @@ class DashboardV1Screen extends StatelessWidget {
                                       0.0,
                                     ),
                                     child: months.isNotEmpty
-                                        ? PersonalInformationWidget()
-                                        : SkeletonLoader(
+                                        ? const PersonalInformationWidget()
+                                        : Shimmer.fromColors(
                                             baseColor: theme.hintColor,
                                             highlightColor: theme.canvasColor,
-                                            builder:
-                                                PersonalInformationWidget()),
+                                            child:
+                                                const PersonalInformationWidget()),
                                   ),
                                 ),
                                 Builder(builder: (context) {

@@ -1,21 +1,24 @@
 import 'package:dio/dio.dart';
+import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_statistics.dart';
-import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
-import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
-import 'package:shared_advisor_interface/data/network/requests/push_enable_request.dart';
-import 'package:shared_advisor_interface/data/network/requests/reorder_cover_pictures_request.dart';
-import 'package:shared_advisor_interface/data/network/requests/restore_freshchat_id_request.dart';
-import 'package:shared_advisor_interface/data/network/requests/set_push_notification_token_request.dart';
-import 'package:shared_advisor_interface/data/network/requests/update_profile_image_request.dart';
-import 'package:shared_advisor_interface/data/network/requests/update_profile_request.dart';
-import 'package:shared_advisor_interface/data/network/requests/update_user_status_request.dart';
-import 'package:shared_advisor_interface/data/network/responses/reports_response.dart';
 
+import '../../models/reports_endpoint/reports_statistics.dart';
+import '../../models/user_info/user_info.dart';
+import '../../models/user_info/user_profile.dart';
+import '../requests/push_enable_request.dart';
+import '../requests/reorder_cover_pictures_request.dart';
+import '../requests/restore_freshchat_id_request.dart';
+import '../requests/set_push_notification_token_request.dart';
+import '../requests/update_profile_image_request.dart';
+import '../requests/update_profile_request.dart';
+import '../requests/update_user_status_request.dart';
+import '../responses/reports_response.dart';
 part 'user_api.g.dart';
 
 @RestApi()
+@injectable
 abstract class UserApi {
+  @factoryMethod
   factory UserApi(Dio dio) = _UserApi;
 
   @GET('/experts')

@@ -1,7 +1,8 @@
 // ignore_for_file: invalid_annotation_target
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_month.dart';
+
+import 'reports_month.dart';
 
 part 'reports_year.freezed.dart';
 

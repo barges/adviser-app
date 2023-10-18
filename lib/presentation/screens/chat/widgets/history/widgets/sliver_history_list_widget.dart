@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/data/models/chats/history_ui_model.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/widgets/history_list_group_header.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/widgets/question_and_answer_pair_widget.dart';
+
+import '../../../../../../data/models/chats/history_ui_model.dart';
+import 'history_list_group_header.dart';
+import 'question_and_answer_pair_widget.dart';
 
 class SliverHistoryListWidget extends StatelessWidget {
   final List<HistoryUiModel> historiesList;

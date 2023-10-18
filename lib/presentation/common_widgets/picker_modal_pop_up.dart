@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+
+import '../../infrastructure/routing/app_router.dart';
+import '../../app_constants.dart';
+import '../../generated/l10n.dart';
 
 void showPickerModalPopUp({
   required BuildContext context,
@@ -32,13 +33,13 @@ void showPickerModalPopUp({
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                      onTap: Get.back,
+                      onTap: context.pop,
                       child: Container(
                         alignment: Alignment.center,
                         height: AppConstants.appBarHeight,
                         color: Colors.transparent,
                         child: Text(
-                          S.of(context).cancel,
+                          SFortunica.of(context).cancel,
                           style:
                               Theme.of(context).textTheme.bodyMedium?.copyWith(
                                     color: Theme.of(context).primaryColor,
@@ -49,14 +50,14 @@ void showPickerModalPopUp({
                     GestureDetector(
                       onTap: () {
                         setIndex(controller.selectedItem);
-                        Get.back();
+                        context.pop();
                       },
                       child: Container(
                         alignment: Alignment.center,
                         height: AppConstants.appBarHeight,
                         color: Colors.transparent,
                         child: Text(
-                          S.of(context).done,
+                          SFortunica.of(context).done,
                           style:
                               Theme.of(context).textTheme.labelMedium?.copyWith(
                                     fontSize: 15.0,

@@ -2,14 +2,15 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
+
+import '../../infrastructure/routing/app_router.dart';
+import '../../generated/l10n.dart';
 
 Future<void> showOkCancelBottomSheet({
   required BuildContext context,
   required VoidCallback okOnTap,
-  String okButtonText = 'Ok',
   VoidCallback? cancelOnTap,
+  String okButtonText = 'Ok',
 }) async {
   if (Platform.isAndroid) {
     showModalBottomSheet(
@@ -34,7 +35,7 @@ Future<void> showOkCancelBottomSheet({
           ),
           GestureDetector(
             onTap: () {
-              Get.back();
+              context.pop();
               if (cancelOnTap != null) {
                 cancelOnTap();
               }
@@ -43,7 +44,7 @@ Future<void> showOkCancelBottomSheet({
               width: MediaQuery.of(context).size.width,
               padding: const EdgeInsets.only(top: 16.0, bottom: 32.0),
               child: Center(
-                child: Text(S.of(context).cancel,
+                child: Text(SFortunica.of(context).cancel,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w500,
                           color: Theme.of(context).primaryColor,
@@ -72,13 +73,13 @@ Future<void> showOkCancelBottomSheet({
             cancelButton: CupertinoActionSheetAction(
               isDefaultAction: true,
               onPressed: () {
-                Get.back();
+                context.pop();
                 if (cancelOnTap != null) {
                   cancelOnTap();
                 }
               },
               child: Text(
-                S.of(context).cancel,
+                SFortunica.of(context).cancel,
               ),
             ),
           );

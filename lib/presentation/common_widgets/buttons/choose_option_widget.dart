@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+
+import '../../../app_constants.dart';
 
 class ChooseOptionWidget extends StatelessWidget {
   final List<String> options;

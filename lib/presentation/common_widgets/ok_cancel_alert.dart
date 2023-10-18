@@ -2,22 +2,28 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+
+import '../../generated/l10n.dart';
+import '../../infrastructure/routing/app_router.dart';
+import '../../app_constants.dart';
 
 Future<bool?> showOkCancelAlert({
   required BuildContext context,
   required String title,
   required String okText,
-  required VoidCallback actionOnOK,
+  Color? okTextColor,
+  VoidCallback? actionOnOK,
   required bool allowBarrierClick,
   required bool isCancelEnabled,
+  useRootNavigator = false,
   String? description,
+  String? cancelText,
 }) async {
   ThemeData theme = Theme.of(context);
   return await showDialog(
     barrierDismissible: allowBarrierClick,
     context: context,
+    useRootNavigator: useRootNavigator,
     builder: (context) {
       return WillPopScope(
         onWillPop: () => Future.value(allowBarrierClick),
@@ -39,16 +45,24 @@ Future<bool?> showOkCancelAlert({
                   if (isCancelEnabled)
                     CupertinoDialogAction(
                       child: Text(
-                        S.of(context).cancel,
+                        cancelText ?? SFortunica.of(context).cancel,
                       ),
-                      onPressed: () => Navigator.pop(context, false),
+                      onPressed: () {
+                        context.popForced(false);
+                      },
                     ),
                   CupertinoDialogAction(
                     isDefaultAction: true,
-                    onPressed: actionOnOK,
-                    child: Text(
-                      okText,
-                    ),
+                    onPressed: () {
+                      context.popForced(true);
+                      if (actionOnOK != null) {
+                        actionOnOK();
+                      }
+                    },
+                    child: Text(okText,
+                        style: theme.textTheme.displayLarge?.copyWith(
+                          color: okTextColor ?? theme.primaryColor,
+                        )),
                   )
                 ],
               )
@@ -89,16 +103,24 @@ Future<bool?> showOkCancelAlert({
                           children: [
                             if (isCancelEnabled)
                               TextButton(
-                                child: Text(S.of(context).cancel.toUpperCase(),
+                                child: Text(
+                                    (cancelText ??
+                                            SFortunica.of(context).cancel)
+                                        .toUpperCase(),
                                     style:
                                         theme.textTheme.displayLarge?.copyWith(
                                       fontSize: 14.0,
                                       color: theme.errorColor,
                                     )),
-                                onPressed: () => Navigator.pop(context, false),
+                                onPressed: () => context.popForced(false),
                               ),
                             TextButton(
-                              onPressed: actionOnOK,
+                              onPressed: () {
+                                context.popForced(true);
+                                if (actionOnOK != null) {
+                                  actionOnOK();
+                                }
+                              },
                               child: Text(okText.toUpperCase(),
                                   style: theme.textTheme.displayLarge?.copyWith(
                                     fontSize: 14.0,

@@ -12,148 +12,58 @@ import 'intl/messages_all.dart';
 // ignore_for_file: join_return_with_assignment, prefer_final_in_for_each
 // ignore_for_file: avoid_redundant_argument_values, avoid_escaping_inner_quotes
 
-class S {
-  S();
+class SFortunica {
+  SFortunica();
 
-  static S? _current;
+  static SFortunica? _current;
 
-  static S get current {
+  static SFortunica get current {
     assert(_current != null,
-        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
+        'No instance of SFortunica was loaded. Try to initialize the SFortunica delegate before accessing SFortunica.current.');
     return _current!;
   }
 
   static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
 
-  static Future<S> load(Locale locale) {
+  static Future<SFortunica> load(Locale locale) {
     final name = (locale.countryCode?.isEmpty ?? false)
         ? locale.languageCode
         : locale.toString();
     final localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
-      final instance = S();
-      S._current = instance;
+      final instance = SFortunica();
+      SFortunica._current = instance;
 
       return instance;
     });
   }
 
-  static S of(BuildContext context) {
-    final instance = S.maybeOf(context);
+  static SFortunica of(BuildContext context) {
+    final instance = SFortunica.maybeOf(context);
     assert(instance != null,
-        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
+        'No instance of SFortunica present in the widget tree. Did you add SFortunica.delegate in localizationsDelegates?');
     return instance!;
   }
 
-  static S? maybeOf(BuildContext context) {
-    return Localizations.of<S>(context, S);
+  static SFortunica? maybeOf(BuildContext context) {
+    return Localizations.of<SFortunica>(context, SFortunica);
   }
 
-  /// `Back`
-  String get back {
+  /// `Ingenio`
+  String get ingenio {
     return Intl.message(
-      'Back',
-      name: 'back',
+      'Ingenio',
+      name: 'ingenio',
       desc: '',
       args: [],
     );
   }
 
-  /// `Login`
-  String get login {
-    return Intl.message(
-      'Login',
-      name: 'login',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Forgot password`
-  String get forgotPassword {
-    return Intl.message(
-      'Forgot password',
-      name: 'forgotPassword',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Email`
-  String get email {
-    return Intl.message(
-      'Email',
-      name: 'email',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Password`
-  String get password {
-    return Intl.message(
-      'Password',
-      name: 'password',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Confirm new password`
-  String get confirmNewPassword {
-    return Intl.message(
-      'Confirm new password',
-      name: 'confirmNewPassword',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Change password`
-  String get changePassword {
-    return Intl.message(
-      'Change password',
-      name: 'changePassword',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `The passwords must match`
-  String get thePasswordsMustMatch {
-    return Intl.message(
-      'The passwords must match',
-      name: 'thePasswordsMustMatch',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Please enter at least 6 characters`
-  String get pleaseEnterAtLeast6Characters {
-    return Intl.message(
-      'Please enter at least 6 characters',
-      name: 'pleaseEnterAtLeast6Characters',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Please, insert correct email`
-  String get pleaseInsertCorrectEmail {
-    return Intl.message(
-      'Please, insert correct email',
-      name: 'pleaseInsertCorrectEmail',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Select brand`
+  /// `Choose brand`
   String get chooseBrand {
     return Intl.message(
-      'Select brand',
+      'Choose brand',
       name: 'chooseBrand',
       desc: '',
       args: [],
@@ -170,146 +80,6 @@ class S {
     );
   }
 
-  /// `Sign in`
-  String get signIn {
-    return Intl.message(
-      'Sign in',
-      name: 'signIn',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Save`
-  String get save {
-    return Intl.message(
-      'Save',
-      name: 'save',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Forgot your password`
-  String get forgotYourPassword {
-    return Intl.message(
-      'Forgot your password',
-      name: 'forgotYourPassword',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Request new password`
-  String get requestNewPassword {
-    return Intl.message(
-      'Request new password',
-      name: 'requestNewPassword',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `The user was not found`
-  String get theUserWasNotFound {
-    return Intl.message(
-      'The user was not found',
-      name: 'theUserWasNotFound',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Edit profile`
-  String get editProfile {
-    return Intl.message(
-      'Edit profile',
-      name: 'editProfile',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Add cover picture`
-  String get addCoverPicture {
-    return Intl.message(
-      'Add cover picture',
-      name: 'addCoverPicture',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Change photo`
-  String get changePhoto {
-    return Intl.message(
-      'Change photo',
-      name: 'changePhoto',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Pseudonym/Profile Name`
-  String get nickname {
-    return Intl.message(
-      'Pseudonym/Profile Name',
-      name: 'nickname',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Name can be changed only on Advisor Tool`
-  String get nameCanBeChangedOnlyOnAdvisorTool {
-    return Intl.message(
-      'Name can be changed only on Advisor Tool',
-      name: 'nameCanBeChangedOnlyOnAdvisorTool',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Status Text`
-  String get statusText {
-    return Intl.message(
-      'Status Text',
-      name: 'statusText',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Profile Text`
-  String get profileText {
-    return Intl.message(
-      'Profile Text',
-      name: 'profileText',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Add photos`
-  String get addGalleryPictures {
-    return Intl.message(
-      'Add photos',
-      name: 'addGalleryPictures',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Add more`
-  String get addMore {
-    return Intl.message(
-      'Add more',
-      name: 'addMore',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Brands`
   String get workspaces {
     return Intl.message(
@@ -320,11 +90,21 @@ class S {
     );
   }
 
-  /// `Other brands`
-  String get otherBrands {
+  /// `All brands`
+  String get allOurBrands {
     return Intl.message(
-      'Other brands',
-      name: 'otherBrands',
+      'All brands',
+      name: 'allOurBrands',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We pride ourselves to offer advisors  a safe place to serve customers and develop professionally. Doing a good job in one of our brands will open doors to others`
+  String get wePrideOurselvesToOfferAdvisorsASafePlaceTo {
+    return Intl.message(
+      'We pride ourselves to offer advisors  a safe place to serve customers and develop professionally. Doing a good job in one of our brands will open doors to others',
+      name: 'wePrideOurselvesToOfferAdvisorsASafePlaceTo',
       desc: '',
       args: [],
     );
@@ -340,1632 +120,11 @@ class S {
     );
   }
 
-  /// `Cancel`
-  String get cancel {
-    return Intl.message(
-      'Cancel',
-      name: 'cancel',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Cancel sending`
-  String get cancelSending {
-    return Intl.message(
-      'Cancel sending',
-      name: 'cancelSending',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Delete`
-  String get delete {
-    return Intl.message(
-      'Delete',
-      name: 'delete',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Log out`
-  String get logOut {
-    return Intl.message(
-      'Log out',
-      name: 'logOut',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Choose email app`
-  String get chooseEmailApp {
-    return Intl.message(
-      'Choose email app',
-      name: 'chooseEmailApp',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Quick Question`
-  String get public {
-    return Intl.message(
-      'Quick Question',
-      name: 'public',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Search`
-  String get search {
-    return Intl.message(
-      'Search',
-      name: 'search',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `I'm available now`
-  String get imAvailableNow {
-    return Intl.message(
-      'I\'m available now',
-      name: 'imAvailableNow',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Notifications`
-  String get notifications {
-    return Intl.message(
-      'Notifications',
-      name: 'notifications',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Profile Preview`
-  String get previewAccount {
-    return Intl.message(
-      'Profile Preview',
-      name: 'previewAccount',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Reviews`
-  String get reviews {
-    return Intl.message(
-      'Reviews',
-      name: 'reviews',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Balance`
-  String get balanceTransactions {
-    return Intl.message(
-      'Balance',
-      name: 'balanceTransactions',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Settings`
-  String get settings {
-    return Intl.message(
-      'Settings',
-      name: 'settings',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Not enough conversations? Check our Profile Guide.`
-  String get notEnoughConversationsCheckOurProfileGuide {
-    return Intl.message(
-      'Not enough conversations? Check our Profile Guide.',
-      name: 'notEnoughConversationsCheckOurProfileGuide',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `See more`
-  String get seeMore {
-    return Intl.message(
-      'See more',
-      name: 'seeMore',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `New`
-  String get newLabel {
-    return Intl.message(
-      'New',
-      name: 'newLabel',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Mandatory`
-  String get mandatory {
-    return Intl.message(
-      'Mandatory',
-      name: 'mandatory',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Articles`
-  String get articles {
-    return Intl.message(
-      'Articles',
-      name: 'articles',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `New article is available!`
-  String get newMandatoryArticleIsAvailable {
-    return Intl.message(
-      'New article is available!',
-      name: 'newMandatoryArticleIsAvailable',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `You have {count} days to read it before your account will get blocked!`
-  String youHaveXdaystoReadItBeforeYourAccountWillGetBlocked(Object count) {
-    return Intl.message(
-      'You have $count days to read it before your account will get blocked!',
-      name: 'youHaveXdaystoReadItBeforeYourAccountWillGetBlocked',
-      desc: '',
-      args: [count],
-    );
-  }
-
-  /// `Take me there`
-  String get takeMeThere {
-    return Intl.message(
-      'Take me there',
-      name: 'takeMeThere',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Change cover picture`
-  String get changeCoverPicture {
-    return Intl.message(
-      'Change cover picture',
-      name: 'changeCoverPicture',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Please enter at least 3 characters`
-  String get pleaseEnterAtLeast3Characters {
-    return Intl.message(
-      'Please enter at least 3 characters',
-      name: 'pleaseEnterAtLeast3Characters',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Resources`
-  String get resources {
-    return Intl.message(
-      'Resources',
-      name: 'resources',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Stats`
-  String get stats {
-    return Intl.message(
-      'Stats',
-      name: 'stats',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Courses`
-  String get courses {
-    return Intl.message(
-      'Courses',
-      name: 'courses',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Today`
-  String get today {
-    return Intl.message(
-      'Today',
-      name: 'today',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `This Week`
-  String get thisWeek {
-    return Intl.message(
-      'This Week',
-      name: 'thisWeek',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `This Month`
-  String get thisMonth {
-    return Intl.message(
-      'This Month',
-      name: 'thisMonth',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Customers`
-  String get customers {
-    return Intl.message(
-      'Customers',
-      name: 'customers',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Customers who come back to you after buying the first session on any platform`
-  String get customersComeBackToYouAfterBuyingFirstSessionPlatform {
-    return Intl.message(
-      'Customers who come back to you after buying the first session on any platform',
-      name: 'customersComeBackToYouAfterBuyingFirstSessionPlatform',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `New Customers`
-  String get newUsers {
-    return Intl.message(
-      'New Customers',
-      name: 'newUsers',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Loyal Customers`
-  String get loyalUsers {
-    return Intl.message(
-      'Loyal Customers',
-      name: 'loyalUsers',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Similar articles`
-  String get similarArticles {
-    return Intl.message(
-      'Similar articles',
-      name: 'similarArticles',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Take a photo`
-  String get takeAPhoto {
-    return Intl.message(
-      'Take a photo',
-      name: 'takeAPhoto',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Will be available in`
-  String get willBeAvailableIn {
-    return Intl.message(
-      'Will be available in',
-      name: 'willBeAvailableIn',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Are you sure that you want to change your status to Offline?`
-  String get areYouSureThatYouWantToChangeYourStatus {
-    return Intl.message(
-      'Are you sure that you want to change your status to Offline?',
-      name: 'areYouSureThatYouWantToChangeYourStatus',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Yes, I’m sure`
-  String get yesImSure {
-    return Intl.message(
-      'Yes, I’m sure',
-      name: 'yesImSure',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No, I changed my mind`
-  String get noIChangedMyMind {
-    return Intl.message(
-      'No, I changed my mind',
-      name: 'noIChangedMyMind',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Done`
-  String get done {
-    return Intl.message(
-      'Done',
-      name: 'done',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Earned`
-  String get earned {
-    return Intl.message(
-      'Earned',
-      name: 'earned',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Total`
-  String get total {
-    return Intl.message(
-      'Total',
-      name: 'total',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `All Markets`
-  String get totalMarkets {
-    return Intl.message(
-      'All Markets',
-      name: 'totalMarkets',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Dashboard`
-  String get dashboard {
-    return Intl.message(
-      'Dashboard',
-      name: 'dashboard',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `About Me`
-  String get aboutMe {
-    return Intl.message(
-      'About Me',
-      name: 'aboutMe',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Quick Questions`
-  String get quickAnswers {
-    return Intl.message(
-      'Quick Questions',
-      name: 'quickAnswers',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Born`
-  String get born {
-    return Intl.message(
-      'Born',
-      name: 'born',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Chats`
-  String get chats {
-    return Intl.message(
-      'Chats',
-      name: 'chats',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Calls`
-  String get calls {
-    return Intl.message(
-      'Calls',
-      name: 'calls',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Balance`
-  String get services {
-    return Intl.message(
-      'Balance',
-      name: 'services',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Add new`
-  String get addNew {
-    return Intl.message(
-      'Add new',
-      name: 'addNew',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `You don’t have any notes yet`
-  String get youDoNotHaveAnyNotesYet {
-    return Intl.message(
-      'You don’t have any notes yet',
-      name: 'youDoNotHaveAnyNotesYet',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Add Note`
-  String get addNote {
-    return Intl.message(
-      'Add Note',
-      name: 'addNote',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Title`
-  String get title {
-    return Intl.message(
-      'Title',
-      name: 'title',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `You have not completed any sessions yet`
-  String get youHaveNotCompletedAnySessionsYet {
-    return Intl.message(
-      'You have not completed any sessions yet',
-      name: 'youHaveNotCompletedAnySessionsYet',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No sessions were completed this month`
-  String get youHaveNotYetCompletedThisMonthsSessions {
-    return Intl.message(
-      'No sessions were completed this month',
-      name: 'youHaveNotYetCompletedThisMonthsSessions',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Avg Daily Earnings`
-  String get avgDailyEarnings {
-    return Intl.message(
-      'Avg Daily Earnings',
-      name: 'avgDailyEarnings',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Performance Overview Analytics`
-  String get performanceOverviewAnalytics {
-    return Intl.message(
-      'Performance Overview Analytics',
-      name: 'performanceOverviewAnalytics',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Edit Note`
-  String get editNote {
-    return Intl.message(
-      'Edit Note',
-      name: 'editNote',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `All Markets`
-  String get allMarkets {
-    return Intl.message(
-      'All Markets',
-      name: 'allMarkets',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Market:`
-  String get market {
-    return Intl.message(
-      'Market:',
-      name: 'market',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `All`
-  String get all {
-    return Intl.message(
-      'All',
-      name: 'all',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Private Questions`
-  String get privateQuestions {
-    return Intl.message(
-      'Private Questions',
-      name: 'privateQuestions',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Only Premium Sessions`
-  String get onlyPremiumProducts {
-    return Intl.message(
-      'Only Premium Sessions',
-      name: 'onlyPremiumProducts',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No questions, yet.`
-  String get noQuestionsYet {
-    return Intl.message(
-      'No questions, yet.',
-      name: 'noQuestionsYet',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No sessions, yet.`
-  String get noSessionsYet {
-    return Intl.message(
-      'No sessions, yet.',
-      name: 'noSessionsYet',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No internet connection.`
-  String get noInternetConnection {
-    return Intl.message(
-      'No internet connection.',
-      name: 'noInternetConnection',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `You can change the status again in 1 hour.`
-  String get youWillBeAbleToChangeYourStatusBackIn {
-    return Intl.message(
-      'You can change the status again in 1 hour.',
-      name: 'youWillBeAbleToChangeYourStatusBackIn',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Reset password`
-  String get resetPassword {
-    return Intl.message(
-      'Reset password',
-      name: 'resetPassword',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Your account has been banned. Please contact Advisor Management.`
-  String get yourAccountHasBeenBlockedPleaseContactYourAdvisorManager {
-    return Intl.message(
-      'Your account has been banned. Please contact Advisor Management.',
-      name: 'yourAccountHasBeenBlockedPleaseContactYourAdvisorManager',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Account`
-  String get account {
-    return Intl.message(
-      'Account',
-      name: 'account',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Sessions`
-  String get sessions {
-    return Intl.message(
-      'Sessions',
-      name: 'sessions',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `from {minRecordDurationInSec} sec to {maxRecordDurationInMinutes} min`
-  String fromXsecToYmin(
-      Object minRecordDurationInSec, Object maxRecordDurationInMinutes) {
-    return Intl.message(
-      'from $minRecordDurationInSec sec to $maxRecordDurationInMinutes min',
-      name: 'fromXsecToYmin',
-      desc: '',
-      args: [minRecordDurationInSec, maxRecordDurationInMinutes],
-    );
-  }
-
-  /// `Do you want to delete image?`
-  String get doYouWantToDeleteImage {
-    return Intl.message(
-      'Do you want to delete image?',
-      name: 'doYouWantToDeleteImage',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Try again`
-  String get tryAgain {
-    return Intl.message(
-      'Try again',
-      name: 'tryAgain',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `OK`
-  String get ok {
-    return Intl.message(
-      'OK',
-      name: 'ok',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Confirm`
-  String get confirm {
-    return Intl.message(
-      'Confirm',
-      name: 'confirm',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Return`
-  String get return_ {
-    return Intl.message(
-      'Return',
-      name: 'return_',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Note`
-  String get note {
-    return Intl.message(
-      'Note',
-      name: 'note',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Live`
-  String get live {
-    return Intl.message(
-      'Live',
-      name: 'live',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Incomplete`
-  String get incomplete {
-    return Intl.message(
-      'Incomplete',
-      name: 'incomplete',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Blocked`
-  String get blocked {
-    return Intl.message(
-      'Blocked',
-      name: 'blocked',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Legal block`
-  String get legalBlock {
-    return Intl.message(
-      'Legal block',
-      name: 'legalBlock',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Offline`
-  String get offline {
-    return Intl.message(
-      'Offline',
-      name: 'offline',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Go to Account`
-  String get goToAccount {
-    return Intl.message(
-      'Go to Account',
-      name: 'goToAccount',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Active chat`
-  String get activeChat {
-    return Intl.message(
-      'Active chat',
-      name: 'activeChat',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `History`
-  String get history {
-    return Intl.message(
-      'History',
-      name: 'history',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Profile`
-  String get profile {
-    return Intl.message(
-      'Profile',
-      name: 'profile',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `PERSONAL DETAILS`
-  String get personalDetails {
-    return Intl.message(
-      'PERSONAL DETAILS',
-      name: 'personalDetails',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Take question`
-  String get takeQuestion {
-    return Intl.message(
-      'Take question',
-      name: 'takeQuestion',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Photo is required`
-  String get photoIsRequired {
-    return Intl.message(
-      'Photo is required',
-      name: 'photoIsRequired',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Your Username`
-  String get yourUsername {
-    return Intl.message(
-      'Your Username',
-      name: 'yourUsername',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Male`
-  String get male {
-    return Intl.message(
-      'Male',
-      name: 'male',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Female`
-  String get female {
-    return Intl.message(
-      'Female',
-      name: 'female',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Non-binary`
-  String get nonBinary {
-    return Intl.message(
-      'Non-binary',
-      name: 'nonBinary',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Prefer not to answer`
-  String get preferNotToAnswer {
-    return Intl.message(
-      'Prefer not to answer',
-      name: 'preferNotToAnswer',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Audio message`
-  String get audioMessage {
-    return Intl.message(
-      'Audio message',
-      name: 'audioMessage',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `We didn’t find anything`
-  String get weDidntFindAnything {
-    return Intl.message(
-      'We didn’t find anything',
-      name: 'weDidntFindAnything',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Other`
-  String get other {
-    return Intl.message(
-      'Other',
-      name: 'other',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Private`
-  String get private {
-    return Intl.message(
-      'Private',
-      name: 'private',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Card Reading`
-  String get tarot {
-    return Intl.message(
-      'Card Reading',
-      name: 'tarot',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Palm Reading`
-  String get palmReading {
-    return Intl.message(
-      'Palm Reading',
-      name: 'palmReading',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Astral Chart`
-  String get astrology {
-    return Intl.message(
-      'Astral Chart',
-      name: 'astrology',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `360° Reading`
-  String get reading360 {
-    return Intl.message(
-      '360° Reading',
-      name: 'reading360',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Soulmate Reading`
-  String get soulmateReading {
-    return Intl.message(
-      'Soulmate Reading',
-      name: 'soulmateReading',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Love Crush Reading`
-  String get loveCrushReading {
-    return Intl.message(
-      'Love Crush Reading',
-      name: 'loveCrushReading',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Ritual Session`
-  String get ritual {
-    return Intl.message(
-      'Ritual Session',
-      name: 'ritual',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Tips`
-  String get tips {
-    return Intl.message(
-      'Tips',
-      name: 'tips',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Questions`
-  String get questions {
-    return Intl.message(
-      'Questions',
-      name: 'questions',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Question`
-  String get question {
-    return Intl.message(
-      'Question',
-      name: 'question',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Session`
-  String get session {
-    return Intl.message(
-      'Session',
-      name: 'session',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Check your internet connection`
-  String get checkYourInternetConnection {
-    return Intl.message(
-      'Check your internet connection',
-      name: 'checkYourInternetConnection',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `You can’t send this message because it’s less than {minRecordDurationInSec} seconds`
-  String youCantSendThisMessageBecauseItsLessThanXSeconds(
-      Object minRecordDurationInSec) {
-    return Intl.message(
-      'You can’t send this message because it’s less than $minRecordDurationInSec seconds',
-      name: 'youCantSendThisMessageBecauseItsLessThanXSeconds',
-      desc: '',
-      args: [minRecordDurationInSec],
-    );
-  }
-
-  /// `The maximum size of the attachments is {maxAttachmentSizeInMb}Mb`
-  String theMaximumSizeOfTheAttachmentsIsXMb(Object maxAttachmentSizeInMb) {
-    return Intl.message(
-      'The maximum size of the attachments is ${maxAttachmentSizeInMb}Mb',
-      name: 'theMaximumSizeOfTheAttachmentsIsXMb',
-      desc: '',
-      args: [maxAttachmentSizeInMb],
-    );
-  }
-
-  /// `This question will be returned to the queue after {counter}`
-  String thisQuestionWillBeReturnedToTheGeneralListAfterCounter(
-      Object counter) {
-    return Intl.message(
-      'This question will be returned to the queue after $counter',
-      name: 'thisQuestionWillBeReturnedToTheGeneralListAfterCounter',
-      desc: '',
-      args: [counter],
-    );
-  }
-
-  /// `The answer is not possible, this question will be returned to the queue in ~ 1 min`
-  String
-      get theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m {
-    return Intl.message(
-      'The answer is not possible, this question will be returned to the queue in ~ 1 min',
-      name:
-          'theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `You have an active session`
-  String get youHaveAnActiveSession {
-    return Intl.message(
-      'You have an active session',
-      name: 'youHaveAnActiveSession',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `You have a private message`
-  String get youHaveAPrivateMessage {
-    return Intl.message(
-      'You have a private message',
-      name: 'youHaveAPrivateMessage',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `You have a few active sessions`
-  String get youHaveAFewActiveSessions {
-    return Intl.message(
-      'You have a few active sessions',
-      name: 'youHaveAFewActiveSessions',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Unknown error`
-  String get unknownError {
-    return Intl.message(
-      'Unknown error',
-      name: 'unknownError',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `When you help your first client, you will see your session history here.`
-  String get whenYouHelpYourFirstClientYouWillSeeYourSessionHistoryHere {
-    return Intl.message(
-      'When you help your first client, you will see your session history here.',
-      name: 'whenYouHelpYourFirstClientYouWillSeeYourSessionHistoryHere',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Your client session history will appear here`
-  String get yourClientSessionHistoryWillAppearHere {
-    return Intl.message(
-      'Your client session history will appear here',
-      name: 'yourClientSessionHistoryWillAppearHere',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Status Text may not exceed 300 characters`
-  String get statusTextMayNotExceed300Characters {
-    return Intl.message(
-      'Status Text may not exceed 300 characters',
-      name: 'statusTextMayNotExceed300Characters',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Uh-oh. It looks like you've lost your connection. Please try again.`
-  String get uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgain {
-    return Intl.message(
-      'Uh-oh. It looks like you\'ve lost your connection. Please try again.',
-      name: 'uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgain',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Required field`
-  String get requiredField {
-    return Intl.message(
-      'Required field',
-      name: 'requiredField',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Customers want to know you're a real person. The more photos you add, the more trust you can build.`
-  String
-      get customersWantToKnowYouReARealPersonTheMorePhotosYouAddTheMoreTrustYouCanBuild {
-    return Intl.message(
-      'Customers want to know you\'re a real person. The more photos you add, the more trust you can build.',
-      name:
-          'customersWantToKnowYouReARealPersonTheMorePhotosYouAddTheMoreTrustYouCanBuild',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Complete your profile to start work`
-  String get completeYourProfileToStartWork {
-    return Intl.message(
-      'Complete your profile to start work',
-      name: 'completeYourProfileToStartWork',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `You're not live on the platform`
-  String get youReNotLiveOnThePlatform {
-    return Intl.message(
-      'You\'re not live on the platform',
-      name: 'youReNotLiveOnThePlatform',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Please ensure your profile is completed for all languages. Need help? Contact your manager.`
-  String
-      get pleaseEnsureYourProfileIsCompletedForAllLanguagesNeedHelpContactYourManager {
-    return Intl.message(
-      'Please ensure your profile is completed for all languages. Need help? Contact your manager.',
-      name:
-          'pleaseEnsureYourProfileIsCompletedForAllLanguagesNeedHelpContactYourManager',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `You need to accept the advisor contract`
-  String get youNeedToAcceptTheAdvisorContract {
-    return Intl.message(
-      'You need to accept the advisor contract',
-      name: 'youNeedToAcceptTheAdvisorContract',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Please login to the web version of your account.`
-  String get pleaseLoginToTheWebVersionOfYourAccount {
-    return Intl.message(
-      'Please login to the web version of your account.',
-      name: 'pleaseLoginToTheWebVersionOfYourAccount',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `You're currently offline`
-  String get youReCurrentlyOffline {
-    return Intl.message(
-      'You\'re currently offline',
-      name: 'youReCurrentlyOffline',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Change your status in your profile to make yourself visible to users.`
-  String get changeYourStatusInYourProfileToMakeYourselfVisibleToUsers {
-    return Intl.message(
-      'Change your status in your profile to make yourself visible to users.',
-      name: 'changeYourStatusInYourProfileToMakeYourselfVisibleToUsers',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Leave a note when you'll be available again.`
-  String get tellOurTeamWhenYouPlanToReturn {
-    return Intl.message(
-      'Leave a note when you\'ll be available again.',
-      name: 'tellOurTeamWhenYouPlanToReturn',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Do you want to delete this audio message?`
-  String get doYouWantToDeleteThisAudioMessage {
-    return Intl.message(
-      'Do you want to delete this audio message?',
-      name: 'doYouWantToDeleteThisAudioMessage',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `You don't have an internet connection`
-  String get youDontHaveAnInternetConnection {
-    return Intl.message(
-      'You don\'t have an internet connection',
-      name: 'youDontHaveAnInternetConnection',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Add any information you want to remember about this client.`
-  String get addAnyInformationYouWantToRememberAboutThisClient {
-    return Intl.message(
-      'Add any information you want to remember about this client.',
-      name: 'addAnyInformationYouWantToRememberAboutThisClient',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `You've reach the {maxRecordDurationInMinutes} minute time limit.`
-  String youVeReachTheXMinuteTimeLimit(Object maxRecordDurationInMinutes) {
-    return Intl.message(
-      'You\'ve reach the $maxRecordDurationInMinutes minute time limit.',
-      name: 'youVeReachTheXMinuteTimeLimit',
-      desc: '',
-      args: [maxRecordDurationInMinutes],
-    );
-  }
-
-  /// `Preferred topics`
-  String get preferredTopics {
-    return Intl.message(
-      'Preferred topics',
-      name: 'preferredTopics',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Permission Needed`
-  String get permissionNeeded {
-    return Intl.message(
-      'Permission Needed',
-      name: 'permissionNeeded',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `We need permission to access your camera and gallery so you can send images`
-  String get weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImages {
-    return Intl.message(
-      'We need permission to access your camera and gallery so you can send images',
-      name: 'weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImages',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Do you want to return this question?`
-  String get doYouWantToRejectThisQuestion {
-    return Intl.message(
-      'Do you want to return this question?',
-      name: 'doYouWantToRejectThisQuestion',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `It will go back into the queue.`
-  String get itWillGoBackIntoTheGeneralQueue {
-    return Intl.message(
-      'It will go back into the queue.',
-      name: 'itWillGoBackIntoTheGeneralQueue',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `You must answer your active public question before you can help someone else.`
-  String get youMustAnswerYourActivePublicQuestionBeforeYouCanHelpSomeoneElse {
-    return Intl.message(
-      'You must answer your active public question before you can help someone else.',
-      name: 'youMustAnswerYourActivePublicQuestionBeforeYouCanHelpSomeoneElse',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `RETURN\nTO QUEUE`
-  String get returnToQueue {
-    return Intl.message(
-      'RETURN\nTO QUEUE',
-      name: 'returnToQueue',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No messages found with this filter.`
-  String get noSessionsFoundWithThisFilter {
-    return Intl.message(
-      'No messages found with this filter.',
-      name: 'noSessionsFoundWithThisFilter',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `When someone asks a quick question, you'll see it on this list`
-  String get whenSomeoneAsksAPublicQuestionYouLlSeeThemOnThisList {
-    return Intl.message(
-      'When someone asks a quick question, you\'ll see it on this list',
-      name: 'whenSomeoneAsksAPublicQuestionYouLlSeeThemOnThisList',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Choose photo from library`
-  String get choosePhotoFromLibrary {
-    return Intl.message(
-      'Choose photo from library',
-      name: 'choosePhotoFromLibrary',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Use your new password to login`
-  String get useYourNewPasswordToLogin {
-    return Intl.message(
-      'Use your new password to login',
-      name: 'useYourNewPasswordToLogin',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Open email`
-  String get openEmail {
-    return Intl.message(
-      'Open email',
-      name: 'openEmail',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `We've sent password reset instructions to {email}.`
-  String weVeSentPasswordResetInstructionsToEmail(Object email) {
-    return Intl.message(
-      'We\'ve sent password reset instructions to $email.',
-      name: 'weVeSentPasswordResetInstructionsToEmail',
-      desc: '',
-      args: [email],
-    );
-  }
-
-  /// `Enter your email address and we'll send you instructions to create a new password`
-  String
-      get enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPassword {
-    return Intl.message(
-      'Enter your email address and we\'ll send you instructions to create a new password',
-      name:
-          'enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPassword',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Wrong email and/or password.`
-  String get wrongUsernameAndOrPassword {
-    return Intl.message(
-      'Wrong email and/or password.',
-      name: 'wrongUsernameAndOrPassword',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `We need permission to access your microphone`
-  String get weNeedPermissionToAccessYourMicrophone {
-    return Intl.message(
-      'We need permission to access your microphone',
-      name: 'weNeedPermissionToAccessYourMicrophone',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Type message`
-  String get typeMessage {
-    return Intl.message(
-      'Type message',
-      name: 'typeMessage',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Please confirm that your answer is ready to be sent`
-  String get pleaseConfirmThatYourAnswerIsReadyToBeSent {
-    return Intl.message(
-      'Please confirm that your answer is ready to be sent',
-      name: 'pleaseConfirmThatYourAnswerIsReadyToBeSent',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Enter your password`
-  String get enterYourPassword {
-    return Intl.message(
-      'Enter your password',
-      name: 'enterYourPassword',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Enter new password`
-  String get enterNewPassword {
-    return Intl.message(
-      'Enter new password',
-      name: 'enterNewPassword',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Repeat new password`
-  String get repeatNewPassword {
-    return Intl.message(
-      'Repeat new password',
-      name: 'repeatNewPassword',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Enter your email`
-  String get enterYourEmail {
-    return Intl.message(
-      'Enter your email',
-      name: 'enterYourEmail',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `My Gallery`
-  String get myGallery {
-    return Intl.message(
-      'My Gallery',
-      name: 'myGallery',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Please update the app`
-  String get pleaseUpdateTheApp {
-    return Intl.message(
-      'Please update the app',
-      name: 'pleaseUpdateTheApp',
+  /// `Other brands`
+  String get otherBrands {
+    return Intl.message(
+      'Other brands',
+      name: 'otherBrands',
       desc: '',
       args: [],
     );
@@ -2001,41 +160,31 @@ class S {
     );
   }
 
-  /// `Message is not sent`
-  String get messageIsNotSent {
+  /// `Please update the app`
+  String get pleaseUpdateTheApp {
     return Intl.message(
-      'Message is not sent',
-      name: 'messageIsNotSent',
+      'Please update the app',
+      name: 'pleaseUpdateTheApp',
       desc: '',
       args: [],
     );
   }
 
-  /// `Recording is not possible, allocate space on the device`
-  String get recordingIsNotPossibleAllocateSpaceOnTheDevice {
+  /// `Unknown error`
+  String get unknownError {
     return Intl.message(
-      'Recording is not possible, allocate space on the device',
-      name: 'recordingIsNotPossibleAllocateSpaceOnTheDevice',
+      'Unknown error',
+      name: 'unknownError',
       desc: '',
       args: [],
     );
   }
 
-  /// `Notifications are disabled`
-  String get notificationsAreDisabled {
+  /// `Log out`
+  String get logOut {
     return Intl.message(
-      'Notifications are disabled',
-      name: 'notificationsAreDisabled',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `To enable notification, you’ll need to allow notifications in your phone settings`
-  String get toEnableNotificationYoullNeedToAllowNotificationsInYour {
-    return Intl.message(
-      'To enable notification, you’ll need to allow notifications in your phone settings',
-      name: 'toEnableNotificationYoullNeedToAllowNotificationsInYour',
+      'Log out',
+      name: 'logOut',
       desc: '',
       args: [],
     );
@@ -2071,138 +220,2128 @@ class S {
     );
   }
 
-  /// `Not specified`
-  String get notSpecified {
+  /// `Cancel`
+  String get cancel {
     return Intl.message(
-      'Not specified',
-      name: 'notSpecified',
+      'Cancel',
+      name: 'cancel',
       desc: '',
       args: [],
     );
   }
 
-  /// `New password`
-  String get newPassword {
+  /// `Done`
+  String get done {
     return Intl.message(
-      'New password',
-      name: 'newPassword',
+      'Done',
+      name: 'done',
       desc: '',
       args: [],
     );
   }
 
-  /// `Private Question`
-  String get privateQuestion {
+  /// `Settings`
+  String get settings {
     return Intl.message(
-      'Private Question',
-      name: 'privateQuestion',
+      'Settings',
+      name: 'settings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Permission Needed`
+  String get permissionNeeded {
+    return Intl.message(
+      'Permission Needed',
+      name: 'permissionNeeded',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We need permission to access your camera and gallery so you can send images`
+  String get weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImages {
+    return Intl.message(
+      'We need permission to access your camera and gallery so you can send images',
+      name: 'weNeedPermissionToAccessYourCameraAndGallerySoYouCanSendImages',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We need permission to access your microphone`
+  String get weNeedPermissionToAccessYourMicrophone {
+    return Intl.message(
+      'We need permission to access your microphone',
+      name: 'weNeedPermissionToAccessYourMicrophone',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `To enable notification, you’ll need to allow notifications in your phone settings`
+  String get toEnableNotificationYoullNeedToAllowNotificationsInYour {
+    return Intl.message(
+      'To enable notification, you’ll need to allow notifications in your phone settings',
+      name: 'toEnableNotificationYoullNeedToAllowNotificationsInYour',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notifications are disabled`
+  String get notificationsAreDisabled {
+    return Intl.message(
+      'Notifications are disabled',
+      name: 'notificationsAreDisabled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Today`
+  String get today {
+    return Intl.message(
+      'Today',
+      name: 'today',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Other`
+  String get other {
+    return Intl.message(
+      'Other',
+      name: 'other',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose photo from library`
+  String get choosePhotoFromLibrary {
+    return Intl.message(
+      'Choose photo from library',
+      name: 'choosePhotoFromLibrary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Take a photo`
+  String get takeAPhoto {
+    return Intl.message(
+      'Take a photo',
+      name: 'takeAPhoto',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get delete {
+    return Intl.message(
+      'Delete',
+      name: 'delete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Back`
+  String get backFortunica {
+    return Intl.message(
+      'Back',
+      name: 'backFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login`
+  String get loginFortunica {
+    return Intl.message(
+      'Login',
+      name: 'loginFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Forgot password`
+  String get forgotPasswordFortunica {
+    return Intl.message(
+      'Forgot password',
+      name: 'forgotPasswordFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email`
+  String get emailFortunica {
+    return Intl.message(
+      'Email',
+      name: 'emailFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password`
+  String get passwordFortunica {
+    return Intl.message(
+      'Password',
+      name: 'passwordFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm new password`
+  String get confirmNewPasswordFortunica {
+    return Intl.message(
+      'Confirm new password',
+      name: 'confirmNewPasswordFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change password`
+  String get changePasswordFortunica {
+    return Intl.message(
+      'Change password',
+      name: 'changePasswordFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The passwords must match`
+  String get thePasswordsMustMatchFortunica {
+    return Intl.message(
+      'The passwords must match',
+      name: 'thePasswordsMustMatchFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter at least 6 characters`
+  String get pleaseEnterAtLeast6CharactersFortunica {
+    return Intl.message(
+      'Please enter at least 6 characters',
+      name: 'pleaseEnterAtLeast6CharactersFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please, insert correct email`
+  String get pleaseInsertCorrectEmailFortunica {
+    return Intl.message(
+      'Please, insert correct email',
+      name: 'pleaseInsertCorrectEmailFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select brand`
+  String get chooseBrandFortunica {
+    return Intl.message(
+      'Select brand',
+      name: 'chooseBrandFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Coming soon!`
+  String get comingSoonFortunica {
+    return Intl.message(
+      'Coming soon!',
+      name: 'comingSoonFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign in`
+  String get signInFortunica {
+    return Intl.message(
+      'Sign in',
+      name: 'signInFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get saveFortunica {
+    return Intl.message(
+      'Save',
+      name: 'saveFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Forgot your password`
+  String get forgotYourPasswordFortunica {
+    return Intl.message(
+      'Forgot your password',
+      name: 'forgotYourPasswordFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Request new password`
+  String get requestNewPasswordFortunica {
+    return Intl.message(
+      'Request new password',
+      name: 'requestNewPasswordFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The user was not found`
+  String get theUserWasNotFoundFortunica {
+    return Intl.message(
+      'The user was not found',
+      name: 'theUserWasNotFoundFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit profile`
+  String get editProfileFortunica {
+    return Intl.message(
+      'Edit profile',
+      name: 'editProfileFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add cover picture`
+  String get addCoverPictureFortunica {
+    return Intl.message(
+      'Add cover picture',
+      name: 'addCoverPictureFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change photo`
+  String get changePhotoFortunica {
+    return Intl.message(
+      'Change photo',
+      name: 'changePhotoFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pseudonym/Profile Name`
+  String get nicknameFortunica {
+    return Intl.message(
+      'Pseudonym/Profile Name',
+      name: 'nicknameFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name can be changed only on Advisor Tool`
+  String get nameCanBeChangedOnlyOnAdvisorToolFortunica {
+    return Intl.message(
+      'Name can be changed only on Advisor Tool',
+      name: 'nameCanBeChangedOnlyOnAdvisorToolFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Status Text`
+  String get statusTextFortunica {
+    return Intl.message(
+      'Status Text',
+      name: 'statusTextFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Profile Text`
+  String get profileTextFortunica {
+    return Intl.message(
+      'Profile Text',
+      name: 'profileTextFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add photos`
+  String get addGalleryPicturesFortunica {
+    return Intl.message(
+      'Add photos',
+      name: 'addGalleryPicturesFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add more`
+  String get addMoreFortunica {
+    return Intl.message(
+      'Add more',
+      name: 'addMoreFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Brands`
+  String get workspacesFortunica {
+    return Intl.message(
+      'Brands',
+      name: 'workspacesFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Customer Support`
+  String get customerSupportFortunica {
+    return Intl.message(
+      'Customer Support',
+      name: 'customerSupportFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancelFortunica {
+    return Intl.message(
+      'Cancel',
+      name: 'cancelFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel sending`
+  String get cancelSendingFortunica {
+    return Intl.message(
+      'Cancel sending',
+      name: 'cancelSendingFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose email app`
+  String get chooseEmailAppFortunica {
+    return Intl.message(
+      'Choose email app',
+      name: 'chooseEmailAppFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Open email`
+  String get openEmailFortunica {
+    return Intl.message(
+      'Open email',
+      name: 'openEmailFortunica',
       desc: '',
       args: [],
     );
   }
 
   /// `Quick Question`
-  String get publicQuestion {
+  String get publicFortunica {
     return Intl.message(
       'Quick Question',
-      name: 'publicQuestion',
+      name: 'publicFortunica',
       desc: '',
       args: [],
     );
   }
 
-  /// `Soulmate Reading`
-  String get soulmateReadingSessions {
+  /// `Search`
+  String get searchFortunica {
     return Intl.message(
-      'Soulmate Reading',
-      name: 'soulmateReadingSessions',
+      'Search',
+      name: 'searchFortunica',
       desc: '',
       args: [],
     );
   }
 
-  /// `Love Crush Reading`
-  String get loveCrushReadingSessions {
+  /// `I'm available now`
+  String get imAvailableNowFortunica {
     return Intl.message(
-      'Love Crush Reading',
-      name: 'loveCrushReadingSessions',
+      'I\'m available now',
+      name: 'imAvailableNowFortunica',
       desc: '',
       args: [],
     );
   }
 
-  /// `Palm Reading`
-  String get palmReadingSessions {
+  /// `Notifications`
+  String get notificationsFortunica {
     return Intl.message(
-      'Palm Reading',
-      name: 'palmReadingSessions',
+      'Notifications',
+      name: 'notificationsFortunica',
       desc: '',
       args: [],
     );
   }
 
-  /// `360° Reading`
-  String get reading360Sessions {
+  /// `Profile Preview`
+  String get previewAccountFortunica {
     return Intl.message(
-      '360° Reading',
-      name: 'reading360Sessions',
+      'Profile Preview',
+      name: 'previewAccountFortunica',
       desc: '',
       args: [],
     );
   }
 
-  /// `Ritual Session`
-  String get ritualSessions {
+  /// `Reviews`
+  String get reviewsFortunica {
     return Intl.message(
-      'Ritual Session',
-      name: 'ritualSessions',
+      'Reviews',
+      name: 'reviewsFortunica',
       desc: '',
       args: [],
     );
   }
 
-  /// `Astral Chart`
-  String get astrologySessions {
+  /// `Balance`
+  String get balanceTransactionsFortunica {
     return Intl.message(
-      'Astral Chart',
-      name: 'astrologySessions',
+      'Balance',
+      name: 'balanceTransactionsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Settings`
+  String get settingsFortunica {
+    return Intl.message(
+      'Settings',
+      name: 'settingsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not enough conversations? Check our Profile Guide.`
+  String get notEnoughConversationsCheckOurProfileGuideFortunica {
+    return Intl.message(
+      'Not enough conversations? Check our Profile Guide.',
+      name: 'notEnoughConversationsCheckOurProfileGuideFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `See more`
+  String get seeMoreFortunica {
+    return Intl.message(
+      'See more',
+      name: 'seeMoreFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New`
+  String get newFortunica {
+    return Intl.message(
+      'New',
+      name: 'newFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mandatory`
+  String get mandatoryFortunica {
+    return Intl.message(
+      'Mandatory',
+      name: 'mandatoryFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New article is available!`
+  String get newMandatoryArticleIsAvailableFortunica {
+    return Intl.message(
+      'New article is available!',
+      name: 'newMandatoryArticleIsAvailableFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have {count} days to read it before your account will get blocked!`
+  String youHaveXdaystoReadItBeforeYourAccountWillGetBlockedFortunica(
+      Object count) {
+    return Intl.message(
+      'You have $count days to read it before your account will get blocked!',
+      name: 'youHaveXdaystoReadItBeforeYourAccountWillGetBlockedFortunica',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `Take me there`
+  String get takeMeThereFortunica {
+    return Intl.message(
+      'Take me there',
+      name: 'takeMeThereFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change cover picture`
+  String get changeCoverPictureFortunica {
+    return Intl.message(
+      'Change cover picture',
+      name: 'changeCoverPictureFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter at least 3 characters`
+  String get pleaseEnterAtLeast3CharactersFortunica {
+    return Intl.message(
+      'Please enter at least 3 characters',
+      name: 'pleaseEnterAtLeast3CharactersFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Resources`
+  String get resourcesFortunica {
+    return Intl.message(
+      'Resources',
+      name: 'resourcesFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Stats`
+  String get statsFortunica {
+    return Intl.message(
+      'Stats',
+      name: 'statsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Courses`
+  String get coursesFortunica {
+    return Intl.message(
+      'Courses',
+      name: 'coursesFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Today`
+  String get todayFortunica {
+    return Intl.message(
+      'Today',
+      name: 'todayFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This Month`
+  String get thisMonthFortunica {
+    return Intl.message(
+      'This Month',
+      name: 'thisMonthFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This Week`
+  String get thisWeekFortunica {
+    return Intl.message(
+      'This Week',
+      name: 'thisWeekFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Customers`
+  String get customersFortunica {
+    return Intl.message(
+      'Customers',
+      name: 'customersFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Customers who come back to you after buying the first session on any platform`
+  String get customersComeBackToYouAfterBuyingFirstSessionPlatformFortunica {
+    return Intl.message(
+      'Customers who come back to you after buying the first session on any platform',
+      name: 'customersComeBackToYouAfterBuyingFirstSessionPlatformFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New Customers`
+  String get newUsersFortunica {
+    return Intl.message(
+      'New Customers',
+      name: 'newUsersFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Loyal Customers`
+  String get loyalUsersFortunica {
+    return Intl.message(
+      'Loyal Customers',
+      name: 'loyalUsersFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Similar articles`
+  String get similarArticlesFortunica {
+    return Intl.message(
+      'Similar articles',
+      name: 'similarArticlesFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Will be available in`
+  String get willBeAvailableInFortunica {
+    return Intl.message(
+      'Will be available in',
+      name: 'willBeAvailableInFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure that you want to change your status to Offline?`
+  String get areYouSureThatYouWantToChangeYourStatusFortunica {
+    return Intl.message(
+      'Are you sure that you want to change your status to Offline?',
+      name: 'areYouSureThatYouWantToChangeYourStatusFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yes, I’m sure`
+  String get yesImSureFortunica {
+    return Intl.message(
+      'Yes, I’m sure',
+      name: 'yesImSureFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No, I changed my mind`
+  String get noIChangedMyMindFortunica {
+    return Intl.message(
+      'No, I changed my mind',
+      name: 'noIChangedMyMindFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Done`
+  String get doneFortunica {
+    return Intl.message(
+      'Done',
+      name: 'doneFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Earned`
+  String get earnedFortunica {
+    return Intl.message(
+      'Earned',
+      name: 'earnedFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total`
+  String get totalFortunica {
+    return Intl.message(
+      'Total',
+      name: 'totalFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All Markets`
+  String get totalMarketsFortunica {
+    return Intl.message(
+      'All Markets',
+      name: 'totalMarketsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dashboard`
+  String get dashboardFortunica {
+    return Intl.message(
+      'Dashboard',
+      name: 'dashboardFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `About Me`
+  String get aboutMeFortunica {
+    return Intl.message(
+      'About Me',
+      name: 'aboutMeFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Quick Questions`
+  String get quickAnswersFortunica {
+    return Intl.message(
+      'Quick Questions',
+      name: 'quickAnswersFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Born`
+  String get bornFortunica {
+    return Intl.message(
+      'Born',
+      name: 'bornFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chats`
+  String get chatsFortunica {
+    return Intl.message(
+      'Chats',
+      name: 'chatsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Calls`
+  String get callsFortunica {
+    return Intl.message(
+      'Calls',
+      name: 'callsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Balance`
+  String get servicesFortunica {
+    return Intl.message(
+      'Balance',
+      name: 'servicesFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add new`
+  String get addNewFortunica {
+    return Intl.message(
+      'Add new',
+      name: 'addNewFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You don’t have any notes yet`
+  String get youDoNotHaveAnyNotesYetFortunica {
+    return Intl.message(
+      'You don’t have any notes yet',
+      name: 'youDoNotHaveAnyNotesYetFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Note`
+  String get addNoteFortunica {
+    return Intl.message(
+      'Add Note',
+      name: 'addNoteFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Title`
+  String get titleFortunica {
+    return Intl.message(
+      'Title',
+      name: 'titleFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have not completed any sessions yet`
+  String get youHaveNotCompletedAnySessionsYetFortunica {
+    return Intl.message(
+      'You have not completed any sessions yet',
+      name: 'youHaveNotCompletedAnySessionsYetFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No sessions were completed this month`
+  String get youHaveNotYetCompletedThisMonthsSessionsFortunica {
+    return Intl.message(
+      'No sessions were completed this month',
+      name: 'youHaveNotYetCompletedThisMonthsSessionsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Avg Daily Earnings`
+  String get avgDailyEarningsFortunica {
+    return Intl.message(
+      'Avg Daily Earnings',
+      name: 'avgDailyEarningsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Performance Overview Analytics`
+  String get performanceOverviewAnalyticsFortunica {
+    return Intl.message(
+      'Performance Overview Analytics',
+      name: 'performanceOverviewAnalyticsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Note`
+  String get editNoteFortunica {
+    return Intl.message(
+      'Edit Note',
+      name: 'editNoteFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All Markets`
+  String get allMarketsFortunica {
+    return Intl.message(
+      'All Markets',
+      name: 'allMarketsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Market:`
+  String get marketFortunica {
+    return Intl.message(
+      'Market:',
+      name: 'marketFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All`
+  String get allFortunica {
+    return Intl.message(
+      'All',
+      name: 'allFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Private Questions`
+  String get privateQuestionsFortunica {
+    return Intl.message(
+      'Private Questions',
+      name: 'privateQuestionsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Only Premium Sessions`
+  String get onlyPremiumProductsFortunica {
+    return Intl.message(
+      'Only Premium Sessions',
+      name: 'onlyPremiumProductsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No questions, yet.`
+  String get noQuestionsYetFortunica {
+    return Intl.message(
+      'No questions, yet.',
+      name: 'noQuestionsYetFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No internet connection.`
+  String get noInternetConnectionFortunica {
+    return Intl.message(
+      'No internet connection.',
+      name: 'noInternetConnectionFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Uh-oh. It looks like you've lost your connection. Please try again.`
+  String get uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgainFortunica {
+    return Intl.message(
+      'Uh-oh. It looks like you\'ve lost your connection. Please try again.',
+      name: 'uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgainFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can change the status again in 1 hour.`
+  String get youWillBeAbleToChangeYourStatusBackInFortunica {
+    return Intl.message(
+      'You can change the status again in 1 hour.',
+      name: 'youWillBeAbleToChangeYourStatusBackInFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reset password`
+  String get resetPasswordFortunica {
+    return Intl.message(
+      'Reset password',
+      name: 'resetPasswordFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your account has been banned. Please contact Advisor Management.`
+  String get yourAccountHasBeenBlockedPleaseContactYourAdvisorManagerFortunica {
+    return Intl.message(
+      'Your account has been banned. Please contact Advisor Management.',
+      name: 'yourAccountHasBeenBlockedPleaseContactYourAdvisorManagerFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Account`
+  String get accountFortunica {
+    return Intl.message(
+      'Account',
+      name: 'accountFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Articles`
+  String get articlesFortunica {
+    return Intl.message(
+      'Articles',
+      name: 'articlesFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sessions`
+  String get sessionsFortunica {
+    return Intl.message(
+      'Sessions',
+      name: 'sessionsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `from {minRecordDurationInSec} sec to {maxRecordDurationInMinutes} min`
+  String fromXsecToYminFortunica(
+      Object minRecordDurationInSec, Object maxRecordDurationInMinutes) {
+    return Intl.message(
+      'from $minRecordDurationInSec sec to $maxRecordDurationInMinutes min',
+      name: 'fromXsecToYminFortunica',
+      desc: '',
+      args: [minRecordDurationInSec, maxRecordDurationInMinutes],
+    );
+  }
+
+  /// `Do you want to delete image?`
+  String get doYouWantToDeleteImageFortunica {
+    return Intl.message(
+      'Do you want to delete image?',
+      name: 'doYouWantToDeleteImageFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Try again`
+  String get tryAgainFortunica {
+    return Intl.message(
+      'Try again',
+      name: 'tryAgainFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `OK`
+  String get okFortunica {
+    return Intl.message(
+      'OK',
+      name: 'okFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm`
+  String get confirmFortunica {
+    return Intl.message(
+      'Confirm',
+      name: 'confirmFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Return`
+  String get returnFortunica {
+    return Intl.message(
+      'Return',
+      name: 'returnFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Note`
+  String get noteFortunica {
+    return Intl.message(
+      'Note',
+      name: 'noteFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Live`
+  String get liveFortunica {
+    return Intl.message(
+      'Live',
+      name: 'liveFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Incomplete`
+  String get incompleteFortunica {
+    return Intl.message(
+      'Incomplete',
+      name: 'incompleteFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Blocked`
+  String get blockedFortunica {
+    return Intl.message(
+      'Blocked',
+      name: 'blockedFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Legal block`
+  String get legalBlockFortunica {
+    return Intl.message(
+      'Legal block',
+      name: 'legalBlockFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Offline`
+  String get offlineFortunica {
+    return Intl.message(
+      'Offline',
+      name: 'offlineFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Go to Account`
+  String get goToAccountFortunica {
+    return Intl.message(
+      'Go to Account',
+      name: 'goToAccountFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Active chat`
+  String get activeChatFortunica {
+    return Intl.message(
+      'Active chat',
+      name: 'activeChatFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `History`
+  String get historyFortunica {
+    return Intl.message(
+      'History',
+      name: 'historyFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Profile`
+  String get profileFortunica {
+    return Intl.message(
+      'Profile',
+      name: 'profileFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `PERSONAL DETAILS`
+  String get personalDetailsFortunica {
+    return Intl.message(
+      'PERSONAL DETAILS',
+      name: 'personalDetailsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Take question`
+  String get takeQuestionFortunica {
+    return Intl.message(
+      'Take question',
+      name: 'takeQuestionFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Photo is required`
+  String get photoIsRequiredFortunica {
+    return Intl.message(
+      'Photo is required',
+      name: 'photoIsRequiredFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your Username`
+  String get yourUsernameFortunica {
+    return Intl.message(
+      'Your Username',
+      name: 'yourUsernameFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Male`
+  String get maleFortunica {
+    return Intl.message(
+      'Male',
+      name: 'maleFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Female`
+  String get femaleFortunica {
+    return Intl.message(
+      'Female',
+      name: 'femaleFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Non-binary`
+  String get nonBinaryFortunica {
+    return Intl.message(
+      'Non-binary',
+      name: 'nonBinaryFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Prefer not to answer`
+  String get preferNotToAnswerFortunica {
+    return Intl.message(
+      'Prefer not to answer',
+      name: 'preferNotToAnswerFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Audio message`
+  String get audioMessageFortunica {
+    return Intl.message(
+      'Audio message',
+      name: 'audioMessageFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We didn’t find anything`
+  String get weDidntFindAnythingFortunica {
+    return Intl.message(
+      'We didn’t find anything',
+      name: 'weDidntFindAnythingFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Other`
+  String get otherFortunica {
+    return Intl.message(
+      'Other',
+      name: 'otherFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Private`
+  String get privateFortunica {
+    return Intl.message(
+      'Private',
+      name: 'privateFortunica',
       desc: '',
       args: [],
     );
   }
 
   /// `Card Reading`
-  String get tarotSessions {
+  String get tarotFortunica {
     return Intl.message(
       'Card Reading',
-      name: 'tarotSessions',
+      name: 'tarotFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Palm Reading`
+  String get palmReadingFortunica {
+    return Intl.message(
+      'Palm Reading',
+      name: 'palmReadingFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Astral Chart`
+  String get astrologyFortunica {
+    return Intl.message(
+      'Astral Chart',
+      name: 'astrologyFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `360° Reading`
+  String get reading360Fortunica {
+    return Intl.message(
+      '360° Reading',
+      name: 'reading360Fortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Soulmate Reading`
+  String get soulmateReadingFortunica {
+    return Intl.message(
+      'Soulmate Reading',
+      name: 'soulmateReadingFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Love Crush Reading`
+  String get loveCrushReadingFortunica {
+    return Intl.message(
+      'Love Crush Reading',
+      name: 'loveCrushReadingFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ritual Session`
+  String get ritualFortunica {
+    return Intl.message(
+      'Ritual Session',
+      name: 'ritualFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tips`
+  String get tipsFortunica {
+    return Intl.message(
+      'Tips',
+      name: 'tipsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Questions`
+  String get questionsFortunica {
+    return Intl.message(
+      'Questions',
+      name: 'questionsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Question`
+  String get questionFortunica {
+    return Intl.message(
+      'Question',
+      name: 'questionFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Session`
+  String get sessionFortunica {
+    return Intl.message(
+      'Session',
+      name: 'sessionFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check your internet connection`
+  String get checkYourInternetConnectionFortunica {
+    return Intl.message(
+      'Check your internet connection',
+      name: 'checkYourInternetConnectionFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can’t send this message because it’s less than {minRecordDurationInSec} seconds`
+  String youCantSendThisMessageBecauseItsLessThanXSecondsFortunica(
+      Object minRecordDurationInSec) {
+    return Intl.message(
+      'You can’t send this message because it’s less than $minRecordDurationInSec seconds',
+      name: 'youCantSendThisMessageBecauseItsLessThanXSecondsFortunica',
+      desc: '',
+      args: [minRecordDurationInSec],
+    );
+  }
+
+  /// `The maximum size of the attachments is {maxAttachmentSizeInMb}Mb`
+  String theMaximumSizeOfTheAttachmentsIsXMbFortunica(
+      Object maxAttachmentSizeInMb) {
+    return Intl.message(
+      'The maximum size of the attachments is ${maxAttachmentSizeInMb}Mb',
+      name: 'theMaximumSizeOfTheAttachmentsIsXMbFortunica',
+      desc: '',
+      args: [maxAttachmentSizeInMb],
+    );
+  }
+
+  /// `This question will be returned to the queue after {counter}`
+  String thisQuestionWillBeReturnedToTheGeneralListAfterCounterFortunica(
+      Object counter) {
+    return Intl.message(
+      'This question will be returned to the queue after $counter',
+      name: 'thisQuestionWillBeReturnedToTheGeneralListAfterCounterFortunica',
+      desc: '',
+      args: [counter],
+    );
+  }
+
+  /// `The answer is not possible, this question will be returned to the queue in ~ 1 min`
+  String
+      get theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1mFortunica {
+    return Intl.message(
+      'The answer is not possible, this question will be returned to the queue in ~ 1 min',
+      name:
+          'theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1mFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have an active session`
+  String get youHaveAnActiveSessionFortunica {
+    return Intl.message(
+      'You have an active session',
+      name: 'youHaveAnActiveSessionFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have a private message`
+  String get youHaveAPrivateMessageFortunica {
+    return Intl.message(
+      'You have a private message',
+      name: 'youHaveAPrivateMessageFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have a few active sessions`
+  String get youHaveAFewActiveSessionsFortunica {
+    return Intl.message(
+      'You have a few active sessions',
+      name: 'youHaveAFewActiveSessionsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unknown error`
+  String get unknownErrorFortunica {
+    return Intl.message(
+      'Unknown error',
+      name: 'unknownErrorFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When you help your first client, you will see your session history here.`
+  String
+      get whenYouHelpYourFirstClientYouWillSeeYourSessionHistoryHereFortunica {
+    return Intl.message(
+      'When you help your first client, you will see your session history here.',
+      name:
+          'whenYouHelpYourFirstClientYouWillSeeYourSessionHistoryHereFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your client session history will appear here`
+  String get yourClientSessionHistoryWillAppearHereFortunica {
+    return Intl.message(
+      'Your client session history will appear here',
+      name: 'yourClientSessionHistoryWillAppearHereFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No sessions, yet.`
+  String get noSessionsYetFortunica {
+    return Intl.message(
+      'No sessions, yet.',
+      name: 'noSessionsYetFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Status Text may not exceed 300 characters`
+  String get statusTextMayNotExceed300CharactersFortunica {
+    return Intl.message(
+      'Status Text may not exceed 300 characters',
+      name: 'statusTextMayNotExceed300CharactersFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Required field`
+  String get requiredFieldFortunica {
+    return Intl.message(
+      'Required field',
+      name: 'requiredFieldFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Customers want to know you're a real person. The more photos you add, the more trust you can build.`
+  String
+      get customersWantToKnowYouReARealPersonTheMorePhotosYouAddTheMoreTrustYouCanBuildFortunica {
+    return Intl.message(
+      'Customers want to know you\'re a real person. The more photos you add, the more trust you can build.',
+      name:
+          'customersWantToKnowYouReARealPersonTheMorePhotosYouAddTheMoreTrustYouCanBuildFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Complete your profile to start work`
+  String get completeYourProfileToStartWorkFortunica {
+    return Intl.message(
+      'Complete your profile to start work',
+      name: 'completeYourProfileToStartWorkFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You're not live on the platform`
+  String get youReNotLiveOnThePlatformFortunica {
+    return Intl.message(
+      'You\'re not live on the platform',
+      name: 'youReNotLiveOnThePlatformFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please ensure your profile is completed for all languages. Need help? Contact your manager.`
+  String
+      get pleaseEnsureYourProfileIsCompletedForAllLanguagesNeedHelpContactYourManagerFortunica {
+    return Intl.message(
+      'Please ensure your profile is completed for all languages. Need help? Contact your manager.',
+      name:
+          'pleaseEnsureYourProfileIsCompletedForAllLanguagesNeedHelpContactYourManagerFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You need to accept the advisor contract`
+  String get youNeedToAcceptTheAdvisorContractFortunica {
+    return Intl.message(
+      'You need to accept the advisor contract',
+      name: 'youNeedToAcceptTheAdvisorContractFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please login to the web version of your account.`
+  String get pleaseLoginToTheWebVersionOfYourAccountFortunica {
+    return Intl.message(
+      'Please login to the web version of your account.',
+      name: 'pleaseLoginToTheWebVersionOfYourAccountFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You're currently offline`
+  String get youReCurrentlyOfflineFortunica {
+    return Intl.message(
+      'You\'re currently offline',
+      name: 'youReCurrentlyOfflineFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change your status in your profile to make yourself visible to users.`
+  String
+      get changeYourStatusInYourProfileToMakeYourselfVisibleToUsersFortunica {
+    return Intl.message(
+      'Change your status in your profile to make yourself visible to users.',
+      name:
+          'changeYourStatusInYourProfileToMakeYourselfVisibleToUsersFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `TLeave a note when you'll be available again.`
+  String get tellOurTeamWhenYouPlanToReturnFortunica {
+    return Intl.message(
+      'TLeave a note when you\'ll be available again.',
+      name: 'tellOurTeamWhenYouPlanToReturnFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you want to delete this audio message?`
+  String get doYouWantToDeleteThisAudioMessageFortunica {
+    return Intl.message(
+      'Do you want to delete this audio message?',
+      name: 'doYouWantToDeleteThisAudioMessageFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You don't have an internet connection`
+  String get youDontHaveAnInternetConnectionFortunica {
+    return Intl.message(
+      'You don\'t have an internet connection',
+      name: 'youDontHaveAnInternetConnectionFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add any information you want to remember about this client.`
+  String get addAnyInformationYouWantToRememberAboutThisClientFortunica {
+    return Intl.message(
+      'Add any information you want to remember about this client.',
+      name: 'addAnyInformationYouWantToRememberAboutThisClientFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You've reach the {maxRecordDurationInMinutes} minute time limit.`
+  String youVeReachTheXMinuteTimeLimitFortunica(
+      Object maxRecordDurationInMinutes) {
+    return Intl.message(
+      'You\'ve reach the $maxRecordDurationInMinutes minute time limit.',
+      name: 'youVeReachTheXMinuteTimeLimitFortunica',
+      desc: '',
+      args: [maxRecordDurationInMinutes],
+    );
+  }
+
+  /// `Preferred topics`
+  String get preferredTopicsFortunica {
+    return Intl.message(
+      'Preferred topics',
+      name: 'preferredTopicsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you want to return this question?`
+  String get doYouWantToRejectThisQuestionFortunica {
+    return Intl.message(
+      'Do you want to return this question?',
+      name: 'doYouWantToRejectThisQuestionFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `It will go back into the queue.`
+  String get itWillGoBackIntoTheGeneralQueueFortunica {
+    return Intl.message(
+      'It will go back into the queue.',
+      name: 'itWillGoBackIntoTheGeneralQueueFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You must answer your active public question before you can help someone else.`
+  String
+      get youMustAnswerYourActivePublicQuestionBeforeYouCanHelpSomeoneElseFortunica {
+    return Intl.message(
+      'You must answer your active public question before you can help someone else.',
+      name:
+          'youMustAnswerYourActivePublicQuestionBeforeYouCanHelpSomeoneElseFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `RETURN\nTO QUEUE`
+  String get returnToQueueFortunica {
+    return Intl.message(
+      'RETURN\nTO QUEUE',
+      name: 'returnToQueueFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No messages found with this filter.`
+  String get noSessionsFoundWithThisFilterFortunica {
+    return Intl.message(
+      'No messages found with this filter.',
+      name: 'noSessionsFoundWithThisFilterFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When someone asks a quick question, you'll see it on this list`
+  String get whenSomeoneAsksAPublicQuestionYouLlSeeThemOnThisListFortunica {
+    return Intl.message(
+      'When someone asks a quick question, you\'ll see it on this list',
+      name: 'whenSomeoneAsksAPublicQuestionYouLlSeeThemOnThisListFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Use your new password to login`
+  String get useYourNewPasswordToLoginFortunica {
+    return Intl.message(
+      'Use your new password to login',
+      name: 'useYourNewPasswordToLoginFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We've sent password reset instructions to {email}.`
+  String weVeSentPasswordResetInstructionsToEmailFortunica(Object email) {
+    return Intl.message(
+      'We\'ve sent password reset instructions to $email.',
+      name: 'weVeSentPasswordResetInstructionsToEmailFortunica',
+      desc: '',
+      args: [email],
+    );
+  }
+
+  /// `Enter your email address and we'll send you instructions to create a new password`
+  String
+      get enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPasswordFortunica {
+    return Intl.message(
+      'Enter your email address and we\'ll send you instructions to create a new password',
+      name:
+          'enterYourEmailAddressAndWeLlSendYouInstructionsToCreateANewPasswordFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Wrong email and/or password.`
+  String get wrongUsernameAndOrPasswordFortunica {
+    return Intl.message(
+      'Wrong email and/or password.',
+      name: 'wrongUsernameAndOrPasswordFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Type message`
+  String get typeMessageFortunica {
+    return Intl.message(
+      'Type message',
+      name: 'typeMessageFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please confirm that your answer is ready to be sent`
+  String get pleaseConfirmThatYourAnswerIsReadyToBeSentFortunica {
+    return Intl.message(
+      'Please confirm that your answer is ready to be sent',
+      name: 'pleaseConfirmThatYourAnswerIsReadyToBeSentFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your password`
+  String get enterYourPasswordFortunica {
+    return Intl.message(
+      'Enter your password',
+      name: 'enterYourPasswordFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your email`
+  String get enterYourEmailFortunica {
+    return Intl.message(
+      'Enter your email',
+      name: 'enterYourEmailFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter new password`
+  String get enterNewPasswordFortunica {
+    return Intl.message(
+      'Enter new password',
+      name: 'enterNewPasswordFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Repeat new password`
+  String get repeatNewPasswordFortunica {
+    return Intl.message(
+      'Repeat new password',
+      name: 'repeatNewPasswordFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My Gallery`
+  String get myGalleryFortunica {
+    return Intl.message(
+      'My Gallery',
+      name: 'myGalleryFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Message is not sent`
+  String get messageIsNotSentFortunica {
+    return Intl.message(
+      'Message is not sent',
+      name: 'messageIsNotSentFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Recording is not possible, allocate space on the device`
+  String get recordingIsNotPossibleAllocateSpaceOnTheDeviceFortunica {
+    return Intl.message(
+      'Recording is not possible, allocate space on the device',
+      name: 'recordingIsNotPossibleAllocateSpaceOnTheDeviceFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not specified`
+  String get notSpecifiedFortunica {
+    return Intl.message(
+      'Not specified',
+      name: 'notSpecifiedFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New password`
+  String get newPasswordFortunica {
+    return Intl.message(
+      'New password',
+      name: 'newPasswordFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Private Question`
+  String get privateQuestionFortunica {
+    return Intl.message(
+      'Private Question',
+      name: 'privateQuestionFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Quick Question`
+  String get publicQuestionFortunica {
+    return Intl.message(
+      'Quick Question',
+      name: 'publicQuestionFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Soulmate Reading`
+  String get soulmateReadingSessionsFortunica {
+    return Intl.message(
+      'Soulmate Reading',
+      name: 'soulmateReadingSessionsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Love Crush Reading`
+  String get loveCrushReadingSessionsFortunica {
+    return Intl.message(
+      'Love Crush Reading',
+      name: 'loveCrushReadingSessionsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Palm Reading`
+  String get palmReadingSessionsFortunica {
+    return Intl.message(
+      'Palm Reading',
+      name: 'palmReadingSessionsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `360° Reading`
+  String get reading360SessionsFortunica {
+    return Intl.message(
+      '360° Reading',
+      name: 'reading360SessionsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ritual Session`
+  String get ritualSessionsFortunica {
+    return Intl.message(
+      'Ritual Session',
+      name: 'ritualSessionsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Astral Chart`
+  String get astrologySessionsFortunica {
+    return Intl.message(
+      'Astral Chart',
+      name: 'astrologySessionsFortunica',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Card Reading`
+  String get tarotSessionsFortunica {
+    return Intl.message(
+      'Card Reading',
+      name: 'tarotSessionsFortunica',
       desc: '',
       args: [],
     );
   }
 
   /// `Canceled`
-  String get cancelled {
+  String get cancelledFortunica {
     return Intl.message(
       'Canceled',
-      name: 'cancelled',
+      name: 'cancelledFortunica',
       desc: '',
       args: [],
     );
   }
 
   /// `Earned this month:`
-  String get earnedThisMonth {
+  String get earnedThisMonthFortunica {
     return Intl.message(
       'Earned this month:',
-      name: 'earnedThisMonth',
+      name: 'earnedThisMonthFortunica',
       desc: '',
       args: [],
     );
   }
 }
 
-class AppLocalizationDelegate extends LocalizationsDelegate<S> {
+class AppLocalizationDelegate extends LocalizationsDelegate<SFortunica> {
   const AppLocalizationDelegate();
 
   List<Locale> get supportedLocales {
@@ -2217,7 +2356,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   @override
   bool isSupported(Locale locale) => _isSupported(locale);
   @override
-  Future<S> load(Locale locale) => S.load(locale);
+  Future<SFortunica> load(Locale locale) => SFortunica.load(locale);
   @override
   bool shouldReload(AppLocalizationDelegate old) => false;
 

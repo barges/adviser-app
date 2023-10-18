@@ -2,8 +2,9 @@
 
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shared_advisor_interface/data/models/chats/meta.dart';
-import 'package:shared_advisor_interface/data/models/enums/attachment_type.dart';
+
+import '../enums/attachment_type.dart';
+import 'meta.dart';
 
 part 'attachment.freezed.dart';
 part 'attachment.g.dart';

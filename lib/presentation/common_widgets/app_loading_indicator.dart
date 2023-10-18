@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:shared_advisor_interface/presentation/themes/app_colors_dark.dart';
-import 'package:shared_advisor_interface/presentation/themes/app_colors_light.dart';
-import 'package:shared_advisor_interface/presentation/utils/utils.dart';
+
+import '../../themes/app_colors_dark.dart';
+import '../../themes/app_colors_light.dart';
+import '../../utils/utils.dart';
 
 class AppLoadingIndicator extends StatelessWidget {
   const AppLoadingIndicator({Key? key}) : super(key: key);

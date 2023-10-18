@@ -1,23 +1,27 @@
+import '../../../../extensions.dart';
+import 'package:intl/intl.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
-import 'package:shared_advisor_interface/data/models/customer_info/customer_info.dart';
-import 'package:shared_advisor_interface/data/models/customer_info/note.dart';
-import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/customer_profile_cubit.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/widgets/notes_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/widgets/question_properties_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/user_avatar.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:get/get.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
+
+import '../../../app_constants.dart';
+import '../../../data/models/customer_info/customer_info.dart';
+import '../../../data/models/customer_info/note.dart';
+import '../../../data/models/enums/gender.dart';
+import '../../../fortunica_extensions.dart';
+import '../../../generated/l10n.dart';
+import '../../screens/chat/chat_cubit.dart';
+import '../../screens/customer_profile/customer_profile_screen.dart';
+import '../user_avatar.dart';
+import 'customer_profile_cubit.dart';
+import 'widgets/notes_widget.dart';
+import 'widgets/question_properties_widget.dart';
 
 class CustomerProfileWidget extends StatelessWidget {
   final String customerId;
   final ValueChanged<CustomerProfileScreenArguments?>?
       updateClientInformationCallback;
+
   final ChatCubit? chatCubit;
 
   const CustomerProfileWidget({
@@ -60,176 +64,158 @@ class CustomerProfileWidget extends StatelessWidget {
                     .applyTo(const ClampingScrollPhysics()),
                 child: Builder(
                   builder: (context) {
-                    return (customerInfo == null)
-                        ? ListView(
-                            padding: EdgeInsets.zero,
-                            shrinkWrap: true,
-                            children: [
-                              SizedBox(
-                                height: MediaQuery.of(context).size.height,
-                              )
-                            ],
+                    if (customerInfo == null) {
+                      return ListView(
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        children: [
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height,
                           )
-                        : Column(
-                            children: [
-                              Container(
-                                color: theme.canvasColor,
-                                width: MediaQuery.of(context).size.width,
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal:
-                                        AppConstants.horizontalScreenPadding,
-                                    vertical: 24.0),
-                                child: Column(children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 4.0),
-                                    child: Stack(
-                                      alignment: Alignment.bottomCenter,
-                                      children: [
-                                        UserAvatar(
-                                          avatarUrl: customerInfo.zodiac
-                                              ?.imagePath(context),
-                                          diameter: 96.0,
-                                          isZodiac: true,
-                                        ),
-                                        // Container(
-                                        //   padding: const EdgeInsets.symmetric(
-                                        //       vertical: 2.0, horizontal: 8.0),
-                                        //   decoration: BoxDecoration(
-                                        //     color: AppColors.promotion,
-                                        //     borderRadius: BorderRadius.circular(
-                                        //       AppConstants.buttonRadius,
-                                        //     ),
-                                        //   ),
-                                        //   child: Text(
-                                        //     S.of(context).topSpender,
-                                        //     style: theme
-                                        //         .textTheme
-                                        //         .labelSmall
-                                        //         ?.copyWith(
-                                        //           fontWeight: FontWeight.w700,
-                                        //           color: AppColors.white,
-                                        //         ),
-                                        //   ),
-                                        // )
-                                      ],
+                        ],
+                      );
+                    } else {
+                      final Gender? gender = customerInfo.gender;
+                      final DateTime? birthdate = customerInfo.birthdate;
+                      return Column(
+                        children: [
+                          Container(
+                            color: theme.canvasColor,
+                            width: MediaQuery.of(context).size.width,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal:
+                                    AppConstants.horizontalScreenPadding,
+                                vertical: 24.0),
+                            child: Column(children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 4.0),
+                                child: Stack(
+                                  alignment: Alignment.bottomCenter,
+                                  children: [
+                                    UserAvatar(
+                                      avatarUrl: customerInfo.zodiac
+                                          ?.imagePath(context),
+                                      diameter: 96.0,
+                                      isZodiac: true,
                                     ),
-                                  ),
-                                  Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: AppConstants
-                                              .horizontalScreenPadding),
-                                      child: Column(
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal:
+                                          AppConstants.horizontalScreenPadding),
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 12.0,
+                                        ),
+                                        child: Builder(builder: (context) {
+                                          final String? firstName =
+                                              customerInfo.firstName;
+                                          final String? lastName =
+                                              customerInfo.lastName;
+                                          return Text(
+                                            firstName != null &&
+                                                    lastName != null
+                                                ? '$firstName $lastName'
+                                                : SFortunica.of(context)
+                                                    .notSpecifiedFortunica,
+                                            textAlign: TextAlign.center,
+                                            style:
+                                                theme.textTheme.headlineMedium,
+                                          );
+                                        }),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                              vertical: 12.0,
+                                          if (birthdate != null)
+                                            Text(
+                                              DateFormat(datePattern5)
+                                                      .format(birthdate)
+                                                      .capitalize ??
+                                                  '',
+                                              style: theme.textTheme.bodyMedium
+                                                  ?.copyWith(
+                                                color: theme.shadowColor,
+                                              ),
                                             ),
-                                            child: Builder(builder: (context) {
-                                              final String? firstName =
-                                                  customerInfo.firstName;
-                                              final String? lastName =
-                                                  customerInfo.lastName;
-                                              return Text(
-                                                firstName != null &&
-                                                        lastName != null
-                                                    ? '$firstName $lastName'
-                                                    : S
-                                                        .of(context)
-                                                        .notSpecified,
-                                                textAlign: TextAlign.center,
-                                                style: theme
-                                                    .textTheme.headlineMedium,
-                                              );
-                                            }),
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              if (customerInfo.birthdate !=
-                                                  null)
-                                                Text(
-                                                  DateFormat(datePattern9)
-                                                          .format(customerInfo
-                                                              .birthdate!)
-                                                          .capitalize ??
-                                                      '',
-                                                  style: theme
-                                                      .textTheme.bodyMedium
-                                                      ?.copyWith(
-                                                    color: theme.shadowColor,
-                                                  ),
+                                          if (gender != null ||
+                                              birthdate != null)
+                                            Row(
+                                              children: [
+                                                const SizedBox(
+                                                  width: 8.0,
                                                 ),
-                                              const SizedBox(
-                                                width: 8.0,
+                                                Container(
+                                                  width: 4.0,
+                                                  height: 4.0,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              90.0),
+                                                      color: theme.hintColor),
+                                                ),
+                                                const SizedBox(
+                                                  width: 8.0,
+                                                ),
+                                              ],
+                                            ),
+                                          if (gender != null)
+                                            Text(
+                                              gender.name(context),
+                                              style: theme.textTheme.bodyMedium
+                                                  ?.copyWith(
+                                                color: theme.shadowColor,
                                               ),
-                                              Container(
-                                                width: 4.0,
-                                                height: 4.0,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            90.0),
-                                                    color: theme.hintColor),
-                                              ),
-                                              const SizedBox(
-                                                width: 8.0,
-                                              ),
-                                              if (customerInfo.gender != null)
-                                                Text(
-                                                  customerInfo.gender!
-                                                      .name(context),
-                                                  style: theme
-                                                      .textTheme.bodyMedium
-                                                      ?.copyWith(
-                                                    color: theme.shadowColor,
-                                                  ),
-                                                )
-                                            ],
-                                          ),
+                                            )
                                         ],
-                                      )),
-                                  Builder(builder: (context) {
-                                    final List<String>? questionProperties =
-                                        customerInfo.advisorMatch?.values
-                                            .toList();
-                                    return (questionProperties != null &&
-                                            questionProperties.isNotEmpty)
-                                        ? Column(
+                                      ),
+                                    ],
+                                  )),
+                              Builder(builder: (context) {
+                                final List<String>? questionProperties =
+                                    customerInfo.advisorMatch?.values.toList();
+                                return (questionProperties != null &&
+                                        questionProperties.isNotEmpty)
+                                    ? Column(
+                                        children: [
+                                          const SizedBox(
+                                              height: AppConstants
+                                                  .horizontalScreenPadding),
+                                          Wrap(
+                                            runSpacing: 8.0,
                                             children: [
-                                              const SizedBox(
-                                                  height: AppConstants
-                                                      .horizontalScreenPadding),
-                                              Wrap(
-                                                runSpacing: 8.0,
-                                                children: [
-                                                  QuestionPropertiesWidget(
-                                                    properties:
-                                                        questionProperties,
-                                                  )
-                                                ],
+                                              QuestionPropertiesWidget(
+                                                properties: questionProperties,
                                               )
                                             ],
                                           )
-                                        : const SizedBox.shrink();
-                                  }),
-                                ]),
-                              ),
-                              Builder(builder: (context) {
-                                final List<Note>? notes = context.select(
-                                    (CustomerProfileCubit cubit) =>
-                                        cubit.state.notes);
-                                return NotesWidget(
-                                  notes: notes,
-                                  images: const [
-                                    [
-                                      //'https://cdn.shopify.com/s/files/1/0275/3318/0970/products/AgendaNotebook-2_800x.jpg'
-                                    ],
-                                  ],
-                                );
-                              })
-                            ],
-                          );
+                                        ],
+                                      )
+                                    : const SizedBox.shrink();
+                              }),
+                            ]),
+                          ),
+                          Builder(builder: (context) {
+                            final List<Note>? notes = context.select(
+                                (CustomerProfileCubit cubit) =>
+                                    cubit.state.notes);
+                            return NotesWidget(
+                              notes: notes,
+                              images: const [
+                                [
+                                  //'https://cdn.shopify.com/s/files/1/0275/3318/0970/products/AgendaNotebook-2_800x.jpg'
+                                ],
+                              ],
+                            );
+                          })
+                        ],
+                      );
+                    }
                   },
                 ),
               ),

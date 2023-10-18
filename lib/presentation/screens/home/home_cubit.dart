@@ -1,39 +1,40 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
-import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/home_state.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs_types.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../data/cache/fortunica_caching_manager.dart';
+import '../../../data/models/enums/fortunica_user_status.dart';
+import '../../../infrastructure/routing/app_router.gr.dart';
+import 'home_state.dart';
+import 'tabs_types.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   static final List<TabsTypes> tabsList = [
     TabsTypes.dashboard,
-    // TabsTypes.articles,
     TabsTypes.sessions,
     TabsTypes.account,
   ];
 
-  final CachingManager _cacheManager;
+  final FortunicaCachingManager _cacheManager;
+  final TabsTypes? _initTab;
+  late final StreamSubscription _userStatusSubscription;
+  late final List<PageRouteInfo> routes;
 
-  late final VoidCallback disposeListen;
+  HomeCubit(this._cacheManager, this._initTab) : super(const HomeState()) {
+    routes = tabsList.map((e) => _getPage(e)).toList();
 
-  HomeCubit(
-    this._cacheManager,
-  ) : super(const HomeState()) {
-    final HomeScreenArguments? arguments = Get.arguments;
-    if (arguments?.initTab != null && tabsList.contains(arguments!.initTab)) {
-      changeTabIndex(
-        tabsList.indexOf(arguments.initTab),
-      );
+    if (_initTab != null && tabsList.contains(_initTab)) {
+      Future.delayed(const Duration(seconds: 1)).then((value) {
+        changeTabIndex(
+          tabsList.indexOf(_initTab!),
+        );
+      });
     }
 
     emit(state.copyWith(userStatus: _cacheManager.getUserStatus()));
-    disposeListen = _cacheManager.listenCurrentUserStatus((value) {
+    _userStatusSubscription =
+        _cacheManager.listenCurrentUserStatusStream((value) {
       if (value.status != FortunicaUserStatus.live) {
         changeTabIndex(tabsList.indexOf(TabsTypes.account));
       }
@@ -41,19 +42,24 @@ class HomeCubit extends Cubit<HomeState> {
     });
   }
 
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
-
   @override
   Future<void> close() {
-    disposeListen.call();
+    _userStatusSubscription.cancel();
     return super.close();
-  }
-
-  void openDrawer() {
-    scaffoldKey.currentState?.openDrawer();
   }
 
   changeTabIndex(int index) {
     emit(state.copyWith(tabPositionIndex: index));
+  }
+
+  PageRouteInfo _getPage(TabsTypes tab) {
+    switch (tab) {
+      case TabsTypes.dashboard:
+        return const FortunicaDashboard();
+      case TabsTypes.sessions:
+        return const FortunicaChats();
+      case TabsTypes.account:
+        return const FortunicaAccount();
+    }
   }
 }

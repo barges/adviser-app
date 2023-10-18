@@ -2,16 +2,25 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+
+import '../../infrastructure/routing/app_router.dart';
+import '../../app_constants.dart';
+import '../../generated/l10n.dart';
+import '../../utils/utils.dart';
 
 Future<bool?> showDeleteAlert(
   BuildContext context,
-  String title,
-) {
+  String title, {
+  String? deleteText,
+  String? description,
+  bool swapButtonColorsForAndroid = false,
+}) {
   final ThemeData theme = Theme.of(context);
+  final String showDeleteText = deleteText ?? SFortunica.of(context).delete;
+
   return showDialog<bool>(
     context: context,
+    barrierColor: Utils.getOverlayColor(context),
     builder: (context) => Platform.isIOS
         ? CupertinoAlertDialog(
             title: Text(
@@ -21,11 +30,19 @@ Future<bool?> showDeleteAlert(
                 fontSize: 17.0,
               ),
             ),
+            content: description != null
+                ? Text(
+                    description,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontSize: 13.0,
+                    ),
+                  )
+                : null,
             actions: [
               CupertinoDialogAction(
                 isDefaultAction: true,
                 onPressed: () => Navigator.pop(context, true),
-                child: Text(S.of(context).delete,
+                child: Text(showDeleteText,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: theme.errorColor,
                       fontSize: 17.0,
@@ -34,9 +51,9 @@ Future<bool?> showDeleteAlert(
               const SizedBox.shrink(),
               CupertinoDialogAction(
                 isDefaultAction: true,
-                onPressed: () => Navigator.pop(context, false),
+                onPressed: () => context.popForced(false),
                 child: Text(
-                  S.of(context).cancel,
+                  SFortunica.of(context).cancel,
                   style: theme.textTheme.displayLarge?.copyWith(
                     color: theme.primaryColor,
                     fontSize: 17.0,
@@ -67,6 +84,18 @@ Future<bool?> showDeleteAlert(
                       style:
                           theme.textTheme.labelLarge?.copyWith(fontSize: 17.0),
                     ),
+                    if (description != null)
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 12.0,
+                        ),
+                        child: Text(
+                          description,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            fontSize: 13.0,
+                          ),
+                        ),
+                      ),
                     const SizedBox(
                       height: 24.0,
                     ),
@@ -74,20 +103,25 @@ Future<bool?> showDeleteAlert(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         TextButton(
-                          child: Text(S.of(context).cancel.toUpperCase(),
-                              style: theme.textTheme.displayLarge?.copyWith(
-                                fontSize: 14.0,
-                                color: theme.primaryColor,
-                              )),
-                          onPressed: () => Navigator.pop(context, false),
+                          child:
+                              Text(SFortunica.of(context).cancel.toUpperCase(),
+                                  style: theme.textTheme.displayLarge?.copyWith(
+                                    fontSize: 14.0,
+                                    color: swapButtonColorsForAndroid
+                                        ? theme.errorColor
+                                        : theme.primaryColor,
+                                  )),
+                          onPressed: () => context.popForced(false),
                         ),
                         TextButton(
-                          child: Text(S.of(context).delete.toUpperCase(),
+                          child: Text(showDeleteText.toUpperCase(),
                               style: theme.textTheme.displayLarge?.copyWith(
                                 fontSize: 14.0,
-                                color: theme.errorColor,
+                                color: swapButtonColorsForAndroid
+                                    ? theme.primaryColor
+                                    : theme.errorColor,
                               )),
-                          onPressed: () => Navigator.pop(context, true),
+                          onPressed: () => context.popForced(true),
                         )
                       ],
                     )

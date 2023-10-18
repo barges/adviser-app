@@ -1,12 +1,16 @@
 import 'package:dio/dio.dart';
+import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:shared_advisor_interface/data/network/requests/reset_password_request.dart';
-import 'package:shared_advisor_interface/data/network/responses/login_response.dart';
+
+import '../requests/reset_password_request.dart';
+import '../responses/login_response.dart';
 
 part 'auth_api.g.dart';
 
 @RestApi()
+@injectable
 abstract class AuthApi {
+  @factoryMethod
   factory AuthApi(Dio dio) = _AuthApi;
 
   @POST('/experts/login/app')

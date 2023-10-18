@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/empty_list_widget.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+
+import '../../../app_constants.dart';
+import '../../../generated/l10n.dart';
+import '../empty_list_widget.dart';
 
 class EmptyStatisticsWidget extends StatelessWidget {
   const EmptyStatisticsWidget({Key? key}) : super(key: key);
@@ -20,12 +21,14 @@ class EmptyStatisticsWidget extends StatelessWidget {
                     horizontal: AppConstants.horizontalScreenPadding,
                   ),
                   child: EmptyListWidget(
-                    title: S.of(context).youHaveNotCompletedAnySessionsYet,
+                    title: SFortunica.of(context)
+                        .youHaveNotCompletedAnySessionsYetFortunica,
                   ),
                 ),
               ],
             ),
           ),
+          //const SeeMoreWidget(),
         ],
       ),
     );

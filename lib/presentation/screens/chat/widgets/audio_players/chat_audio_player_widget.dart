@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/audio_players/chat_audio_player_cubit.dart';
-import 'package:shared_advisor_interface/presentation/services/audio/audio_player_service.dart';
+
+import '../../../../../data/models/chats/attachment.dart';
+import '../../../../../generated/assets/assets.gen.dart';
+import '../../../../../main_cubit.dart';
+import '../../../../../services/audio/audio_player_service.dart';
+import '../../chat_cubit.dart';
+import 'chat_audio_player_cubit.dart';
 
 class ChatAudioPlayerWidget extends StatelessWidget {
   final bool isQuestion;

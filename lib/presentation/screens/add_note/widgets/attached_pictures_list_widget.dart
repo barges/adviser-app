@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/presentation/screens/add_note/add_note_cubit.dart';
+
+import '../add_note_cubit.dart';
 
 class AttachedPicturesListWidget extends StatelessWidget {
   const AttachedPicturesListWidget({Key? key}) : super(key: key);

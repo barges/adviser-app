@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
+
+import '../../../generated/assets/assets.gen.dart';
+import '../../../generated/l10n.dart';
 
 enum SessionsTypes {
   public,
@@ -21,28 +22,28 @@ enum SessionsTypes {
   String sessionName(BuildContext context) {
     switch (this) {
       case SessionsTypes.public:
-        return S.of(context).public;
+        return SFortunica.of(context).publicFortunica;
       case SessionsTypes.private:
-        return S.of(context).private;
+        return SFortunica.of(context).privateFortunica;
       case SessionsTypes.tarot:
-        return S.of(context).tarot;
+        return SFortunica.of(context).tarotFortunica;
       case SessionsTypes.palmreading:
-        return S.of(context).palmReading;
+        return SFortunica.of(context).palmReadingFortunica;
       case SessionsTypes.astrology:
-        return S.of(context).astrology;
+        return SFortunica.of(context).astrologyFortunica;
       case SessionsTypes.reading360:
-        return S.of(context).reading360;
+        return SFortunica.of(context).reading360Fortunica;
       case SessionsTypes.aurareading:
-        return S.of(context).soulmateReading;
+        return SFortunica.of(context).soulmateReadingFortunica;
       case SessionsTypes.lovecrushreading:
-        return S.of(context).loveCrushReading;
+        return SFortunica.of(context).loveCrushReadingFortunica;
       case SessionsTypes.ritual:
-        return S.of(context).ritual;
+        return SFortunica.of(context).ritualFortunica;
       case SessionsTypes.tipsLow:
       case SessionsTypes.tipsMedium:
       case SessionsTypes.tipsHigh:
       case SessionsTypes.tips:
-        return S.of(context).tips;
+        return SFortunica.of(context).tipsFortunica;
       case SessionsTypes.undefined:
         return '';
     }
@@ -51,23 +52,23 @@ enum SessionsTypes {
   String sessionNameForStatistics(context) {
     switch (this) {
       case SessionsTypes.public:
-        return S.of(context).publicQuestion;
+        return SFortunica.of(context).publicQuestionFortunica;
       case SessionsTypes.private:
-        return S.of(context).privateQuestion;
+        return SFortunica.of(context).privateQuestionFortunica;
       case SessionsTypes.tarot:
-        return S.of(context).tarotSessions;
+        return SFortunica.of(context).tarotSessionsFortunica;
       case SessionsTypes.palmreading:
-        return S.of(context).palmReadingSessions;
+        return SFortunica.of(context).palmReadingSessionsFortunica;
       case SessionsTypes.astrology:
-        return S.of(context).astrologySessions;
+        return SFortunica.of(context).astrologySessionsFortunica;
       case SessionsTypes.reading360:
-        return S.of(context).reading360Sessions;
+        return SFortunica.of(context).reading360SessionsFortunica;
       case SessionsTypes.aurareading:
-        return S.of(context).soulmateReadingSessions;
+        return SFortunica.of(context).soulmateReadingSessionsFortunica;
       case SessionsTypes.lovecrushreading:
-        return S.of(context).loveCrushReadingSessions;
+        return SFortunica.of(context).loveCrushReadingSessionsFortunica;
       case SessionsTypes.ritual:
-        return S.of(context).ritualSessions;
+        return SFortunica.of(context).ritualSessionsFortunica;
       case SessionsTypes.tipsLow:
       case SessionsTypes.tipsMedium:
       case SessionsTypes.tipsHigh:

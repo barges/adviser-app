@@ -1,33 +1,38 @@
-import 'package:bloc/bloc.dart';
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_month.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_statistics.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_year.dart';
-import 'package:shared_advisor_interface/data/network/responses/reports_response.dart';
-import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/balance_and_transactions/balance_and_transactions_state.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../data/cache/fortunica_caching_manager.dart';
+import '../../../data/models/reports_endpoint/reports_month.dart';
+import '../../../data/models/reports_endpoint/reports_statistics.dart';
+import '../../../data/models/reports_endpoint/reports_year.dart';
+import '../../../data/network/responses/reports_response.dart';
+import '../../../domain/repositories/fortunica_user_repository.dart';
+import '../../../global.dart';
+import '../../../main_cubit.dart';
+import 'balance_and_transactions_state.dart';
 
 class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
-  final UserRepository _userRepository = getIt.get<UserRepository>();
-  final MainCubit mainCubit = getIt.get<MainCubit>();
-  final CachingManager _cacheManager = getIt.get<CachingManager>();
+  final FortunicaCachingManager _cacheManager;
+  final FortunicaUserRepository _userRepository;
+  final MainCubit _mainCubit;
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
-  late final VoidCallback _disposeUserIdListen;
+  late final StreamSubscription _userIdSubscription;
 
   String? userId;
 
-  BalanceAndTransactionsCubit() : super(const BalanceAndTransactionsState()) {
+  BalanceAndTransactionsCubit(
+      this._cacheManager, this._userRepository, this._mainCubit)
+      : super(const BalanceAndTransactionsState()) {
     userId = _cacheManager.getUserId();
 
     getReports();
 
-    _disposeUserIdListen = _cacheManager.listenUserId((value) {
+    _userIdSubscription = _cacheManager.listenUserIdStream((value) {
       if (value != null) {
         userId = value;
         getReports();
@@ -37,7 +42,7 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
 
   @override
   Future<void> close() async {
-    _disposeUserIdListen.call();
+    _userIdSubscription.cancel();
 
     super.close();
   }
@@ -45,7 +50,7 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
   Future<void> getReports() async {
     try {
       if (userId == null) {
-        mainCubit.updateAccount();
+        _mainCubit.updateAccount();
       }
       if (userId != null) {
         final List<ReportsMonth> months = [];
@@ -66,10 +71,6 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
     } catch (e) {
       logger.d(e);
     }
-  }
-
-  void openDrawer() {
-    scaffoldKey.currentState?.openDrawer();
   }
 
   Future<void> updateStatisticsByMonth(int index) async {

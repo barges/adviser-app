@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
-import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
-import 'package:shared_advisor_interface/data/models/enums/attachment_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/message_content_type.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
+
+import '../../app_constants.dart';
+import '../../data/models/chats/attachment.dart';
+import '../../data/models/chats/chat_item.dart';
+import '../../data/models/enums/attachment_type.dart';
+import '../../data/models/enums/message_content_type.dart';
+import '../../generated/assets/assets.gen.dart';
+import '../../generated/l10n.dart';
+import '../../themes/app_colors.dart';
+import 'app_image_widget.dart';
 
 class ListTileContentWidget extends StatelessWidget {
   final ChatItem question;
@@ -163,7 +164,7 @@ class _MediaContent extends StatelessWidget {
                 width: 8.0,
               ),
               Text(
-                S.of(context).audioMessage,
+                SFortunica.of(context).audioMessageFortunica,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   fontSize: 14.0,
                   color: (isActive == true)

@@ -2,55 +2,57 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
+import 'package:disk_space/disk_space.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
-import 'package:get/get.dart';
+import '../../../../extensions.dart';
 import 'package:mime/mime.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
-import 'package:shared_advisor_interface/data/models/app_errors/ui_error_type.dart';
-import 'package:shared_advisor_interface/data/models/app_success/app_success.dart';
-import 'package:shared_advisor_interface/data/models/app_success/ui_success_type.dart';
-import 'package:shared_advisor_interface/data/models/chats/answer_limitation.dart';
-import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
-import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
-import 'package:shared_advisor_interface/data/models/chats/content_limitation.dart';
-import 'package:shared_advisor_interface/data/models/chats/meta.dart';
-import 'package:shared_advisor_interface/data/models/chats/rirual_card_info.dart';
-import 'package:shared_advisor_interface/data/models/enums/attachment_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/message_content_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/sessions_types.dart';
-import 'package:shared_advisor_interface/data/network/requests/answer_request.dart';
-import 'package:shared_advisor_interface/data/network/responses/answer_validation_response.dart';
-import 'package:shared_advisor_interface/data/network/responses/rituals_response.dart';
-import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
-import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_input_widget.dart';
-import 'package:shared_advisor_interface/presentation/services/audio/audio_player_service.dart';
-import 'package:shared_advisor_interface/presentation/services/audio/audio_recorder_service.dart';
-import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
-import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
-import 'package:snapping_sheet/snapping_sheet.dart';
-import 'package:storage_space/storage_space.dart';
+import 'package:snapping_sheet_2/snapping_sheet.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../../../infrastructure/routing/app_router.dart';
+import '../../../app_constants.dart';
+import '../../../data/models/app_error/app_error.dart';
+import '../../../data/models/app_error/ui_error_type.dart';
+import '../../../data/models/app_success/app_success.dart';
+import '../../../data/models/app_success/ui_success_type.dart';
+import '../../../data/models/chats/answer_limitation.dart';
+import '../../../data/models/chats/attachment.dart';
+import '../../../data/models/chats/chat_item.dart';
+import '../../../data/models/chats/content_limitation.dart';
+import '../../../data/models/chats/meta.dart';
+import '../../../data/models/enums/attachment_type.dart';
+import '../../../data/models/enums/chat_item_status_type.dart';
+import '../../../data/models/enums/chat_item_type.dart';
+import '../../../data/models/enums/message_content_type.dart';
+import '../../../data/models/enums/sessions_types.dart';
+import '../../../data/network/requests/answer_request.dart';
+import '../../../data/network/responses/answer_validation_response.dart';
+import '../../../data/network/responses/rituals_response.dart';
+import '../../../domain/repositories/fortunica_chats_repository.dart';
+import '../../../fortunica_constants.dart';
+import '../../../global.dart';
+import '../../../main.dart';
+import '../../../main_cubit.dart';
+import '../../../services/audio/audio_player_service.dart';
+import '../../../services/audio/audio_recorder_service.dart';
+import '../../../services/check_permission_service.dart';
+import '../../../services/connectivity_service.dart';
+import '../../base_cubit/base_cubit.dart';
+import '../customer_profile/customer_profile_screen.dart';
+import 'chat_screen.dart';
 import 'chat_state.dart';
+import 'widgets/chat_text_input_widget.dart';
 
 const String _recordFileExt = 'm4a';
 
-class ChatCubit extends Cubit<ChatState> {
+class ChatCubit extends BaseCubit<ChatState> {
   final ScrollController activeMessagesScrollController = ScrollController();
   final ScrollController textInputScrollController = ScrollController();
   final SnappingSheetController controller = SnappingSheetController();
@@ -64,20 +66,18 @@ class ChatCubit extends Cubit<ChatState> {
 
   GlobalKey? questionGlobalKey;
 
-  final ConnectivityService _connectivityService;
+  final ConnectivityService connectivityService;
 
-  late final StreamSubscription<bool> _keyboardSubscription;
-
-  final ChatsRepository _repository;
-  late final ChatScreenArguments chatScreenArguments;
-  final VoidCallback _showErrorAlert;
-  final ValueGetter<Future<bool?>> _confirmSendAnswerAlert;
-  final ValueGetter<Future<bool?>> _deleteAudioMessageAlert;
-  final ValueGetter<Future<bool?>> _recordingIsNotPossibleAlert;
-  final MainCubit _mainCubit;
+  final FortunicaChatsRepository chatsRepository;
+  final ChatScreenArguments chatScreenArguments;
+  final VoidCallback showErrorAlert;
+  final ValueGetter<Future<bool?>> confirmSendAnswerAlert;
+  final ValueGetter<Future<bool?>> deleteAudioMessageAlert;
+  final ValueGetter<Future<bool?>> recordingIsNotPossibleAlert;
+  final MainCubit mainCubit;
   final AudioPlayerService audioPlayer;
   final AudioRecorderService audioRecorder;
-  final CheckPermissionService _checkPermissionService;
+  final CheckPermissionService checkPermissionService;
   final _uuid = const Uuid();
   int _tillShowMessagesInSec = 0;
   int _afterShowMessagesInSec = 0;
@@ -90,11 +90,9 @@ class ChatCubit extends Cubit<ChatState> {
   double _maxAttachmentSizeInMb = 0;
   int? _recordAudioDuration;
   AnswerRequest? _answerRequest;
-  late final StreamSubscription<bool> _appOnPauseSubscription;
-  late final StreamSubscription<bool> _stopAudioSubscription;
   late final StreamSubscription<bool> _refreshChatInfoSubscription;
+
   StreamSubscription<RecorderDisposition>? _recordingProgressSubscription;
-  StreamSubscription<RecorderServiceState>? _recordingStateSubscription;
   StreamSubscription<RecorderDisposition>? _recordingDurationSubscription;
 
   Timer? _answerTimer;
@@ -106,20 +104,19 @@ class ChatCubit extends Cubit<ChatState> {
 
   static List<AnswerLimitation> _answerLimitations = [];
 
-  ChatCubit(
-    this._repository,
-    this._connectivityService,
-    this._mainCubit,
-    this.audioRecorder,
-    this.audioPlayer,
-    this._checkPermissionService,
-    this._showErrorAlert,
-    this._confirmSendAnswerAlert,
-    this._deleteAudioMessageAlert,
-    this._recordingIsNotPossibleAlert,
-  ) : super(const ChatState()) {
-    chatScreenArguments = Get.arguments;
-
+  ChatCubit({
+    required this.chatsRepository,
+    required this.connectivityService,
+    required this.mainCubit,
+    required this.audioRecorder,
+    required this.audioPlayer,
+    required this.checkPermissionService,
+    required this.showErrorAlert,
+    required this.confirmSendAnswerAlert,
+    required this.deleteAudioMessageAlert,
+    required this.recordingIsNotPossibleAlert,
+    required this.chatScreenArguments,
+  }) : super(const ChatState()) {
     textInputEditingController.addListener(textInputEditingControllerListener);
 
     if (chatScreenArguments.clientIdFromPush != null) {
@@ -141,7 +138,7 @@ class ChatCubit extends Cubit<ChatState> {
     }
     getData();
 
-    _appOnPauseSubscription = _mainCubit.changeAppLifecycleStream.listen(
+    addListener(mainCubit.changeAppLifecycleStream.listen(
       (value) async {
         if (isPublicChat()) {
           _answerTimer?.cancel();
@@ -158,9 +155,9 @@ class ChatCubit extends Cubit<ChatState> {
           audioPlayer.pause();
         }
       },
-    );
+    ));
 
-    _keyboardSubscription = KeyboardVisibilityController()
+    addListener(KeyboardVisibilityController()
         .onChange
         .debounceTime(const Duration(milliseconds: 700))
         .listen((bool visible) {
@@ -168,39 +165,23 @@ class ChatCubit extends Cubit<ChatState> {
         if (!_isAttachingPicture) {
           textInputFocusNode.unfocus();
         }
-        emit(state.copyWith(isTextInputCollapsed: true));
+        emit(state.copyWith(
+          isTextInputCollapsed: true,
+          keyboardOpened: !state.keyboardOpened,
+        ));
       } else {
         scrollChatDown();
       }
-    });
+    }));
 
-    _stopAudioSubscription = _mainCubit.audioStopTrigger.listen((value) {
+    addListener(mainCubit.audioStopTrigger.listen((value) {
       if (audioRecorder.isRecording) {
         stopRecordingAudio();
       }
       audioPlayer.pause();
-    });
+    }));
 
-    _refreshChatInfoSubscription = refreshChatInfoTrigger.listen((value) {
-      getData();
-    });
-
-    textInputFocusNode.addListener(() {
-      final bool isFocused = textInputFocusNode.hasFocus;
-
-      logger.d('isFocused: $isFocused');
-
-      if (!isFocused) {
-        if (_isAttachingPicture) {
-          setTextInputFocus(true);
-        } else {
-          setTextInputFocus(false);
-        }
-      }
-      getBottomTextAreaHeight();
-    });
-
-    _recordingStateSubscription = audioRecorder.stateStream?.listen((e) async {
+    addListener(audioRecorder.stateStream.listen((e) async {
       if (e.state == SoundRecorderState.isRecording) {
         emit(state.copyWith(
           recordingDuration: const Duration(),
@@ -219,6 +200,19 @@ class ChatCubit extends Cubit<ChatState> {
       emit(state.copyWith(
         isRecording: e.state == SoundRecorderState.isRecording,
       ));
+    }));
+
+    _refreshChatInfoSubscription = refreshChatInfoTrigger.listen((value) {
+      getData();
+    });
+
+    textInputFocusNode.addListener(() {
+      final bool isFocused = textInputFocusNode.hasFocus;
+
+      if (!isFocused) {
+        setTextInputFocus(false);
+      }
+      getBottomTextAreaHeight();
     });
 
     getBottomTextAreaHeight();
@@ -226,15 +220,12 @@ class ChatCubit extends Cubit<ChatState> {
 
   @override
   Future<void> close() async {
-    _keyboardSubscription.cancel();
     if (audioRecorder.isRecording) {
       await cancelRecordingAudio();
     }
     _deleteRecordedAudioFile(state.recordedAudio);
 
     activeMessagesScrollController.dispose();
-    _appOnPauseSubscription.cancel();
-    _stopAudioSubscription.cancel();
 
     textInputScrollController.dispose();
     textInputEditingController.dispose();
@@ -244,13 +235,13 @@ class ChatCubit extends Cubit<ChatState> {
     audioPlayer.dispose();
 
     _recordingProgressSubscription?.cancel();
-    _recordingDurationSubscription?.cancel();
-    _recordingStateSubscription?.cancel();
 
     _answerTimer?.cancel();
     _attachingPictureTimer?.cancel();
 
     _refreshChatInfoSubscription.cancel();
+
+    _recordingDurationSubscription?.cancel();
 
     return super.close();
   }
@@ -289,8 +280,12 @@ class ChatCubit extends Cubit<ChatState> {
     if (height <= maxHeight) {
       emit(state.copyWith(textInputHeight: height));
       if (controller.isAttached && state.isTextInputCollapsed) {
-        controller.snapToPosition(SnappingPosition.pixels(
-            positionPixels: height + grabbingHeight * 2));
+        try {
+          controller.snapToPosition(SnappingPosition.pixels(
+              positionPixels: height + grabbingHeight * 2));
+        } catch (e) {
+          logger.d('method -> updateHiddenInputHeight in ChatCubit: \n$e');
+        }
         scrollChatDown();
       }
     } else {
@@ -348,33 +343,33 @@ class ChatCubit extends Cubit<ChatState> {
     _afterShowMessagesInSec =
         answerLimitationContent?.questionRemindMinutes != null
             ? answerLimitationContent!.questionRemindMinutes! *
-                AppConstants.minuteInSec
-            : AppConstants.afterShowAnswerTimingMessagesInSec;
+                FortunicaConstants.minuteInSec
+            : FortunicaConstants.afterShowAnswerTimingMessagesInSec;
     _tillShowMessagesInSec =
         answerLimitationContent?.questionReturnMinutes != null
             ? answerLimitationContent!.questionReturnMinutes! *
-                    AppConstants.minuteInSec -
+                    FortunicaConstants.minuteInSec -
                 _afterShowMessagesInSec
-            : AppConstants.tillShowAnswerTimingMessagesInSec;
+            : FortunicaConstants.tillShowAnswerTimingMessagesInSec;
 
     _minRecordDurationInSec = answerLimitationContent?.audioTime?.min ??
-        AppConstants.minRecordDurationInSec;
+        FortunicaConstants.minRecordDurationInSec;
     _maxRecordDurationInSec = answerLimitationContent?.audioTime?.max ??
-        AppConstants.maxRecordDurationInSec;
+        FortunicaConstants.maxRecordDurationInSec;
     _maxRecordDurationInMinutes =
-        _maxRecordDurationInSec ~/ AppConstants.minuteInSec;
+        _maxRecordDurationInSec ~/ FortunicaConstants.minuteInSec;
 
     _minTextLength = answerLimitationContent?.min ??
         (questionFromDBtype == ChatItemType.ritual
-            ? AppConstants.minTextLengthRitual
-            : AppConstants.minTextLength);
+            ? FortunicaConstants.minTextLengthRitual
+            : FortunicaConstants.minTextLength);
     _maxTextLength = answerLimitationContent?.max ??
         (questionFromDBtype == ChatItemType.ritual
-            ? AppConstants.maxTextLengthRitual
-            : AppConstants.maxTextLength);
+            ? FortunicaConstants.maxTextLengthRitual
+            : FortunicaConstants.maxTextLength);
 
     _maxAttachmentSizeInBytes = answerLimitationContent?.bodySize?.max ??
-        AppConstants.maxAttachmentSizeInBytes;
+        FortunicaConstants.maxAttachmentSizeInBytes;
     _maxAttachmentSizeInMb = _maxAttachmentSizeInBytes /
         (AppConstants.bytesInKilobyte * AppConstants.bytesInKilobyte);
   }
@@ -382,7 +377,7 @@ class ChatCubit extends Cubit<ChatState> {
   Future<void> _getAnswerLimitations() async {
     try {
       final AnswerValidationResponse response =
-          await _repository.getAnswerValidation();
+          await chatsRepository.getAnswerValidation();
       _answerLimitations = response.answerLimitations ?? [];
     } catch (e) {
       emit(state.copyWith(refreshEnabled: true));
@@ -413,10 +408,10 @@ class ChatCubit extends Cubit<ChatState> {
     try {
       ChatItem? question;
       if (chatScreenArguments.publicQuestionId != null) {
-        question = await _repository.getQuestion(
+        question = await chatsRepository.getQuestion(
             id: chatScreenArguments.publicQuestionId!);
       } else if (chatScreenArguments.privateQuestionId != null) {
-        question = await _repository.getQuestion(
+        question = await chatsRepository.getQuestion(
             id: chatScreenArguments.privateQuestionId!);
       }
 
@@ -434,7 +429,7 @@ class ChatCubit extends Cubit<ChatState> {
       _refreshChatInfoSubscription.cancel();
     } on DioError catch (e) {
       if (_checkStatusCode(e)) {
-        _showErrorAlert();
+        showErrorAlert();
       }
       emit(state.copyWith(refreshEnabled: true));
       logger.d(e);
@@ -444,7 +439,7 @@ class ChatCubit extends Cubit<ChatState> {
   Future<void> _getRituals(String ritualId) async {
     try {
       final RitualsResponse ritualsResponse =
-          await _repository.getRituals(id: ritualId);
+          await chatsRepository.getRituals(id: ritualId);
 
       final List<ChatItem>? questions = ritualsResponse.story?.questions;
       final List<ChatItem>? answers = ritualsResponse.story?.answers;
@@ -490,7 +485,7 @@ class ChatCubit extends Cubit<ChatState> {
     } on DioError catch (e) {
       final int? statusCode = e.response?.statusCode;
       if (statusCode == 404 || statusCode == 409 || statusCode == 400) {
-        _showErrorAlert();
+        showErrorAlert();
       }
 
       emit(state.copyWith(refreshEnabled: true));
@@ -511,7 +506,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   Future<void> takeQuestion() async {
     try {
-      final ChatItem question = await _repository.takeQuestion(
+      final ChatItem question = await chatsRepository.takeQuestion(
         AnswerRequest(
           questionID: chatScreenArguments.publicQuestionId,
         ),
@@ -522,13 +517,13 @@ class ChatCubit extends Cubit<ChatState> {
           questionStatus: question.status ?? ChatItemStatusType.open,
         ),
       );
-      _mainCubit.updateSessions();
+      mainCubit.updateSessions();
       if (question.status == ChatItemStatusType.taken) {
         _startTimer(_tillShowMessagesInSec, _afterShowMessagesInSec);
       }
     } on DioError catch (e) {
       if (_checkStatusCode(e)) {
-        _showErrorAlert();
+        showErrorAlert();
       }
       logger.d(e);
     }
@@ -536,7 +531,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   Future<void> returnQuestion() async {
     try {
-      await _repository.returnQuestion(
+      await chatsRepository.returnQuestion(
         AnswerRequest(
           questionID: chatScreenArguments.publicQuestionId,
         ),
@@ -545,21 +540,17 @@ class ChatCubit extends Cubit<ChatState> {
       logger.d(e);
     }
 
-    _mainCubit.updateSessions();
-    Get.back();
+    mainCubit.updateSessions();
+    currentContext?.popForced();
     _answerTimer?.cancel();
   }
 
   Future<void> startRecordingAudio(BuildContext context) async {
     textInputFocusNode.unfocus();
-    StorageSpace freeSpace = await getStorageSpace(
-      lowOnSpaceThreshold: 0,
-      fractionDigits: 1,
-    );
-    final freeSpaceInMb = freeSpace.free /
-        (AppConstants.bytesInKilobyte * AppConstants.bytesInKilobyte);
+
+    final freeSpaceInMb = await DiskSpace.getFreeDiskSpace ?? double.infinity;
     if (freeSpaceInMb <= AppConstants.minFreeSpaceInMb) {
-      await _recordingIsNotPossibleAlert();
+      await recordingIsNotPossibleAlert();
       return;
     }
 
@@ -568,7 +559,7 @@ class ChatCubit extends Cubit<ChatState> {
     audioPlayer.stop();
 
     // ignore: use_build_context_synchronously
-    await _checkPermissionService.handlePermission(
+    await checkPermissionService.handlePermission(
         context, PermissionType.audio);
 
     final isRecordGranted = await Permission.microphone.isGranted;
@@ -606,13 +597,13 @@ class ChatCubit extends Cubit<ChatState> {
       _recordAudioDuration = (metaAudio.trackDuration ?? 0) ~/ 1000;
       if (!checkMinRecordDurationIsOk()) {
         if (state.currentTabIndex == 0) {
-          _mainCubit.updateErrorMessage(UIError(
+          mainCubit.updateErrorMessage(UIError(
               uiErrorType:
                   UIErrorType.youCantSendThisMessageBecauseItsLessThanXSeconds,
               args: [_minRecordDurationInSec]));
         }
       } else if (!_checkMaxRecordDurationIsOk()) {
-        _mainCubit.updateErrorMessage(UIError(
+        mainCubit.updateErrorMessage(UIError(
             uiErrorType: UIErrorType.youVeReachTheXMinuteTimeLimit,
             args: [_maxRecordDurationInMinutes]));
         isSendButtonEnabled = true;
@@ -651,7 +642,7 @@ class ChatCubit extends Cubit<ChatState> {
   Future<void> deleteRecordedAudio() async {
     await audioPlayer.stop();
 
-    if (await _deleteAudioMessageAlert() == true) {
+    if (await deleteAudioMessageAlert() == true) {
       await _deleteRecordedAudioFile(state.recordedAudio);
       _recordAudioDuration = null;
 
@@ -677,7 +668,8 @@ class ChatCubit extends Cubit<ChatState> {
     _tryStartAnswerSend();
 
     final List<File> images = List.of(state.attachedPictures);
-    if (image != null && images.length < AppConstants.maxAttachedPictures) {
+    if (image != null &&
+        images.length < FortunicaConstants.maxAttachedPictures) {
       images.add(image);
     } else {
       return;
@@ -725,7 +717,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> sendAnswer(ChatContentType contentType) async {
-    if (await _confirmSendAnswerAlert() == true) {
+    if (await confirmSendAnswerAlert() == true) {
       switch (contentType) {
         case ChatContentType.media:
           return sendMediaAnswer();
@@ -744,7 +736,7 @@ class ChatCubit extends Cubit<ChatState> {
     if (answer != null) {
       if (answer.isSent) {
         _deleteRecordedAudioFile(state.recordedAudio);
-        _mainCubit.updateSessions();
+        mainCubit.updateSessions();
         _recordAudioDuration = null;
       }
 
@@ -780,7 +772,7 @@ class ChatCubit extends Cubit<ChatState> {
       scrollChatDown();
 
       if (answer.isSent) {
-        _mainCubit.updateSessions();
+        mainCubit.updateSessions();
       }
     }
   }
@@ -800,30 +792,14 @@ class ChatCubit extends Cubit<ChatState> {
   void clearSuccessMessage() {
     if (state.appSuccess is! EmptySuccess) {
       _counterMessageCleared = state.appSuccess.uiSuccessType ==
-          UISuccessType.thisQuestionWillBeReturnedToTheGeneralListAfterCounter;
+          UISuccessMessagesType
+              .thisQuestionWillBeReturnedToTheGeneralListAfterCounter;
       emit(state.copyWith(appSuccess: const EmptySuccess()));
     }
   }
 
-  void goToGallery(RitualCardInfo ritualCardInfo, double initPage) {
-    List<String> pictures = [];
-    if (ritualCardInfo.leftImage != null) {
-      pictures.add(ritualCardInfo.leftImage!);
-    }
-    if (ritualCardInfo.rightImage != null) {
-      pictures.add(ritualCardInfo.rightImage!);
-    }
-    Get.toNamed(
-      AppRoutes.galleryPictures,
-      arguments: GalleryPicturesScreenArguments(
-        pictures: pictures,
-        initPage: initPage,
-      ),
-    );
-  }
-
   Future<void> _tryStartAnswerSend() async {
-    if (await _connectivityService.checkConnection() &&
+    if (await connectivityService.checkConnection() &&
         !_isStartAnswerSending &&
         chatScreenArguments.publicQuestionId == null &&
         state.questionFromDB?.id != null &&
@@ -836,8 +812,8 @@ class ChatCubit extends Cubit<ChatState> {
 
   Future<void> _startAnswer(String questionId) async {
     try {
-      final ChatItem question =
-          await _repository.startAnswer(AnswerRequest(questionID: questionId));
+      final ChatItem question = await chatsRepository
+          .startAnswer(AnswerRequest(questionID: questionId));
       emit(
         state.copyWith(
           questionFromDB: state.questionFromDB
@@ -877,7 +853,7 @@ class ChatCubit extends Cubit<ChatState> {
               afterTakenInSec;
         }
 
-        if (afterShowMessagesInSec <= AppConstants.minuteInSec) {
+        if (afterShowMessagesInSec <= FortunicaConstants.minuteInSec) {
           _setAnswerIsNotPossible();
         }
 
@@ -897,14 +873,17 @@ class ChatCubit extends Cubit<ChatState> {
 
         _answerTimer = Timer.periodic(tick, (_) {
           tillEnd = tillEnd - tick;
-          if (tillEnd.inSeconds > AppConstants.minuteInSec) {
+          if (tillEnd.inSeconds > FortunicaConstants.minuteInSec) {
             if (!_counterMessageCleared) {
-              updateSuccessMessage(UISuccess.withArguments(
-                  UISuccessType
+              updateSuccessMessage(
+                UISuccess.withArguments(
+                  UISuccessMessagesType
                       .thisQuestionWillBeReturnedToTheGeneralListAfterCounter,
-                  tillEnd.formatMMSS));
+                  _formatMMSS(tillEnd),
+                ),
+              );
             }
-          } else if (tillEnd.inSeconds == AppConstants.minuteInSec) {
+          } else if (tillEnd.inSeconds == FortunicaConstants.minuteInSec) {
             _setAnswerIsNotPossible();
           }
           if (tillEnd.inSeconds == 0) {
@@ -916,8 +895,14 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
+  String _formatMMSS(Duration duration) {
+    final minutes = duration.inMinutes.remainder(60);
+    final seconds = duration.inSeconds.remainder(60);
+    return "${minutes < 10 ? '0$minutes' : '$minutes'}:${seconds < 10 ? '0$seconds' : '$seconds'}";
+  }
+
   _setAnswerIsNotPossible() {
-    updateSuccessMessage(UISuccess(UISuccessType
+    updateSuccessMessage(UISuccess(UISuccessMessagesType
         .theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m));
 
     emit(
@@ -974,7 +959,7 @@ class ChatCubit extends Cubit<ChatState> {
     int? statusCode;
     DioErrorType? errorType;
     try {
-      answer = await _repository.sendAnswer(_answerRequest!);
+      answer = await chatsRepository.sendAnswer(_answerRequest!);
       logger.d('send answer response: $answer');
       answer = answer.copyWith(
         isAnswer: true,
@@ -987,7 +972,7 @@ class ChatCubit extends Cubit<ChatState> {
       logger.d(e);
       errorType = e.type;
       if (await _isConnectionProblem(errorType)) {
-        _mainCubit.updateErrorMessage(
+        mainCubit.updateErrorMessage(
             UIError(uiErrorType: UIErrorType.checkYourInternetConnection));
         answer = await _getNotSentAnswer();
       }
@@ -1001,7 +986,7 @@ class ChatCubit extends Cubit<ChatState> {
     }
 
     if (statusCode == 409) {
-      _showErrorAlert();
+      showErrorAlert();
     }
 
     if (answer?.isSent == true) {
@@ -1016,7 +1001,8 @@ class ChatCubit extends Cubit<ChatState> {
       await audioPlayer.stop();
 
       if (_answerRequest != null) {
-        final ChatItem answer = await _repository.sendAnswer(_answerRequest!);
+        final ChatItem answer =
+            await chatsRepository.sendAnswer(_answerRequest!);
         logger.i('send text response:$answer');
         _answerRequest = null;
 
@@ -1031,7 +1017,7 @@ class ChatCubit extends Cubit<ChatState> {
         _answerTimer?.cancel();
         _recordAudioDuration = null;
         clearSuccessMessage();
-        _mainCubit.updateSessions();
+        mainCubit.updateSessions();
         _deleteRecordedAudioFile(state.recordedAudio);
 
         emit(
@@ -1044,7 +1030,7 @@ class ChatCubit extends Cubit<ChatState> {
     } on DioError catch (e) {
       logger.d(e);
       if (await _isConnectionProblem(e.type)) {
-        _mainCubit.updateErrorMessage(
+        mainCubit.updateErrorMessage(
             UIError(uiErrorType: UIErrorType.checkYourInternetConnection));
       }
 
@@ -1053,7 +1039,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<bool> _isConnectionProblem(DioErrorType errorType) async {
-    return !await _connectivityService.checkConnection() ||
+    return !await connectivityService.checkConnection() ||
         errorType == DioErrorType.connectionTimeout ||
         errorType == DioErrorType.sendTimeout ||
         errorType == DioErrorType.receiveTimeout;
@@ -1061,7 +1047,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   _handleIfEntityTooLargeError(int? statusCode) {
     if (statusCode == 413) {
-      _mainCubit.updateErrorMessage(UIError(
+      mainCubit.updateErrorMessage(UIError(
           uiErrorType: UIErrorType.theMaximumSizeOfTheAttachmentsIsXMb,
           args: [_maxAttachmentSizeInMb.toInt()]));
     }
@@ -1153,16 +1139,16 @@ class ChatCubit extends Cubit<ChatState> {
   bool _checkAttachmentSizeIsOk(List<File> images, File? recordedAudio) {
     if (_calculateAttachmentSizeInBytes(images, recordedAudio) <=
         _maxAttachmentSizeInBytes) {
-      if (_mainCubit.state.appError is UIError &&
-          (_mainCubit.state.appError as UIError).uiErrorType ==
+      if (mainCubit.state.appError is UIError &&
+          (mainCubit.state.appError as UIError).uiErrorType ==
               UIErrorType.theMaximumSizeOfTheAttachmentsIsXMb) {
         SchedulerBinding.instance.endOfFrame
-            .then((_) => _mainCubit.clearErrorMessage());
+            .then((_) => mainCubit.clearErrorMessage());
       }
       return true;
     } else {
       SchedulerBinding.instance.endOfFrame.then((_) =>
-          _mainCubit.updateErrorMessage(UIError(
+          mainCubit.updateErrorMessage(UIError(
               uiErrorType: UIErrorType.theMaximumSizeOfTheAttachmentsIsXMb,
               args: [_maxAttachmentSizeInMb.toInt()])));
       return false;
@@ -1211,8 +1197,8 @@ class ChatCubit extends Cubit<ChatState> {
   bool canAttachPictureTo({AttachmentType? attachmentType}) {
     return state.attachedPictures.length <
         ((attachmentType != null && attachmentType == AttachmentType.audio)
-            ? AppConstants.minAttachedPictures
-            : AppConstants.maxAttachedPictures);
+            ? FortunicaConstants.minAttachedPictures
+            : FortunicaConstants.maxAttachedPictures);
   }
 
   void _scrollTextFieldToEnd() {

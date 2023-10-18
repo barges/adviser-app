@@ -1,21 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/customer_profile_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
-import 'package:shared_advisor_interface/presentation/screens/customer_profile/customer_profile_screen_cubit.dart';
+
+import '../../../data/models/app_error/app_error.dart';
+import '../../../data/models/enums/zodiac_sign.dart';
+import '../../../infrastructure/di/inject_config.dart';
+import '../../../main_cubit.dart';
+import '../../common_widgets/appbar/chat_conversation_app_bar.dart';
+import '../../common_widgets/customer_profile/customer_profile_widget.dart';
+import '../../common_widgets/messages/app_error_widget.dart';
+import 'customer_profile_screen_cubit.dart';
 
 class CustomerProfileScreen extends StatelessWidget {
-  const CustomerProfileScreen({Key? key}) : super(key: key);
+  final CustomerProfileScreenArguments customerProfileScreenArguments;
+
+  const CustomerProfileScreen({
+    Key? key,
+    required this.customerProfileScreenArguments,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => CustomerProfileScreenCubit(getIt.get<MainCubit>()),
+      create: (_) => CustomerProfileScreenCubit(
+        fortunicaGetIt.get<MainCubit>(),
+        customerProfileScreenArguments,
+      ),
       child: Builder(builder: (context) {
         final CustomerProfileScreenCubit customerProfileScreenCubit =
             context.read<CustomerProfileScreenCubit>();
@@ -51,4 +60,16 @@ class CustomerProfileScreen extends StatelessWidget {
       }),
     );
   }
+}
+
+class CustomerProfileScreenArguments {
+  final String? customerID;
+  final String? clientName;
+  final ZodiacSign? zodiacSign;
+
+  const CustomerProfileScreenArguments({
+    this.customerID,
+    this.clientName,
+    this.zodiacSign,
+  });
 }

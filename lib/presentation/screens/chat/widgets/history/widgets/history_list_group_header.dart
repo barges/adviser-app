@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
-import 'package:shared_advisor_interface/extensions.dart';
+
+import '../../../../../../fortunica_extensions.dart';
+import '../../../../../../data/models/chats/chat_item.dart';
 
 class HistoryListGroupHeader extends StatelessWidget {
   final ChatItem? question;

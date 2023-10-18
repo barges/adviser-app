@@ -1,19 +1,19 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
-import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
-import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/error_badge.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/user_avatar.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/account_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/change_status_comment_bottom_sheet.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/timer_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/account/widgets/tile_widget.dart';
+
+import '../../../../../../app_constants.dart';
+import '../../../../../../data/models/enums/fortunica_user_status.dart';
+import '../../../../../../data/models/user_info/user_profile.dart';
+import '../../../../../../data/models/user_info/user_status.dart';
+import '../../../../../../generated/assets/assets.gen.dart';
+import '../../../../../../generated/l10n.dart';
+import '../../../../../common_widgets/error_badge.dart';
+import '../../../../../common_widgets/user_avatar.dart';
+import '../../../home_cubit.dart';
+import '../account_cubit.dart';
+import 'change_status_comment_bottom_sheet.dart';
+import 'tile_widget.dart';
+import 'timer_widget.dart';
 
 class UserInfoPartWidget extends StatelessWidget {
   const UserInfoPartWidget({
@@ -44,15 +44,14 @@ class UserInfoPartWidget extends StatelessWidget {
             ),
             child: GestureDetector(
               onTap: currentStatus.status != FortunicaUserStatus.legalBlock
-                  ? accountCubit.goToEditProfile
+                  ? () => accountCubit.goToEditProfile(context)
                   : null,
               child: Row(
                 children: [
                   UserAvatar(
                     avatarUrl: userProfile?.profilePictures?.firstOrNull,
                     diameter: 72.0,
-                    badgeColor:
-                        currentStatus.status?.statusColorForBadge(context),
+                    badgeColor: currentStatus.status?.statusBadgeColor(context),
                   ),
                   const SizedBox(
                     width: 16.0,
@@ -65,7 +64,7 @@ class UserInfoPartWidget extends StatelessWidget {
                           userProfile?.profileName != null &&
                                   userProfile!.profileName!.isNotEmpty
                               ? userProfile.profileName!
-                              : S.of(context).yourUsername,
+                              : SFortunica.of(context).yourUsernameFortunica,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context)
                               .textTheme
@@ -87,13 +86,11 @@ class UserInfoPartWidget extends StatelessWidget {
                                       color: Theme.of(context).shadowColor)),
                         Text(
                           currentStatus.status?.statusName(context) ?? '',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
-                              ?.copyWith(
-                                color:
-                                    currentStatus.status?.statusColor(context),
-                              ),
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: currentStatus.status
+                                        ?.statusNameColor(context),
+                                  ),
                         ),
                       ],
                     ),
@@ -143,7 +140,7 @@ class UserInfoPartWidget extends StatelessWidget {
                     .select((AccountCubit cubit) => cubit.state.isTimeout);
 
                 return TileWidget(
-                  title: S.of(context).imAvailableNow,
+                  title: SFortunica.of(context).imAvailableNowFortunica,
                   iconSVGPath: Assets.vectors.availability.path,
                   onChanged: (newValue) {
                     if (newValue) {
@@ -190,7 +187,7 @@ class UserInfoPartWidget extends StatelessWidget {
                     .select((AccountCubit cubit) => cubit.state.isTimeout);
                 return TileWidget(
                   initSwitcherValue: enableNotifications,
-                  title: S.of(context).notifications,
+                  title: SFortunica.of(context).notificationsFortunica,
                   iconSVGPath: Assets.vectors.notification.path,
                   isDisable: isTimeout || homeCubit.state.userStatus == null,
                   onChanged: (value) =>
@@ -205,8 +202,8 @@ class UserInfoPartWidget extends StatelessWidget {
               isDisable: currentStatus.status != FortunicaUserStatus.live &&
                   currentStatus.status != FortunicaUserStatus.offline,
               iconSVGPath: Assets.vectors.eye.path,
-              title: S.of(context).previewAccount,
-              onTap: accountCubit.goToAdvisorPreview,
+              title: SFortunica.of(context).previewAccountFortunica,
+              onTap: () => accountCubit.goToAdvisorPreview(context),
             )
           ]),
         )

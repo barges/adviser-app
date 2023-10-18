@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+
+import '../../../../app_constants.dart';
+import '../../../../generated/assets/assets.gen.dart';
 
 class BirthTownWidget extends StatelessWidget {
   final String address;

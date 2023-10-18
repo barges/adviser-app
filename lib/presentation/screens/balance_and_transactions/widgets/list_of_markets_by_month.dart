@@ -1,12 +1,13 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_market.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_statistics.dart';
-import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/empty_list_widget.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/balance_and_transactions/widgets/reports_market_widget.dart';
+
+import '../../../../extensions.dart';
+import '../../../../app_constants.dart';
+import '../../../../data/models/reports_endpoint/reports_market.dart';
+import '../../../../data/models/reports_endpoint/reports_statistics.dart';
+import '../../../../generated/l10n.dart';
+import '../../../common_widgets/empty_list_widget.dart';
+import 'reports_market_widget.dart';
 
 class ListOfMarketsByMonth extends StatelessWidget {
   final ReportsStatistics reportsStatistics;
@@ -45,7 +46,8 @@ class ListOfMarketsByMonth extends StatelessWidget {
             )
           else
             EmptyListWidget(
-              title: S.of(context).youHaveNotYetCompletedThisMonthsSessions,
+              title: SFortunica.of(context)
+                  .youHaveNotYetCompletedThisMonthsSessionsFortunica,
             ),
           Column(
             mainAxisSize: MainAxisSize.min,
@@ -67,7 +69,7 @@ class ListOfMarketsByMonth extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        '${S.of(context).totalMarkets}:',
+                        '${SFortunica.of(context).totalMarketsFortunica}:',
                         style: Theme.of(context)
                             .textTheme
                             .headlineMedium

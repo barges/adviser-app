@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/customer_sessions/customer_sessions_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/customer_sessions/widgets/customer_session_tile_widget.dart';
+
+import '../../../../app_constants.dart';
+import '../../../../data/models/chats/chat_item.dart';
+import '../customer_sessions_cubit.dart';
+import 'customer_session_tile_widget.dart';
 
 class CustomerSessionsListWidget extends StatelessWidget {
   final List<ChatItem> questions;

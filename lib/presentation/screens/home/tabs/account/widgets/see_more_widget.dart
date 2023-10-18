@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+
+import '../../../../../../app_constants.dart';
+import '../../../../../../generated/assets/assets.gen.dart';
+import '../../../../../../generated/l10n.dart';
 
 class SeeMoreWidget extends StatelessWidget {
   const SeeMoreWidget({Key? key}) : super(key: key);
@@ -36,9 +37,8 @@ class SeeMoreWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        S
-                            .of(context)
-                            .notEnoughConversationsCheckOurProfileGuide,
+                        SFortunica.of(context)
+                            .notEnoughConversationsCheckOurProfileGuideFortunica,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context)
@@ -48,7 +48,7 @@ class SeeMoreWidget extends StatelessWidget {
                       ),
                       const SizedBox(height: 8.0),
                       Text(
-                        S.of(context).seeMore,
+                        SFortunica.of(context).seeMoreFortunica,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             fontWeight: FontWeight.w500,
                             color: Theme.of(context).primaryColor,

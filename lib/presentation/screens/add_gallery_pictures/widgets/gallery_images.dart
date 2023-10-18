@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/add_gallery_pictures/add_gallery_pictures_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/add_gallery_pictures/widgets/add_more_images_from_gallery_widget.dart';
+
+import '../../../../infrastructure/routing/app_router.dart';
+import '../../../../app_constants.dart';
+import '../../../../generated/assets/assets.gen.dart';
+import '../../../../generated/l10n.dart';
+import '../../../../infrastructure/routing/app_router.gr.dart';
+import '../../../../main_cubit.dart';
+import '../../../common_widgets/app_image_widget.dart';
+import '../../../common_widgets/buttons/app_icon_button.dart';
+import '../../../common_widgets/show_delete_alert.dart';
+import '../../../common_widgets/show_pick_image_alert.dart';
+import '../../gallery/gallery_pictures_screen.dart';
+import '../add_gallery_pictures_cubit.dart';
+import 'add_more_images_from_gallery_widget.dart';
 
 class GalleryImages extends StatelessWidget {
   const GalleryImages({Key? key}) : super(key: key);
@@ -34,9 +38,8 @@ class GalleryImages extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
                 child: Text(
-                  S
-                      .of(context)
-                      .customersWantToKnowYouReARealPersonTheMorePhotosYouAddTheMoreTrustYouCanBuild,
+                  SFortunica.of(context)
+                      .customersWantToKnowYouReARealPersonTheMorePhotosYouAddTheMoreTrustYouCanBuildFortunica,
                   style: Theme.of(context)
                       .textTheme
                       .bodyMedium
@@ -63,7 +66,14 @@ class GalleryImages extends StatelessWidget {
                 ? _GalleryImageItem(
                     uri: Uri.parse(coverPictures[index]),
                     onSelectTap: () {
-                      addGalleryPicturesCubit.goToGallery(index);
+                      context.push(
+                          route: FortunicaGalleryPictures(
+                        galleryPicturesScreenArguments:
+                            GalleryPicturesScreenArguments(
+                          pictures: coverPictures,
+                          initPage: index.toDouble(),
+                        ),
+                      ));
                     },
                     onDeleteTap: () {
                       addGalleryPicturesCubit.deletePictureFromGallery(index);
@@ -121,7 +131,9 @@ class _GalleryImageItem extends StatelessWidget {
             icon: Assets.vectors.close.path,
             onTap: () async {
               final bool? isDelete = await showDeleteAlert(
-                  context, S.of(context).doYouWantToDeleteImage);
+                context,
+                SFortunica.of(context).doYouWantToDeleteImageFortunica,
+              );
               if (isDelete == true) {
                 onDeleteTap();
               }

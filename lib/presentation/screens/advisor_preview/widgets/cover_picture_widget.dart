@@ -1,11 +1,11 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_cubit.dart';
-import 'package:shared_advisor_interface/presentation/themes/app_colors_light.dart';
+
+import '../../../../generated/assets/assets.gen.dart';
+import '../../../../themes/app_colors_light.dart';
+import '../../../common_widgets/app_image_widget.dart';
+import '../advisor_preview_cubit.dart';
 
 class CoverPictureWidget extends StatelessWidget {
   const CoverPictureWidget({Key? key}) : super(key: key);

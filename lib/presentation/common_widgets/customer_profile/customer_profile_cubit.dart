@@ -1,21 +1,25 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:shared_advisor_interface/data/models/customer_info/customer_info.dart';
-import 'package:shared_advisor_interface/data/models/customer_info/note.dart';
-import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/customer_profile_state.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../infrastructure/routing/app_router.dart';
+import '../../../data/models/customer_info/customer_info.dart';
+import '../../../data/models/customer_info/note.dart';
+import '../../../domain/repositories/fortunica_customer_repository.dart';
+import '../../../global.dart';
+import '../../../infrastructure/di/inject_config.dart';
+import '../../../infrastructure/routing/app_router.gr.dart';
+import '../../screens/add_note/add_note_screen.dart';
+import '../../screens/chat/chat_cubit.dart';
+import '../../screens/customer_profile/customer_profile_screen.dart';
+import 'customer_profile_state.dart';
 
 class CustomerProfileCubit extends Cubit<CustomerProfileState> {
   final String customerID;
   final ValueChanged<CustomerProfileScreenArguments?>? updateClientInformation;
-  final CustomerRepository _repository = getIt.get<CustomerRepository>();
+  final FortunicaCustomerRepository _repository =
+      fortunicaGetIt.get<FortunicaCustomerRepository>();
   final ChatCubit? _chatCubit;
 
   late final StreamSubscription<bool>? _refreshChatInfoSubscription;
@@ -86,24 +90,25 @@ class CustomerProfileCubit extends Cubit<CustomerProfileState> {
     );
   }
 
-  void updateNote(Note note) {
-    Get.toNamed(
-      AppRoutes.addNote,
-      arguments: AddNoteScreenArguments(
-        customerID: customerID,
+  void updateNote(BuildContext context, Note note) {
+    context.push(
+        route: FortunicaAddNote(
+      addNoteScreenArguments: AddNoteScreenArguments(
+        customerId: customerID,
         oldNote: note.content,
         updatedAt: note.updatedAt,
         noteChanged: getNotes,
       ),
-    );
+    ));
   }
 
-  void createNewNote() {
-    Get.toNamed(
-      AppRoutes.addNote,
-      arguments: AddNoteScreenArguments(
-        customerID: customerID,
-        noteChanged: getNotes,
+  void createNewNote(BuildContext context) {
+    context.push(
+      route: FortunicaAddNote(
+        addNoteScreenArguments: AddNoteScreenArguments(
+          customerId: customerID,
+          noteChanged: getNotes,
+        ),
       ),
     );
   }

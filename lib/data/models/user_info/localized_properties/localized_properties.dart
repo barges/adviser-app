@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:shared_advisor_interface/data/models/user_info/localized_properties/property_by_language.dart';
+
+import 'property_by_language.dart';
 
 part 'localized_properties.g.dart';
 

@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
+
+import '../../models/chats/chat_item.dart';
 
 part 'questions_list_response.g.dart';
 

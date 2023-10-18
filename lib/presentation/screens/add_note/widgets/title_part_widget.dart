@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/screens/add_note/add_note_cubit.dart';
+
+import '../../../../generated/l10n.dart';
+import '../add_note_cubit.dart';
 
 class TitlePartWidget extends StatelessWidget {
   const TitlePartWidget({Key? key}) : super(key: key);
@@ -39,7 +40,7 @@ class TitlePartWidget extends StatelessWidget {
               onTap: (() {
                 addNoteCubit.addTitle();
               }),
-              child: Text(S.of(context).title,
+              child: Text(SFortunica.of(context).titleFortunica,
                   style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                       fontWeight: FontWeight.w500,
                       color: Theme.of(context).shadowColor)));

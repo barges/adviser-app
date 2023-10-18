@@ -1,70 +1,92 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:shared_advisor_interface/configuration.dart';
-import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/main_state.dart';
-import 'package:shared_advisor_interface/presentation/di/modules/api_module.dart';
-import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
-import 'package:shared_advisor_interface/presentation/services/fresh_chat_service.dart';
+import '../infrastructure/routing/app_router.dart';
 
+import 'data/cache/fortunica_caching_manager.dart';
+import 'data/models/app_error/app_error.dart';
+import 'global.dart';
+import 'infrastructure/routing/app_router.gr.dart';
+import 'main.dart';
+import 'main_state.dart';
+import 'services/connectivity_service.dart';
+import 'services/fresh_chat_service.dart';
+
+@singleton
 class MainCubit extends Cubit<MainState> {
-  final CachingManager cacheManager;
+  // TODO DELETE
+  //final GlobalCachingManager _cacheManager;
+  final FortunicaCachingManager _cacheManager;
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+  // TODO DELETE
+  //final BrandManager _brandManager;
 
-  late final VoidCallback _disposeCallback;
-  late final VoidCallback _localeListenerDisposeCallback;
+  //late final StreamSubscription _currentBrandSubscription;
+  late final StreamSubscription _localeSubscription;
   late final StreamSubscription<bool> _connectivitySubscription;
 
-  Timer? _errorTimer;
-
-  final PublishSubject<bool> sessionsUpdateTrigger = PublishSubject();
   final PublishSubject<bool> changeAppLifecycleStream = PublishSubject();
   final PublishSubject<bool> audioStopTrigger = PublishSubject();
+  final PublishSubject<bool> sessionsUpdateTrigger = PublishSubject();
   final PublishSubject<bool> updateAccountTrigger = PublishSubject();
 
   final ConnectivityService _connectivityService;
 
-  MainCubit(this.cacheManager, this._connectivityService)
-      : super(const MainState()) {
+  Timer? _errorTimer;
+
+  MainCubit(
+    this._cacheManager,
+    //this._brandManager,
+    this._connectivityService,
+  ) : super(const MainState()) {
     _connectivitySubscription =
         _connectivityService.connectivityStream.listen((event) {
-      emit(state.copyWith(internetConnectionIsAvailable: event));
+      emit(state.copyWith(
+        internetConnectionIsAvailable: event,
+        isAuth: _cacheManager.isAuth,
+      ));
     });
+    // TODO ?
+    //final BaseBrand currentBrand = _brandManager.getCurrentBrand();
 
-    emit(state.copyWith(
-        currentBrand: cacheManager.getCurrentBrand() ?? Brand.fortunica));
+    //BrandManager.setIsCurrentForBrands(currentBrand);
 
-    _disposeCallback = cacheManager.listenCurrentBrand((value) {
-      emit(state.copyWith(currentBrand: value));
-    });
+    //emit(state.copyWith(currentBrand: currentBrand));
 
-    _localeListenerDisposeCallback =
-        cacheManager.listenLanguageCode(changeLocale);
+    /*_currentBrandSubscription = _brandManager.listenCurrentBrandStream((value) {
+      emit(state.copyWith(
+        currentBrand: value,
+      ));
+      BrandManager.setIsCurrentForBrands(value);
+
+      final String? languageCode = 'EN';//value.languageCode;
+
+      if (languageCode != null) {
+        _cacheManager.saveLanguageCode(languageCode);
+      }
+    });*/
+
+    _localeSubscription = _cacheManager.listenLanguageCodeStream(changeLocale);
   }
 
   @override
   Future<void> close() {
     _connectivitySubscription.cancel();
     _connectivityService.disposeStream();
-    _localeListenerDisposeCallback.call();
-    _disposeCallback.call();
+    _localeSubscription.cancel();
+    //_currentBrandSubscription.cancel();
     _errorTimer?.cancel();
     return super.close();
   }
 
-  void updateIsLoading(bool isLoading) {
-    emit(state.copyWith(isLoading: isLoading));
-  }
-
-  List<Brand> getAuthorizedBrands() {
-    return cacheManager.getAuthorizedBrands();
-  }
+  // TODO DELETE
+  /*void changeCurrentBrand(BaseBrand brand) {
+     _brandManager.setCurrentBrand(brand);
+  }*/
 
   void updateErrorMessage(AppError appError) {
     if (appError is! EmptyError) {
@@ -80,8 +102,8 @@ class MainCubit extends Cubit<MainState> {
     }
   }
 
-  void updateSessions() {
-    sessionsUpdateTrigger.add(true);
+  void updateIsLoading(bool isLoading) {
+    emit(state.copyWith(isLoading: isLoading));
   }
 
   void widgetOnResumeEvent() {
@@ -96,18 +118,32 @@ class MainCubit extends Cubit<MainState> {
     audioStopTrigger.add(true);
   }
 
+  void changeLocale(String languageCode) {
+    if (Platform.isAndroid) {
+      globalGetIt.get<FreshChatService>().changeLocaleInvite();
+    }
+
+    emit(state.copyWith(
+        locale: Locale(languageCode, languageCode.toUpperCase())));
+  }
+
+  void updateSessions() {
+    sessionsUpdateTrigger.add(true);
+  }
+
   void updateAccount() {
     updateAccountTrigger.add(true);
   }
 
-  void changeLocale(String languageCode) {
-    if (Platform.isAndroid) {
-      getIt.get<FreshChatService>().changeLocaleInvite();
-    }
+  void openDrawer() {
+    scaffoldKey.currentState?.openDrawer();
+  }
 
-    getIt.get<Dio>().addLocaleToHeader(languageCode);
+  void updateAuth(bool isAuth) {
+    emit(state.copyWith(isAuth: isAuth));
+  }
 
-    emit(state.copyWith(
-        locale: Locale(languageCode, languageCode.toUpperCase())));
+  void goToSupport() {
+    currentContext?.push(route: const FortunicaSupport());
   }
 }

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
+
+import '../../../generated/l10n.dart';
+import '../../../themes/app_colors.dart';
 
 enum FortunicaUserStatus {
   @JsonValue("LIVE")
@@ -18,19 +19,19 @@ enum FortunicaUserStatus {
   String statusName(BuildContext context) {
     switch (this) {
       case FortunicaUserStatus.live:
-        return S.of(context).live;
+        return SFortunica.of(context).liveFortunica;
       case FortunicaUserStatus.incomplete:
-        return S.of(context).incomplete;
+        return SFortunica.of(context).incompleteFortunica;
       case FortunicaUserStatus.blocked:
-        return S.of(context).blocked;
+        return SFortunica.of(context).blockedFortunica;
       case FortunicaUserStatus.legalBlock:
-        return S.of(context).legalBlock;
+        return SFortunica.of(context).legalBlockFortunica;
       case FortunicaUserStatus.offline:
-        return S.of(context).offline;
+        return SFortunica.of(context).offlineFortunica;
     }
   }
 
-  Color statusColor(BuildContext context) {
+  Color statusNameColor(BuildContext context) {
     switch (this) {
       case FortunicaUserStatus.live:
         return AppColors.online;
@@ -43,7 +44,7 @@ enum FortunicaUserStatus {
     }
   }
 
-  Color statusColorForBadge(BuildContext context) {
+  Color statusBadgeColor(BuildContext context) {
     switch (this) {
       case FortunicaUserStatus.live:
         return AppColors.online;
@@ -73,11 +74,12 @@ enum FortunicaUserStatus {
       case FortunicaUserStatus.blocked:
         return '';
       case FortunicaUserStatus.incomplete:
-        return S.of(context).youReNotLiveOnThePlatform;
+        return SFortunica.of(context).youReNotLiveOnThePlatformFortunica;
       case FortunicaUserStatus.legalBlock:
-        return S.of(context).youNeedToAcceptTheAdvisorContract;
+        return SFortunica.of(context)
+            .youNeedToAcceptTheAdvisorContractFortunica;
       case FortunicaUserStatus.offline:
-        return S.of(context).youReCurrentlyOffline;
+        return SFortunica.of(context).youReCurrentlyOfflineFortunica;
     }
   }
 
@@ -87,15 +89,14 @@ enum FortunicaUserStatus {
       case FortunicaUserStatus.blocked:
         return '';
       case FortunicaUserStatus.incomplete:
-        return S
-            .of(context)
-            .pleaseEnsureYourProfileIsCompletedForAllLanguagesNeedHelpContactYourManager;
+        return SFortunica.of(context)
+            .pleaseEnsureYourProfileIsCompletedForAllLanguagesNeedHelpContactYourManagerFortunica;
       case FortunicaUserStatus.legalBlock:
-        return S.of(context).pleaseLoginToTheWebVersionOfYourAccount;
+        return SFortunica.of(context)
+            .pleaseLoginToTheWebVersionOfYourAccountFortunica;
       case FortunicaUserStatus.offline:
-        return S
-            .of(context)
-            .changeYourStatusInYourProfileToMakeYourselfVisibleToUsers;
+        return SFortunica.of(context)
+            .changeYourStatusInYourProfileToMakeYourselfVisibleToUsersFortunica;
     }
   }
 
@@ -105,10 +106,10 @@ enum FortunicaUserStatus {
       case FortunicaUserStatus.blocked:
         return '';
       case FortunicaUserStatus.incomplete:
-        return S.of(context).completeYourProfileToStartWork;
+        return SFortunica.of(context).completeYourProfileToStartWorkFortunica;
       case FortunicaUserStatus.legalBlock:
       case FortunicaUserStatus.offline:
-        return S.of(context).goToAccount;
+        return SFortunica.of(context).goToAccountFortunica;
     }
   }
 }

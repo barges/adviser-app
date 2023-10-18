@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
+
+import '../../themes/app_colors.dart';
 
 class SmallListTileBadge extends StatelessWidget {
   const SmallListTileBadge({

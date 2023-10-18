@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/data/models/enums/validation_error_type.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+
+import '../../../app_constants.dart';
+import '../../../data/models/enums/validation_error_type.dart';
 
 class AppTextField extends StatelessWidget {
   final TextEditingController controller;

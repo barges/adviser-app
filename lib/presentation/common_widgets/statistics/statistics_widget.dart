@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_month.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_statistics.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/balance_and_transactions/widgets/list_of_markets_by_month.dart';
-import 'package:shared_advisor_interface/presentation/screens/balance_and_transactions/widgets/month_header_widget.dart';
+
+import '../../../app_constants.dart';
+import '../../../data/models/reports_endpoint/reports_month.dart';
+import '../../../data/models/reports_endpoint/reports_statistics.dart';
+import '../../screens/balance_and_transactions/widgets/list_of_markets_by_month.dart';
+import '../../screens/balance_and_transactions/widgets/month_header_widget.dart';
 
 class StatisticsWidget extends StatelessWidget {
   final List<ReportsMonth> months;

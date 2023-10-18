@@ -1,23 +1,31 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
-import 'package:shared_advisor_interface/data/models/app_success/app_success.dart';
-import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
-import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/empty_list_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_success_widget.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/sessions_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/list_tile/chats_list_tile_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/market_filter_widget.dart';
+
+import '../../../../../../app_constants.dart';
+import '../../../../../../data/models/app_error/app_error.dart';
+import '../../../../../../data/models/app_success/app_success.dart';
+import '../../../../../../data/models/chats/chat_item.dart';
+import '../../../../../../data/models/enums/chat_item_status_type.dart';
+import '../../../../../../data/models/enums/markets_type.dart';
+import '../../../../../../generated/l10n.dart';
+import '../../../../../../main_cubit.dart';
+import '../../../../../common_widgets/empty_list_widget.dart';
+import '../../../../../common_widgets/market_filter_widget.dart';
+import '../../../../../common_widgets/messages/app_error_widget.dart';
+import '../../../../../common_widgets/messages/app_success_widget.dart';
+import '../sessions_cubit.dart';
+import 'list_tile/chats_list_tile_widget.dart';
 
 class ListOfQuestions extends StatelessWidget {
-  const ListOfQuestions({Key? key}) : super(key: key);
+  final ScrollController publicQuestionsScrollController;
+  final ScrollController conversationsScrollController;
+
+  const ListOfQuestions({
+    Key? key,
+    required this.publicQuestionsScrollController,
+    required this.conversationsScrollController,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,16 +34,25 @@ class ListOfQuestions extends StatelessWidget {
 
     return IndexedStack(
       index: index,
-      children: const [
-        _PublicQuestionsListWidget(),
-        _PrivateQuestionsListWidget(),
+      children: [
+        _PublicQuestionsListWidget(
+          publicQuestionsScrollController: publicQuestionsScrollController,
+        ),
+        _PrivateQuestionsListWidget(
+          conversationsScrollController: conversationsScrollController,
+        ),
       ],
     );
   }
 }
 
 class _PublicQuestionsListWidget extends StatelessWidget {
-  const _PublicQuestionsListWidget({Key? key}) : super(key: key);
+  final ScrollController publicQuestionsScrollController;
+
+  const _PublicQuestionsListWidget({
+    Key? key,
+    required this.publicQuestionsScrollController,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -79,15 +96,14 @@ class _PublicQuestionsListWidget extends StatelessWidget {
                 .select((SessionsCubit cubit) => cubit.state.publicQuestions);
             return Expanded(
               child: _ListOfQuestionsWidget(
-                controller: sessionsCubit.publicQuestionsScrollController,
+                controller: publicQuestionsScrollController,
                 questions: publicQuestions,
                 onRefresh: () async {
                   sessionsCubit.getPublicQuestions(refresh: true);
                 },
-                emptyListTitle: S.of(context).noQuestionsYet,
-                emptyListLabel: S
-                    .of(context)
-                    .whenSomeoneAsksAPublicQuestionYouLlSeeThemOnThisList,
+                emptyListTitle: SFortunica.of(context).noQuestionsYetFortunica,
+                emptyListLabel: SFortunica.of(context)
+                    .whenSomeoneAsksAPublicQuestionYouLlSeeThemOnThisListFortunica,
               ),
             );
           },
@@ -98,7 +114,12 @@ class _PublicQuestionsListWidget extends StatelessWidget {
 }
 
 class _PrivateQuestionsListWidget extends StatelessWidget {
-  const _PrivateQuestionsListWidget({Key? key}) : super(key: key);
+  final ScrollController conversationsScrollController;
+
+  const _PrivateQuestionsListWidget({
+    Key? key,
+    required this.conversationsScrollController,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -134,15 +155,15 @@ class _PrivateQuestionsListWidget extends StatelessWidget {
                 .select((SessionsCubit cubit) => cubit.state.conversationsList);
             return Expanded(
               child: _ListOfQuestionsWidget(
-                controller: sessionsCubit.conversationsScrollController,
+                controller: conversationsScrollController,
                 questions: conversationsList,
                 isPublic: false,
                 onRefresh: () async {
                   sessionsCubit.getConversations(refresh: true);
                 },
-                emptyListTitle: S.of(context).noSessionsYet,
-                emptyListLabel:
-                    S.of(context).yourClientSessionHistoryWillAppearHere,
+                emptyListTitle: SFortunica.of(context).noSessionsYetFortunica,
+                emptyListLabel: SFortunica.of(context)
+                    .yourClientSessionHistoryWillAppearHereFortunica,
               ),
             );
           },

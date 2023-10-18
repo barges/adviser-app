@@ -2,35 +2,39 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/data/models/user_info/user_info.dart';
-import 'package:shared_advisor_interface/data/network/requests/restore_freshchat_id_request.dart';
-import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/presentation/screens/support/support_state.dart';
-import 'package:shared_advisor_interface/presentation/services/fresh_chat_service.dart';
+
+import '../../../data/cache/fortunica_caching_manager.dart';
+import '../../../data/models/user_info/user_info.dart';
+import '../../../data/network/requests/restore_freshchat_id_request.dart';
+import '../../../domain/repositories/fortunica_user_repository.dart';
+import '../../../services/fresh_chat_service.dart';
+import 'support_state.dart';
 
 class SupportCubit extends Cubit<SupportState> {
-  final CachingManager _cachingManager;
-  final FreshChatService _freshChatService = getIt.get<FreshChatService>();
-  final UserRepository _userRepository = getIt.get<UserRepository>();
+  final FortunicaCachingManager cachingManager;
+  final FreshChatService freshChatService;
+  final FortunicaUserRepository userRepository;
 
   StreamSubscription? _restoreSubscription;
 
   late final String locale;
 
-  SupportCubit(this._cachingManager) : super(const SupportState()) {
+  SupportCubit({
+    required this.cachingManager,
+    required this.freshChatService,
+    required this.userRepository,
+  }) : super(const SupportState()) {
     locale = Intl.getCurrentLocale();
-    final UserInfo? userInfo = _cachingManager.getUserInfo();
+    final UserInfo? userInfo = cachingManager.getUserInfo();
 
     _setUpFreshChat(userInfo);
 
     if (userInfo?.freshchatInfo?.restoreId == null) {
       _restoreSubscription =
-          _freshChatService.onRestoreStream().listen((event) async {
-        final String? restoreId = await _freshChatService.getRestoreId();
+          freshChatService.onRestoreStream().listen((event) async {
+        final String? restoreId = await freshChatService.getRestoreId();
         if (restoreId != null) {
-          _userRepository.setFreshchatRestoreId(
+          userRepository.setFreshchatRestoreId(
             RestoreFreshchatIdRequest(
               restoreId: restoreId,
             ),
@@ -47,15 +51,89 @@ class SupportCubit extends Cubit<SupportState> {
   }
 
   Future<void> _setUpFreshChat(UserInfo? userInfo) async {
-    final bool configured = await _freshChatService.setUpFreshChat(userInfo);
+    final FreshChaUserInfo freshChaUserInfo = FreshChaUserInfo(
+      userId: userInfo?.id,
+      restoreId: userInfo?.freshchatInfo?.restoreId,
+      email: userInfo?.emails?.firstOrNull?.address,
+      profileName: userInfo?.profile?.profileName,
+    );
+
+    final bool configured =
+        await freshChatService.setUpFreshChat(freshChaUserInfo);
     emit(state.copyWith(configured: configured));
   }
 
-  List<String> getCategories() {
-    return _freshChatService.categoriesByLocale(locale);
+  List<String> freshChatTags(String languageCode) {
+    List<String> tags = [
+      'foen',
+    ];
+    switch (languageCode) {
+      case 'de':
+        tags = [
+          'fode',
+        ];
+        break;
+
+      case 'es':
+        tags = [
+          'foes',
+        ];
+        break;
+      case 'pt':
+        tags = [
+          'fopt',
+        ];
+        break;
+      case 'en':
+      default:
+    }
+    return tags;
   }
 
-  List<String> getContactUsTags() {
-    return _freshChatService.tagsByLocale(locale);
+  List<String> freshChatCategories(String languageCode) {
+    List<String> categories = [
+      'general_foen_advisor',
+      'payments_foen_advisor',
+      'offers_foen_advisor',
+      'tips_foen_advisor',
+      'techhelp_foen_advisor',
+      'performance_foen_advisor',
+      'webtool_foen_advisor',
+    ];
+    switch (languageCode) {
+      case 'de':
+        categories = [
+          'general_fode_advisor',
+          'payments_fode_advisor',
+          'offers_fode_advisor',
+          'tips_fode_advisor',
+          'techhelp_fode_advisor',
+          'performance_fode_advisor',
+        ];
+        break;
+
+      case 'es':
+        categories = [
+          'general_foes_advisor',
+          'payments_foes_advisor',
+          'webtool_foes_advisor',
+          'tips_foes_advisor',
+          'performance_foes_advisor',
+          'specialcases_foes_advisor',
+        ];
+        break;
+      case 'pt':
+        categories = [
+          'general_fopt_advisor',
+          'payments_fopt_advisor',
+          'offers_fopt_advisor',
+          'tips_fopt_advisor',
+          'techhelp_fopt_advisor',
+        ];
+        break;
+      case 'en':
+      default:
+    }
+    return categories;
   }
 }

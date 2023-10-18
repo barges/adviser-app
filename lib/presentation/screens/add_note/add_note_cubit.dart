@@ -1,49 +1,55 @@
 import 'dart:io';
 
-import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
-import 'package:shared_advisor_interface/data/network/responses/update_note_response.dart';
-import 'package:shared_advisor_interface/domain/repositories/customer_repository.dart';
-import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
+import '../../../../extensions.dart';
+import '../../../../infrastructure/routing/app_router.dart';
 
+import '../../../data/network/responses/update_note_response.dart';
+import '../../../domain/repositories/fortunica_customer_repository.dart';
+import '../../../infrastructure/di/inject_config.dart';
+import '../../../main_cubit.dart';
 import 'add_note_state.dart';
 
 class AddNoteCubit extends Cubit<AddNoteState> {
-  late final AddNoteScreenArguments arguments;
+  final String customerID;
+  final String? oldNote;
+  final VoidCallback noteChanged;
+
   final String? oldTitle = null;
-  final CustomerRepository _repository = getIt.get<CustomerRepository>();
+  final FortunicaCustomerRepository _repository =
+      fortunicaGetIt.get<FortunicaCustomerRepository>();
   late final TextEditingController noteController;
   late final TextEditingController titleController;
-  final MainCubit _mainCubit;
+  final MainCubit mainCubit;
 
-  AddNoteCubit(this._mainCubit) : super(AddNoteState()) {
-    arguments = Get.arguments as AddNoteScreenArguments;
-    noteController = TextEditingController(text: arguments.oldNote ?? '');
+  AddNoteCubit({
+    required this.mainCubit,
+    required this.customerID,
+    required this.noteChanged,
+    this.oldNote,
+  }) : super(AddNoteState()) {
+    noteController = TextEditingController(text: oldNote ?? '');
     titleController = TextEditingController(text: oldTitle ?? '');
     if (oldTitle != null) {
       emit(state.copyWith(hadTitle: true));
     }
-    if (arguments.oldNote != null) {
+    if (oldNote != null) {
       emit(state.copyWith(isNoteNew: false));
     }
   }
 
-  Future<void> addNoteToCustomer() async {
-    if (noteController.text != arguments.oldNote) {
+  Future<void> addNoteToCustomer(BuildContext context) async {
+    if (noteController.text != oldNote) {
       UpdateNoteResponse response = await _repository.updateNoteToCustomer(
-          clientID: arguments.customerID, content: noteController.text);
+          clientID: customerID, content: noteController.text);
       if (response.content == noteController.text) {
         emit(state.copyWith(
             newNote: noteController.text.removeSpacesAndNewLines));
-        arguments.noteChanged();
+        noteChanged();
       }
     }
-    Get.back();
+    context.pop();
   }
 
   Future<void> attachPicture(File? image) async {
@@ -67,6 +73,6 @@ class AddNoteCubit extends Cubit<AddNoteState> {
   }
 
   void closeErrorWidget() {
-    _mainCubit.clearErrorMessage();
+    mainCubit.clearErrorMessage();
   }
 }

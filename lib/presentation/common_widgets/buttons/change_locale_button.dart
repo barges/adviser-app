@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/picker_modal_pop_up.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+
+import '../../../extensions.dart';
+import '../../../app_constants.dart';
+import '../../../data/cache/fortunica_caching_manager.dart';
+import '../../../generated/assets/assets.gen.dart';
+import '../../../generated/l10n.dart';
+import '../../../infrastructure/di/inject_config.dart';
+import '../picker_modal_pop_up.dart';
 
 class ChangeLocaleButton extends StatelessWidget {
   const ChangeLocaleButton({Key? key}) : super(key: key);
@@ -15,8 +15,9 @@ class ChangeLocaleButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String languageCode = Intl.getCurrentLocale();
-    final List<String> locales =
-        S.delegate.supportedLocales.map((e) => e.languageCode).toList();
+    final List<String> locales = SFortunica.delegate.supportedLocales
+        .map((e) => e.languageCode)
+        .toList();
     final int currentLocaleIndex =
         !locales.contains(languageCode) ? 0 : locales.indexOf(languageCode);
 
@@ -26,7 +27,17 @@ class ChangeLocaleButton extends StatelessWidget {
         onTap: () => showPickerModalPopUp(
           context: context,
           setIndex: (index) {
-            getIt.get<CachingManager>().saveLanguageCode(locales[index]);
+            final String languageCode = locales[index];
+            if (languageCode !=
+                fortunicaGetIt
+                    .get<FortunicaCachingManager>()
+                    .getLanguageCode()) {
+              fortunicaGetIt
+                  .get<FortunicaCachingManager>()
+                  .saveLanguageCode(languageCode);
+              // TODO DELETE
+              //FortunicaBrand().languageCode = languageCode;
+            }
           },
           currentIndex: currentLocaleIndex,
           elements: locales.map((element) {

@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:shared_advisor_interface/data/models/chats/history.dart';
+
+import '../../models/chats/history.dart';
 
 part 'history_response.g.dart';
 

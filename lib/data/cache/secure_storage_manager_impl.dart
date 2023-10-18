@@ -1,6 +1,9 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:shared_advisor_interface/data/cache/secure_storage_manager.dart';
+import 'package:injectable/injectable.dart';
 
+import 'secure_storage_manager.dart';
+
+@Singleton(as: SecureStorageManager)
 class SecureStorageManagerImpl implements SecureStorageManager {
   static const String _uuidKey = 'com.questico.fortunica.readerapp.uuidKey';
   final FlutterSecureStorage _secureStore = const FlutterSecureStorage();

@@ -1,77 +1,47 @@
-import 'dart:io';
+import 'dart:async';
 
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:dio/dio.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/foundation.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart' hide Transition;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:get/get.dart';
-import 'package:get_it/get_it.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:logger/logger.dart';
-import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/app_loading_indicator.dart';
-import 'package:shared_advisor_interface/presentation/di/injector.dart';
-import 'package:shared_advisor_interface/presentation/di/modules/api_module.dart';
-import 'package:shared_advisor_interface/presentation/di/modules/repository_module.dart';
-import 'package:shared_advisor_interface/presentation/di/modules/services_module.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
-import 'package:shared_advisor_interface/presentation/themes/app_themes.dart';
 
-final GetIt getIt = GetIt.instance;
+import 'data/cache/fortunica_caching_manager.dart';
+import 'generated/intl/messages_all.dart';
+import 'generated/l10n.dart';
+import 'global.dart';
+import 'infrastructure/di/app_initializer.dart';
+import 'infrastructure/di/inject_config.dart';
+import 'infrastructure/flavor/flavor_config.dart';
+import 'infrastructure/routing/app_router.gr.dart';
+import 'main_cubit.dart';
+import 'multiple_localization/multiple_localization.dart';
+import 'presentation/common_widgets/app_loading_indicator.dart';
+import 'themes/app_themes.dart';
 
-final Logger simpleLogger = Logger(printer: SimplePrinter());
-
-final logger = Logger(
-  printer: PrettyPrinter(
-    methodCount: 0,
-    printTime: false,
-  ),
-);
-
-final navigatorKey = GlobalKey<NavigatorState>();
+BuildContext? currentContext;
 
 void main() async {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  if (Platform.isIOS) {
-    await Firebase.initializeApp(
-        options: const FirebaseOptions(
-            apiKey: AppConstants.iosApiKey,
-            appId: AppConstants.iosAppId,
-            messagingSenderId: AppConstants.firebaseMessagingSenderId,
-            projectId: AppConstants.firebaseProjectId));
-  } else {
-    await Firebase.initializeApp();
-  }
+  runZonedGuarded(
+    () async {
+      await AppInitializer.setupPrerequisites(
+        Flavor.production,
+      );
 
-  await FirebaseCrashlytics.instance
-      .setCrashlyticsCollectionEnabled(!kDebugMode);
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-  PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack);
-    return true;
-  };
-  await GetStorage.init();
-  await Injector.instance.inject([
-    ServicesModule(),
-    ApiModule(),
-    RepositoryModule(),
-  ]);
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
+      await SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
 
-  runApp(const MyApp());
+      runApp(const MyApp());
+    },
+    (error, stack) {
+      logger.d("App Error with: $error");
+
+      logger.d("App Error stack: $stack");
+    },
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -82,11 +52,17 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
-  final CachingManager _cacheManager = getIt.get<CachingManager>();
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+  final FortunicaCachingManager _cacheManager =
+      globalGetIt.get<FortunicaCachingManager>();
 
-  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  static FirebaseAnalyticsObserver observer =
-      FirebaseAnalyticsObserver(analytics: analytics);
+  // TODO DELETE
+  /*final GlobalCachingManager _cacheManager =
+      globalGetIt.get<GlobalCachingManager>();*/
+
+  final MainAppRouter rootRouter = MainAppRouter();
+
+  //final BrandManager brandManager = globalGetIt.get<BrandManager>();
 
   @override
   void initState() {
@@ -97,10 +73,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.paused) {
-      getIt.get<MainCubit>().widgetOnPauseEvent();
+      globalGetIt.get<MainCubit>().widgetOnPauseEvent();
     }
     if (state == AppLifecycleState.resumed) {
-      getIt.get<MainCubit>().widgetOnResumeEvent();
+      globalGetIt.get<MainCubit>().widgetOnResumeEvent();
     }
   }
 
@@ -113,7 +89,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => getIt.get<MainCubit>(),
+      create: (_) => globalGetIt.get<MainCubit>(),
       child: Builder(builder: (context) {
         final Locale? locale =
             context.select((MainCubit cubit) => cubit.state.locale);
@@ -121,41 +97,48 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           textDirection: TextDirection.ltr,
           child: Stack(
             children: [
-              GetMaterialApp(
-                debugShowCheckedModeBanner: false,
-                theme: AppThemes.themeLight(context),
-                darkTheme: AppThemes.themeDark(context),
-                defaultTransition: Transition.cupertino,
-                initialRoute: AppRoutes.splash,
-                getPages: AppRoutes.getPages,
-                navigatorKey: navigatorKey,
-                locale: locale,
-                localizationsDelegates: const [
-                  S.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
-                supportedLocales: S.delegate.supportedLocales,
-                localeResolutionCallback: (locale, supportedLocales) {
-                  final String? languageCode = _cacheManager.getLanguageCode();
+              MaterialApp.router(
+                  theme: AppThemes.themeLight(context),
+                  darkTheme: AppThemes.themeDark(context),
+                  routerDelegate: rootRouter.delegate(
+                    navigatorObservers: () => [_AppNavigatorObserver()],
+                  ),
+                  routeInformationProvider: rootRouter.routeInfoProvider(),
+                  routeInformationParser: rootRouter.defaultRouteParser(),
+                  locale: locale,
+                  localizationsDelegates: const [
+                    _S.delegate,
+                    SFortunica.delegate,
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                  ],
+                  supportedLocales: _S.delegate.supportedLocales,
+                  localeResolutionCallback: (locale, supportedLocales) {
+                    final String? languageCode =
+                        _cacheManager.getLanguageCode();
 
-                  Locale? newLocale =
-                      supportedLocales.toList().firstWhereOrNull(
-                            (element) =>
-                                element.languageCode ==
-                                (languageCode ?? locale?.languageCode),
-                          );
-                  newLocale ??= supportedLocales.first;
+                    Locale? newLocale =
+                        supportedLocales.toList().firstWhereOrNull(
+                              (element) =>
+                                  element.languageCode ==
+                                  (languageCode ?? locale?.languageCode),
+                            );
+                    newLocale ??= supportedLocales.first;
+                    if (languageCode == null) {
+                      final String code = newLocale.languageCode;
+                      _cacheManager.saveLanguageCode(code);
+                    }
 
-                  getIt.get<Dio>().addLocaleToHeader(newLocale.languageCode);
-                  return newLocale;
-                },
-                navigatorObservers: <NavigatorObserver>[
-                  observer,
-                  _AppNavigatorObserver(),
-                ],
-              ),
+                    return newLocale;
+                  },
+                  title: 'Advisor App',
+                  builder: (context, router) {
+                    return Scaffold(
+                      body: router!,
+                      key: scaffoldKey,
+                    );
+                  }),
               Builder(builder: (context) {
                 final bool isLoading =
                     context.select((MainCubit cubit) => cubit.state.isLoading);
@@ -171,28 +154,104 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 }
 
-class _AppNavigatorObserver extends NavigatorObserver {
+class _AppNavigatorObserver extends AutoRouterObserver {
   @override
   void didPush(Route route, Route? previousRoute) {
+    super.didPush(route, previousRoute);
     _clearErrorMessage();
+    _setContext();
   }
 
   @override
   void didReplace({Route? newRoute, Route? oldRoute}) {
+    super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
     _clearErrorMessage();
+    _setContext();
   }
 
   @override
   void didRemove(Route route, Route? previousRoute) {
+    super.didRemove(route, previousRoute);
     _clearErrorMessage();
+    _setContext();
+  }
+
+  @override
+  void didInitTabRoute(TabPageRoute route, TabPageRoute? previousRoute) {
+    super.didInitTabRoute(route, previousRoute);
+    _setContext();
+  }
+
+  @override
+  void didChangeTabRoute(TabPageRoute route, TabPageRoute previousRoute) {
+    super.didChangeTabRoute(route, previousRoute);
+    _setContext();
   }
 
   @override
   void didPop(Route route, Route? previousRoute) {
+    super.didPop(route, previousRoute);
     _clearErrorMessage();
+    _setContext();
   }
 
   void _clearErrorMessage() {
-    getIt.get<MainCubit>().clearErrorMessage();
+    fortunicaGetIt.get<MainCubit>().clearErrorMessage();
+    //TODO DELETE
+    //zodiacGetIt.get<ZodiacMainCubit>().clearErrorMessage();
+  }
+
+  void _setContext() {
+    if (navigator?.context != null) {
+      currentContext = navigator?.context;
+      // TODO DELETE
+      //final String path = currentContext.router.current.path;
+      //if (path.contains(FortunicaBrand.alias)) {
+      //}
+      /*else if (path.contains(ZodiacBrand.alias)) {
+        ZodiacBrand().context = currentContext;
+      }*/
+    }
+  }
+}
+
+class _S extends SFortunica {
+  static const _SDelegate delegate = _SDelegate();
+}
+
+class _SDelegate extends LocalizationsDelegate<SFortunica> {
+  const _SDelegate();
+
+  List<Locale> get supportedLocales {
+    return const <Locale>[
+      Locale.fromSubtags(languageCode: 'en'),
+      Locale.fromSubtags(languageCode: 'de'),
+      Locale.fromSubtags(languageCode: 'es'),
+      Locale.fromSubtags(languageCode: 'pt'),
+    ];
+  }
+
+  @override
+  bool isSupported(Locale locale) => _isSupported(locale);
+
+  @override
+  Future<SFortunica> load(Locale locale) {
+    return MultipleLocalizations.load(
+        initializeMessages, locale, (l) => SFortunica.load(Locale(l)),
+        setDefaultLocale: true);
+  }
+
+  @override
+  bool shouldReload(LocalizationsDelegate<SFortunica> old) {
+    return false;
+  }
+
+  bool _isSupported(Locale locale) {
+    for (var supportedLocale in supportedLocales) {
+      if (supportedLocale.languageCode == locale.languageCode) {
+        return true;
+      }
+    }
+    return false;
   }
 }

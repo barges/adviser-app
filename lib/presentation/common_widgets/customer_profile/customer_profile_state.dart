@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shared_advisor_interface/data/models/customer_info/customer_info.dart';
-import 'package:shared_advisor_interface/data/models/customer_info/note.dart';
+
+import '../../../data/models/customer_info/customer_info.dart';
+import '../../../data/models/customer_info/note.dart';
 
 part 'customer_profile_state.freezed.dart';
 

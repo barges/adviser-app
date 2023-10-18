@@ -4,22 +4,9 @@ import 'dart:io';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
 
-const String dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-const String datePattern1 = 'MMM d, yyyy';
-const String datePattern2 = 'MMM. d, yyyy';
-const String datePattern3 = 'dd/MM/yyyy';
-const String datePattern4 = 'HH:mm MMM d yyyy';
-const String datePattern5 = 'H:mm';
-const String datePattern6 = 'MMM. dd, yyyy, HH:mm';
-const String datePattern7 = 'HH:mm';
-const String datePattern8 = 'MMM dd';
-const String datePattern9 = 'MMM dd, yyyy';
-const String datePattern10 = 'MMM. dd, yyyy HH:mm';
-
-const String currencyPattern = '#,##0.00';
+import 'app_constants.dart';
+import 'generated/l10n.dart';
 
 extension ObjectExt<T> on T {
   R let<R>(R Function(T that) op) => op(this);
@@ -32,29 +19,30 @@ extension StringExt on String {
     return hash.toString();
   }
 
+  String? get capitalize {
+    if (length > 1) {
+      return this[0].toUpperCase() + substring(1).toLowerCase();
+    } else if (length == 1) {
+      return this[0].toUpperCase();
+    } else {
+      return null;
+    }
+  }
+
   String languageNameByCode(BuildContext context) {
     final String languageCode = substring(0, 2);
     switch (languageCode) {
       case 'de':
-        return AppConstants.deBrandName;
+        return AppConstants.deLanguageName;
       case 'en':
-        return AppConstants.enBrandName;
+        return AppConstants.enLanguageName;
       case 'es':
-        return AppConstants.esBrandName;
+        return AppConstants.esLanguageName;
       case 'pt':
-        return AppConstants.ptBrandName;
+        return AppConstants.ptLanguageName;
       default:
-        return S.of(context).other;
+        return SFortunica.of(context).other;
     }
-  }
-
-  String get parseDateTimeChat {
-    final datetime = DateTime.tryParse(this);
-    if (datetime == null) {
-      return DateFormat(datePattern5).format(DateTime.now());
-    }
-
-    return DateFormat(datePattern5).format(datetime);
   }
 
   String get removeSpacesAndNewLines {
@@ -65,66 +53,14 @@ extension StringExt on String {
     final NumberFormat format = NumberFormat.simpleCurrency(name: this);
     return format.currencySymbol;
   }
-}
 
-extension DoubleExt on double {
-  String get parseValueToCurrencyFormat {
-    final currencyFormatter = NumberFormat(currencyPattern, 'ID');
-    return currencyFormatter.format(this).replaceAll('.', ' ');
-  }
-}
-
-extension DateTimeExt on DateTime {
-  String get chatListTime {
-    DateTime now = DateTime.now();
-    DateTime localTime = toLocal();
-    int timeDifference =
-        DateTime(localTime.year, localTime.month, localTime.day)
-            .difference(DateTime(now.year, now.month, now.day))
-            .inDays;
-    if (timeDifference == 0) {
-      return DateFormat(datePattern7).format(localTime);
-    }
-    if (localTime.year != now.year) {
-      return DateFormat(datePattern9).format(localTime);
-    }
-    return DateFormat(datePattern8).format(localTime);
-  }
-
-  String historyListTime(BuildContext context) {
-    DateTime now = DateTime.now();
-    DateTime localTime = toLocal();
-    int timeDifference =
-        DateTime(localTime.year, localTime.month, localTime.day)
-            .difference(DateTime(now.year, now.month, now.day))
-            .inDays;
-    if (timeDifference == 0) {
-      return S.of(context).today;
-    }
-    if (localTime.year != now.year) {
-      return DateFormat(datePattern9).format(localTime);
-    }
-    return DateFormat(datePattern8).format(localTime);
+  bool get isHtml {
+    return RegExp(r'<([A-Za-z][A-Za-z0-9]*)\b[^>]*>(.*?)</\1>').hasMatch(this);
   }
 }
 
 extension FileExt on File {
   int get sizeInBytes => lengthSync();
+
   double get sizeInMb => sizeInBytes / (1024 * 1024);
-}
-
-extension DurationExt on Duration {
-  String get formatMMSS {
-    final minutes = inMinutes.remainder(60);
-    final seconds = inSeconds.remainder(60);
-    return "${minutes < 10 ? '0$minutes' : '$minutes'}:${seconds < 10 ? '0$seconds' : '$seconds'}";
-  }
-}
-
-extension IntExt on int {
-  String get formatMSS {
-    final minutes = this ~/ 60;
-    final seconds = remainder(60);
-    return "${'$minutes'}:${seconds < 10 ? '0$seconds' : '$seconds'}";
-  }
 }

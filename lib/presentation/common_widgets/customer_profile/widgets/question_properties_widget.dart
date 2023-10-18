@@ -1,7 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+
+import '../../../../app_constants.dart';
+import '../../../../generated/l10n.dart';
 
 class QuestionPropertiesWidget extends StatelessWidget {
   final List<String> properties;
@@ -25,7 +26,7 @@ class QuestionPropertiesWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            S.of(context).preferredTopics.toUpperCase(),
+            SFortunica.of(context).preferredTopicsFortunica.toUpperCase(),
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   fontWeight: FontWeight.w400,
                   fontSize: 13.0,

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
+
+import '../../../app_constants.dart';
+import '../../../themes/app_colors.dart';
 
 class AppIconGradientButton extends StatelessWidget {
   final String icon;

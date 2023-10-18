@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
+import '../../../generated/l10n.dart';
 
-enum UISuccessType {
+enum UISuccessMessagesType {
   theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m,
   thisQuestionWillBeReturnedToTheGeneralListAfterCounter,
   youMustAnswerYourActivePublicQuestionBeforeYouCanHelpSomeoneElse,
@@ -9,25 +9,22 @@ enum UISuccessType {
 
   String getSuccessMessage(BuildContext context, String? argument) {
     switch (this) {
-      case UISuccessType
-          .theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m:
-        return S
-            .of(context)
-            .theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m;
-      case UISuccessType.thisQuestionWillBeReturnedToTheGeneralListAfterCounter:
-        return S
-            .of(context)
-            .thisQuestionWillBeReturnedToTheGeneralListAfterCounter(
+      case UISuccessMessagesType
+            .theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1m:
+        return SFortunica.of(context)
+            .theAnswerIsNotPossibleThisQuestionWillBeReturnedToTheGeneralListIn1mFortunica;
+      case UISuccessMessagesType
+            .thisQuestionWillBeReturnedToTheGeneralListAfterCounter:
+        return SFortunica.of(context)
+            .thisQuestionWillBeReturnedToTheGeneralListAfterCounterFortunica(
                 argument ?? '');
-      case UISuccessType
-          .youMustAnswerYourActivePublicQuestionBeforeYouCanHelpSomeoneElse:
-        return S
-            .of(context)
-            .youMustAnswerYourActivePublicQuestionBeforeYouCanHelpSomeoneElse;
-      case UISuccessType.weVeSentPasswordResetInstructionsToEmail:
-        return S
-            .of(context)
-            .weVeSentPasswordResetInstructionsToEmail(argument ?? '');
+      case UISuccessMessagesType
+            .youMustAnswerYourActivePublicQuestionBeforeYouCanHelpSomeoneElse:
+        return SFortunica.of(context)
+            .youMustAnswerYourActivePublicQuestionBeforeYouCanHelpSomeoneElseFortunica;
+      case UISuccessMessagesType.weVeSentPasswordResetInstructionsToEmail:
+        return SFortunica.of(context)
+            .weVeSentPasswordResetInstructionsToEmailFortunica(argument ?? '');
     }
   }
 }

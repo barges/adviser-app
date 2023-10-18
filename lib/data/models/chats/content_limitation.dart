@@ -1,7 +1,7 @@
 // ignore_for_file: invalid_annotation_target
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shared_advisor_interface/data/models/chats/limitation.dart';
+import 'limitation.dart';
 
 part 'content_limitation.freezed.dart';
 part 'content_limitation.g.dart';

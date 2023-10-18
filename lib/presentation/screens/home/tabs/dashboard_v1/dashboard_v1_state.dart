@@ -1,7 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_month.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_statistics.dart';
-import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
+
+import '../../../../../data/models/reports_endpoint/reports_month.dart';
+import '../../../../../data/models/reports_endpoint/reports_statistics.dart';
+import '../../../../../data/models/user_info/user_profile.dart';
 
 part 'dashboard_v1_state.freezed.dart';
 

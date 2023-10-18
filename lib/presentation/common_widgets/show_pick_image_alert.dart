@@ -5,20 +5,21 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
 
-Future<void> showPickImageAlert(
-    {required BuildContext context,
-    required ValueChanged<File> setImage,
-    ValueChanged<List<File>>? setMultiImage,
-    VoidCallback? cancelOnTap,
-    bool mounted = true}) async {
+import '../../infrastructure/routing/app_router.dart';
+import '../../app_constants.dart';
+import '../../generated/l10n.dart';
+import '../../global.dart';
+import '../../services/check_permission_service.dart';
+
+Future<void> showPickImageAlert({
+  required BuildContext context,
+  required ValueChanged<File> setImage,
+  ValueChanged<List<File>>? setMultiImage,
+  VoidCallback? cancelOnTap,
+}) async {
   ImageSource? source;
 
   if (Platform.isAndroid) {
@@ -28,13 +29,13 @@ Future<void> showPickImageAlert(
         mainAxisSize: MainAxisSize.min,
         children: [
           GestureDetector(
-            onTap: () => Get.back(result: ImageSource.gallery),
+            onTap: () => context.popForced(ImageSource.gallery),
             child: Container(
               padding: const EdgeInsets.only(top: 32.0, bottom: 16.0),
               width: MediaQuery.of(context).size.width,
               child: Center(
                   child: Text(
-                S.of(context).choosePhotoFromLibrary,
+                SFortunica.of(context).choosePhotoFromLibrary,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w500,
                     ),
@@ -42,13 +43,13 @@ Future<void> showPickImageAlert(
             ),
           ),
           GestureDetector(
-            onTap: () => Get.back(result: ImageSource.camera),
+            onTap: () => context.popForced(ImageSource.camera),
             child: Container(
               padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
               width: MediaQuery.of(context).size.width,
               child: Center(
                   child: Text(
-                S.of(context).takeAPhoto,
+                SFortunica.of(context).takeAPhoto,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w500,
                     ),
@@ -57,7 +58,7 @@ Future<void> showPickImageAlert(
           ),
           GestureDetector(
             onTap: () {
-              Get.back();
+              context.popForced();
               if (cancelOnTap != null) {
                 cancelOnTap();
               }
@@ -66,7 +67,7 @@ Future<void> showPickImageAlert(
               width: MediaQuery.of(context).size.width,
               padding: const EdgeInsets.only(top: 16.0, bottom: 32.0),
               child: Center(
-                child: Text(S.of(context).cancel,
+                child: Text(SFortunica.of(context).cancel,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w500,
                           color: Theme.of(context).primaryColor,
@@ -85,45 +86,43 @@ Future<void> showPickImageAlert(
               actions: <Widget>[
                 CupertinoActionSheetAction(
                   child: Text(
-                    S.of(context).takeAPhoto,
+                    SFortunica.of(context).takeAPhoto,
                   ),
-                  onPressed: () => Get.back(result: ImageSource.camera),
+                  onPressed: () => context.popRoot(ImageSource.camera),
                 ),
                 CupertinoActionSheetAction(
                   child: Text(
-                    S.of(context).choosePhotoFromLibrary,
+                    SFortunica.of(context).choosePhotoFromLibrary,
                   ),
-                  onPressed: () => Get.back(result: ImageSource.gallery),
+                  onPressed: () => context.popRoot(ImageSource.gallery),
                 ),
               ],
               cancelButton: CupertinoActionSheetAction(
                 isDefaultAction: true,
                 onPressed: () {
-                  Get.back();
+                  context.popRoot();
+                  // Navigator.of(context).pop();
                   if (cancelOnTap != null) {
                     cancelOnTap();
                   }
                 },
                 child: Text(
-                  S.of(context).cancel,
+                  SFortunica.of(context).cancel,
                 ),
               ),
             ));
   }
-  if (mounted &&
-      ((source != null && setMultiImage == null) ||
-          (source == ImageSource.camera && setMultiImage != null))) {
+  if ((source != null && setMultiImage == null) ||
+      (source == ImageSource.camera && setMultiImage != null)) {
     await _pickImage(context, source!, setImage);
-  } else if (mounted &&
-      source == ImageSource.gallery &&
-      setMultiImage != null) {
+  } else if (source == ImageSource.gallery && setMultiImage != null) {
     await _pickMultiImage(context, source!, setMultiImage);
   }
 }
 
 Future<void> _pickImage(BuildContext context, ImageSource imageSource,
     ValueChanged<File> setImage) async {
-  await getIt.get<CheckPermissionService>().handlePermission(
+  await globalGetIt.get<CheckPermissionService>().handlePermission(
       context, PermissionType.getPermissionTypeByImageSource(imageSource));
   File? image;
 
@@ -131,7 +130,6 @@ Future<void> _pickImage(BuildContext context, ImageSource imageSource,
     final ImagePicker picker = ImagePicker();
     final XFile? photoFile = await picker.pickImage(
       source: imageSource,
-      requestFullMetadata: false,
 
       ///Uncomment if we need crop image size
       // maxHeight: 2048.0,
@@ -149,7 +147,7 @@ Future<void> _pickImage(BuildContext context, ImageSource imageSource,
 
 Future<void> _pickMultiImage(BuildContext context, ImageSource imageSource,
     ValueChanged<List<File>> setMultiImage) async {
-  await getIt.get<CheckPermissionService>().handlePermission(
+  await globalGetIt.get<CheckPermissionService>().handlePermission(
       context, PermissionType.getPermissionTypeByImageSource(imageSource));
   List<File> images = List.empty(growable: true);
   final ImagePicker picker = ImagePicker();

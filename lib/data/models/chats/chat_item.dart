@@ -3,14 +3,15 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shared_advisor_interface/data/models/chats/attachment.dart';
-import 'package:shared_advisor_interface/data/models/chats/client_information.dart';
-import 'package:shared_advisor_interface/data/models/enums/attachment_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/message_content_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/chat_item_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/sessions_types.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
+
+import '../../../generated/l10n.dart';
+import '../enums/attachment_type.dart';
+import '../enums/chat_item_status_type.dart';
+import '../enums/chat_item_type.dart';
+import '../enums/message_content_type.dart';
+import '../enums/sessions_types.dart';
+import 'attachment.dart';
+import 'client_information.dart';
 
 part 'chat_item.freezed.dart';
 part 'chat_item.g.dart';
@@ -73,7 +74,7 @@ class ChatItem with _$ChatItem {
   String getUnansweredMessage(BuildContext context) {
     String? resultMessage;
     if (unansweredCount != null && unansweredCount! > 1) {
-      resultMessage = S.of(context).youHaveAFewActiveSessions;
+      resultMessage = SFortunica.of(context).youHaveAFewActiveSessionsFortunica;
     } else {
       resultMessage = unansweredTypes?.firstOrNull?.unAnsweredMessage(context);
     }

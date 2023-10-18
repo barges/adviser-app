@@ -1,5 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+
+import '../../app_constants.dart';
 
 class ListOfFiltersWidget extends StatelessWidget {
   final List<String> filters;
@@ -34,25 +36,23 @@ class ListOfFiltersWidget extends StatelessWidget {
                       horizontal: AppConstants.horizontalScreenPadding,
                     ),
               child: Row(
-                  children: filters
-                      .map<Widget>(
-                        (element) => Padding(
-                          padding:
-                              filters.indexOf(element) != filters.length - 1
-                                  ? const EdgeInsets.only(right: 8.0)
-                                  : EdgeInsets.zero,
-                          child: _FilterWidget(
-                            title: element,
-                            isSelected:
-                                filters.indexOf(element) == currentFilterIndex,
-                            onTap: () => onTapToFilter(
-                                filters.indexOf(element) == currentFilterIndex
-                                    ? null
-                                    : filters.indexOf(element)),
-                          ),
-                        ),
-                      )
-                      .toList()),
+                  children: filters.mapIndexed<Widget>(
+                (index, element) {
+                  final bool isSelected = index == currentFilterIndex;
+                  return Padding(
+                    padding: index != filters.length - 1
+                        ? const EdgeInsets.only(right: 8.0)
+                        : EdgeInsets.zero,
+                    child: _FilterWidget(
+                      title: element,
+                      isSelected: isSelected,
+                      onTap: () => onTapToFilter(
+                        isSelected ? null : index,
+                      ),
+                    ),
+                  );
+                },
+              ).toList()),
             )));
   }
 }

@@ -1,11 +1,12 @@
 // ignore_for_file: invalid_annotation_target
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shared_advisor_interface/data/models/user_info/contracts.dart';
-import 'package:shared_advisor_interface/data/models/user_info/email_info.dart';
-import 'package:shared_advisor_interface/data/models/user_info/freshchat_info.dart';
-import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
-import 'package:shared_advisor_interface/data/models/user_info/user_status.dart';
+
+import 'contracts.dart';
+import 'email_info.dart';
+import 'freshchat_info.dart';
+import 'user_profile.dart';
+import 'user_status.dart';
 
 part 'user_info.freezed.dart';
 

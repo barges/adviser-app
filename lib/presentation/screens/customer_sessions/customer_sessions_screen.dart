@@ -1,35 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
-import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
-import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
-import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/no_connection_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
-import 'package:shared_advisor_interface/presentation/screens/customer_sessions/customer_sessions_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/customer_sessions/widgets/customer_sessions_filters_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/customer_sessions/widgets/customer_sessions_list_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/customer_sessions/widgets/empty_customer_sessions_list_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs_types.dart';
+
+import '../../../infrastructure/routing/app_router.dart';
+import '../../../data/cache/fortunica_caching_manager.dart';
+import '../../../data/models/app_error/app_error.dart';
+import '../../../data/models/chats/chat_item.dart';
+import '../../../data/models/enums/zodiac_sign.dart';
+import '../../../domain/repositories/fortunica_chats_repository.dart';
+import '../../../domain/repositories/fortunica_customer_repository.dart';
+import '../../../generated/l10n.dart';
+import '../../../infrastructure/di/inject_config.dart';
+import '../../../infrastructure/routing/app_router.gr.dart';
+import '../../../main_cubit.dart';
+import '../../../services/connectivity_service.dart';
+import '../../common_widgets/appbar/chat_conversation_app_bar.dart';
+import '../../common_widgets/messages/app_error_widget.dart';
+import '../../common_widgets/no_connection_widget.dart';
+import '../../common_widgets/ok_cancel_alert.dart';
+import '../home/tabs_types.dart';
+import 'customer_sessions_cubit.dart';
+import 'widgets/customer_sessions_filters_widget.dart';
+import 'widgets/customer_sessions_list_widget.dart';
+import 'widgets/empty_customer_sessions_list_widget.dart';
 
 class CustomerSessionsScreen extends StatelessWidget {
-  const CustomerSessionsScreen({Key? key}) : super(key: key);
+  final CustomerSessionsScreenArguments customerSessionsScreenArguments;
+
+  const CustomerSessionsScreen({
+    Key? key,
+    required this.customerSessionsScreenArguments,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
         create: (_) => CustomerSessionsCubit(
-              getIt.get<CachingManager>(),
-              MediaQuery.of(context).size.height,
-              () => showErrorAlert(context),
+              chatsRepository: fortunicaGetIt.get<FortunicaChatsRepository>(),
+              customerRepository:
+                  fortunicaGetIt.get<FortunicaCustomerRepository>(),
+              mainCubit: fortunicaGetIt.get<MainCubit>(),
+              connectivityService: fortunicaGetIt.get<ConnectivityService>(),
+              cacheManager: fortunicaGetIt.get<FortunicaCachingManager>(),
+              screenHeight: MediaQuery.of(context).size.height,
+              showErrorAlert: () => showErrorAlert(context),
+              arguments: customerSessionsScreenArguments,
             ),
         child: Builder(builder: (context) {
           final CustomerSessionsCubit customerSessionsCubit =
@@ -69,12 +83,12 @@ class CustomerSessionsScreen extends StatelessWidget {
                                 cubit.state.privateQuestionsWithHistory);
 
                         if (!isOnline) {
-                          return CustomScrollView(slivers: [
+                          return const CustomScrollView(slivers: [
                             SliverFillRemaining(
                                 hasScrollBody: false,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
+                                  children: [
                                     NoConnectionWidget(),
                                   ],
                                 )),
@@ -107,22 +121,31 @@ class CustomerSessionsScreen extends StatelessWidget {
               }));
         }));
   }
+
+  showErrorAlert(BuildContext context) async {
+    await showOkCancelAlert(
+      context: context,
+      title: fortunicaGetIt.get<MainCubit>().state.appError.getMessage(context),
+      okText: SFortunica.of(context).okFortunica,
+      actionOnOK: () async {
+        context.replaceAll([
+          FortunicaHome(
+            initTab: TabsTypes.sessions,
+          )
+        ]);
+      },
+      allowBarrierClick: false,
+      isCancelEnabled: false,
+    );
+  }
 }
 
-showErrorAlert(BuildContext context) async {
-  await showOkCancelAlert(
-    context: context,
-    title: getIt.get<MainCubit>().state.appError.getMessage(context),
-    okText: S.of(context).ok,
-    actionOnOK: () {
-      Get.offNamedUntil(
-          AppRoutes.home,
-          arguments: HomeScreenArguments(
-            initTab: TabsTypes.sessions,
-          ),
-          (route) => false);
-    },
-    allowBarrierClick: false,
-    isCancelEnabled: false,
-  );
+class CustomerSessionsScreenArguments {
+  ChatItem question;
+  int marketIndex;
+
+  CustomerSessionsScreenArguments({
+    required this.question,
+    required this.marketIndex,
+  });
 }

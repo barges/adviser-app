@@ -1,52 +1,48 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mime/mime.dart';
-import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/validation_error_type.dart';
-import 'package:shared_advisor_interface/data/models/user_info/localized_properties/localized_properties.dart';
-import 'package:shared_advisor_interface/data/models/user_info/localized_properties/property_by_language.dart';
-import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
-import 'package:shared_advisor_interface/data/network/requests/reorder_cover_pictures_request.dart';
-import 'package:shared_advisor_interface/data/network/requests/update_profile_image_request.dart';
-import 'package:shared_advisor_interface/data/network/requests/update_profile_request.dart';
-import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
-import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
-import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 
+import '../../../infrastructure/routing/app_router.dart';
+import '../../../data/cache/fortunica_caching_manager.dart';
+import '../../../data/models/enums/markets_type.dart';
+import '../../../data/models/enums/validation_error_type.dart';
+import '../../../data/models/user_info/localized_properties/localized_properties.dart';
+import '../../../data/models/user_info/localized_properties/property_by_language.dart';
+import '../../../data/models/user_info/user_profile.dart';
+import '../../../data/network/requests/reorder_cover_pictures_request.dart';
+import '../../../data/network/requests/update_profile_image_request.dart';
+import '../../../data/network/requests/update_profile_request.dart';
+import '../../../domain/repositories/fortunica_user_repository.dart';
+import '../../../fortunica_constants.dart';
+import '../../../infrastructure/routing/app_router.gr.dart';
+import '../../../main_cubit.dart';
+import '../../../services/connectivity_service.dart';
+import '../../../utils/utils.dart';
+import '../gallery/gallery_pictures_screen.dart';
 import 'edit_profile_state.dart';
 
 class EditProfileCubit extends Cubit<EditProfileState> {
-  final MainCubit mainCubit = getIt.get<MainCubit>();
+  final MainCubit mainCubit;
+  final FortunicaUserRepository userRepository;
+  final FortunicaCachingManager cacheManager;
+  final ConnectivityService connectivityService;
+
   final TextEditingController nicknameController = TextEditingController();
   final FocusNode nicknameFocusNode = FocusNode();
 
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   final GlobalKey profileAvatarKey = GlobalKey();
   final GlobalKey nicknameFieldKey = GlobalKey();
-
-  final UserRepository _userRepository = getIt.get<UserRepository>();
-  final CachingManager _cacheManager = getIt.get<CachingManager>();
-  final ConnectivityService _connectivityService =
-      getIt.get<ConnectivityService>();
 
   UserProfile? userProfile;
   late List<MarketsType> activeLanguages;
   late List<GlobalKey> activeLanguagesGlobalKeys;
   late Map<String, dynamic> _oldPropertiesMap;
-  late VoidCallback disposeCoverPicturesListen;
-
-  late bool needRefresh;
+  late final StreamSubscription userProfileSubscription;
 
   final ScrollController languagesScrollController = ScrollController();
   final PageController picturesPageController = PageController();
@@ -58,15 +54,16 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   int? initialLanguageIndexIfHasError;
 
-  EditProfileCubit() : super(EditProfileState()) {
-    EditProfileScreenArguments arguments =
-        Get.arguments as EditProfileScreenArguments;
-    needRefresh = arguments.isAccountTimeout;
-
-    userProfile = _cacheManager.getUserProfile();
+  EditProfileCubit({
+    required this.mainCubit,
+    required this.userRepository,
+    required this.cacheManager,
+    required this.connectivityService,
+  }) : super(EditProfileState()) {
+    userProfile = cacheManager.getUserProfile();
     setUpScreenForUserProfile();
 
-    disposeCoverPicturesListen = _cacheManager.listenUserProfile((value) {
+    userProfileSubscription = cacheManager.listenUserProfileStream((value) {
       if (userProfile == null) {
         userProfile = value;
         setUpScreenForUserProfile();
@@ -95,7 +92,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     nicknameController.dispose();
     nicknameFocusNode.dispose();
     picturesPageController.dispose();
-    disposeCoverPicturesListen.call();
+    userProfileSubscription.cancel();
     return super.close();
   }
 
@@ -213,45 +210,42 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     });
 
     for (var entry in focusNodesMap.entries) {
-      entry.value.firstOrNull?.addListener(() {
-        hasFocusNotifiersMap[entry.key]?.first.value =
-            entry.value.first.hasFocus;
-      });
-      entry.value.lastOrNull?.addListener(() {
-        hasFocusNotifiersMap[entry.key]?.last.value = entry.value.last.hasFocus;
-      });
+      for (int i = 0; i < entry.value.length; i++) {
+        entry.value[i].addListener(() {
+          hasFocusNotifiersMap[entry.key]?[i].value = entry.value[i].hasFocus;
+        });
+      }
     }
   }
 
-  void openDrawer() {
-    scaffoldKey.currentState?.openDrawer();
-  }
-
-  void goToGallery() {
-    Get.toNamed(
-      AppRoutes.galleryPictures,
-      arguments: GalleryPicturesScreenArguments(
-        pictures: state.coverPictures,
-        editProfilePageController: picturesPageController,
-        initPage: picturesPageController.page ?? 0.0,
+  void goToGallery(BuildContext context) {
+    context.push(
+      route: FortunicaGalleryPictures(
+        galleryPicturesScreenArguments: GalleryPicturesScreenArguments(
+          pictures: state.coverPictures,
+          editProfilePageController: picturesPageController,
+          initPage: picturesPageController.page ?? 0.0,
+        ),
       ),
     );
   }
 
-  void goToAddGalleryPictures() {
-    Get.toNamed(AppRoutes.addGalleryPictures);
+  void goToAddGalleryPictures(BuildContext context) {
+    context.push(
+      route: const FortunicaAddGalleryPictures(),
+    );
   }
 
-  Future<void> updateUserInfo() async {
-    if (await _connectivityService.checkConnection()) {
+  Future<void> updateUserInfo(BuildContext context) async {
+    if (await connectivityService.checkConnection()) {
       if (checkTextFields() & _checkNickName() & checkUserAvatar()) {
         final bool profileUpdated = await updateUserProfileTexts();
         final bool coverPictureUpdated = await updateCoverPicture();
         final bool avatarUpdated = await updateUserAvatar();
         if (profileUpdated || coverPictureUpdated || avatarUpdated) {
-          Get.back(result: true);
+          context.pop(true);
         } else {
-          Get.back();
+          context.pop();
         }
       }
     }
@@ -271,7 +265,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     final LocalizedProperties newProperties =
         LocalizedProperties.fromJson(newPropertiesMap);
 
-    final UserProfile? actualProfile = _cacheManager.getUserProfile();
+    final UserProfile? actualProfile = cacheManager.getUserProfile();
 
     if (nicknameController.text != actualProfile?.profileName ||
         actualProfile?.localizedProperties != newProperties) {
@@ -279,8 +273,8 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         localizedProperties: newProperties,
         profileName: nicknameController.text,
       );
-      final UserProfile profile = await _userRepository.updateProfile(request);
-      _cacheManager.saveUserProfile(
+      final UserProfile profile = await userRepository.updateProfile(request);
+      cacheManager.saveUserProfile(
         profile,
       );
       isOk = true;
@@ -290,7 +284,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   bool _checkNickName([bool animate = true]) {
     bool isValid = true;
-    if (nicknameController.text.length < AppConstants.minNickNameLength) {
+    if (nicknameController.text.length < FortunicaConstants.minNickNameLength) {
       isValid = false;
       if (animate) {
         Utils.animateToWidget(nicknameFieldKey);
@@ -361,11 +355,11 @@ class EditProfileCubit extends Cubit<EditProfileState> {
             indexes.add(index);
           }
         });
-        List<String> coverPictures = await _userRepository
+        List<String> coverPictures = await userRepository
             .reorderCoverPictures(ReorderCoverPicturesRequest(
           indexes: indexes.join(','),
         ));
-        _cacheManager.updateUserProfileCoverPictures(coverPictures);
+        cacheManager.updateUserProfileCoverPictures(coverPictures);
         isOk = true;
       }
     }
@@ -382,7 +376,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         mime: mimeType,
         image: base64Image,
       );
-      await _userRepository.updateProfilePicture(request);
+      await userRepository.updateProfilePicture(request);
       isOk = true;
     }
     return isOk;

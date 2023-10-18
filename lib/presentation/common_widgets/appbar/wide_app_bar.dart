@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+import '../../../../infrastructure/routing/app_router.dart';
+
+import '../../../app_constants.dart';
+import '../../../generated/assets/assets.gen.dart';
+import '../buttons/app_icon_button.dart';
 
 class WideAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget bottomWidget;
@@ -37,7 +38,7 @@ class WideAppBar extends StatelessWidget implements PreferredSizeWidget {
                   children: [
                     AppIconButton(
                       icon: Assets.vectors.arrowLeft.path,
-                      onTap: Get.back,
+                      onTap: context.pop,
                     ),
                     topRightWidget ?? const SizedBox.shrink()
                   ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
+
+import '../../../../../../generated/l10n.dart';
 
 class TimerWidget extends StatelessWidget {
   final int secondsForTimer;
@@ -14,7 +15,7 @@ class TimerWidget extends StatelessWidget {
     final minutes = secondsForTimer ~/ 60;
     final seconds = secondsForTimer % 60;
     return Text(
-      '${S.of(context).willBeAvailableIn}'
+      '${SFortunica.of(context).willBeAvailableInFortunica}'
       ' $minutes:${seconds < 10 ? '0$seconds' : seconds}',
       textAlign: TextAlign.center,
       style: Theme.of(context).textTheme.bodySmall?.copyWith(

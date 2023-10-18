@@ -3,15 +3,16 @@ import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/user_avatar.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/edit_profile/edit_profile_cubit.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+import '../../../../app_constants.dart';
+import '../../../../generated/assets/assets.gen.dart';
+import '../../../../generated/l10n.dart';
+import '../../../../main_cubit.dart';
+import '../../../common_widgets/app_image_widget.dart';
+import '../../../common_widgets/show_pick_image_alert.dart';
+import '../../../common_widgets/user_avatar.dart';
+import '../edit_profile_cubit.dart';
 
 const double _backgroundImageSectionHeight = 140.0;
 
@@ -38,7 +39,9 @@ class ProfileImagesWidget extends StatelessWidget {
                         height: _backgroundImageSectionHeight,
                         color: Theme.of(context).primaryColorLight,
                         child: GestureDetector(
-                          onTap: isOnline ? cubit.goToAddGalleryPictures : null,
+                          onTap: isOnline
+                              ? () => cubit.goToAddGalleryPictures(context)
+                              : null,
                           child: Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(40),
@@ -52,7 +55,9 @@ class ProfileImagesWidget extends StatelessWidget {
                                   color: Theme.of(context).primaryColor,
                                 ),
                                 const SizedBox(width: 6.0),
-                                Text(S.of(context).addCoverPicture,
+                                Text(
+                                    SFortunica.of(context)
+                                        .addCoverPictureFortunica,
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleMedium
@@ -76,12 +81,13 @@ class ProfileImagesWidget extends StatelessWidget {
                               itemCount: coverPictures.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return GestureDetector(
-                                  onTap: cubit.goToGallery,
+                                  onTap: () => cubit.goToGallery(context),
                                   child: SizedBox(
                                     height: _backgroundImageSectionHeight,
                                     child: AppImageWidget(
                                       uri: Uri.parse(coverPictures[index]),
-                                      memCacheHeight: _backgroundImageSectionHeight.toInt(),
+                                      memCacheHeight:
+                                          _backgroundImageSectionHeight.toInt(),
                                     ),
                                   ),
                                 );
@@ -118,7 +124,9 @@ class ProfileImagesWidget extends StatelessWidget {
                 ? Opacity(
                     opacity: isOnline ? 1.0 : 0.4,
                     child: GestureDetector(
-                      onTap: isOnline ? cubit.goToAddGalleryPictures : null,
+                      onTap: isOnline
+                          ? () => cubit.goToAddGalleryPictures(context)
+                          : null,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 16.0),
@@ -134,7 +142,7 @@ class ProfileImagesWidget extends StatelessWidget {
                               width: 4.0,
                             ),
                             Text(
-                              S.of(context).myGallery,
+                              SFortunica.of(context).myGalleryFortunica,
                               style: Theme.of(context)
                                   .textTheme
                                   .titleMedium

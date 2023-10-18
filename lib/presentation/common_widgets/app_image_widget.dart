@@ -1,12 +1,14 @@
 import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
+
+import '../../infrastructure/routing/app_router.dart';
+import '../../app_constants.dart';
+import '../../generated/assets/assets.gen.dart';
+import '../../infrastructure/routing/app_router.gr.dart';
+import '../screens/gallery/gallery_pictures_screen.dart';
 
 class AppImageWidget extends StatelessWidget {
   final Uri uri;
@@ -40,10 +42,12 @@ class AppImageWidget extends StatelessWidget {
     return GestureDetector(
       onTap: canBeOpenedInFullScreen
           ? () {
-              Get.toNamed(
-                AppRoutes.galleryPictures,
-                arguments: GalleryPicturesScreenArguments(
-                  pictures: [uri.toString()],
+              context.push(
+                route: FortunicaGalleryPictures(
+                  galleryPicturesScreenArguments:
+                      GalleryPicturesScreenArguments(
+                    pictures: [uri.toString()],
+                  ),
                 ),
               );
             }

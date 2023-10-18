@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/error_badge.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+
+import '../../../../../../app_constants.dart';
+import '../../../../../../generated/assets/assets.gen.dart';
+import '../../../../../common_widgets/error_badge.dart';
 
 class TileWidget extends StatelessWidget {
   final String iconSVGPath;

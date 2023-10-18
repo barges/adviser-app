@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/show_pick_image_alert.dart';
-import 'package:shared_advisor_interface/presentation/screens/add_note/add_note_cubit.dart';
-import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
+
+import '../../../../generated/assets/assets.gen.dart';
+import '../../../../themes/app_colors.dart';
+import '../../../common_widgets/show_pick_image_alert.dart';
+import '../add_note_cubit.dart';
 
 class AttachNewPictureCircleButtonWidget extends StatelessWidget {
   const AttachNewPictureCircleButtonWidget({Key? key}) : super(key: key);

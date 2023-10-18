@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/data/models/enums/fortunica_user_status.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/home_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs_types.dart';
-import 'package:shared_advisor_interface/presentation/utils/utils.dart';
+
+import '../../../../../../app_constants.dart';
+import '../../../../../../data/models/enums/fortunica_user_status.dart';
+import '../../../../../../generated/assets/assets.gen.dart';
+import '../../../../../../utils/utils.dart';
+import '../../../../../common_widgets/buttons/app_elevated_button.dart';
+import '../../../home_cubit.dart';
+import '../../../tabs_types.dart';
 
 class NotLiveStatusWidget extends StatelessWidget {
   final FortunicaUserStatus status;

@@ -1,9 +1,10 @@
 // ignore_for_file: invalid_annotation_target
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shared_advisor_interface/data/models/enums/gender.dart';
-import 'package:shared_advisor_interface/data/models/enums/zodiac_sign.dart';
-import 'package:shared_advisor_interface/data/network/responses/customer_info_response/questions_subscription.dart';
+
+import '../../network/responses/customer_info_response/questions_subscription.dart';
+import '../enums/gender.dart';
+import '../enums/zodiac_sign.dart';
 
 part 'customer_info.g.dart';
 part 'customer_info.freezed.dart';
@@ -17,8 +18,7 @@ class CustomerInfo with _$CustomerInfo {
     String? country,
     DateTime? birthdate,
     String? firstName,
-    @JsonKey(unknownEnumValue: Gender.unknown)
-    Gender? gender,
+    @JsonKey(unknownEnumValue: Gender.unknown) Gender? gender,
     String? lastName,
     ZodiacSign? zodiac,
     bool? isProfileCompleted,

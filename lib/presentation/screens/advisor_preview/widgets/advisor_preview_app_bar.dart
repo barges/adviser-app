@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/advisor_preview/advisor_preview_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/advisor_preview/widgets/flags_bottom_sheet.dart';
+
+import '../../../../infrastructure/routing/app_router.dart';
+import '../../../../app_constants.dart';
+import '../../../../generated/assets/assets.gen.dart';
+import '../advisor_preview_constants.dart';
+import '../advisor_preview_cubit.dart';
+import 'flags_bottom_sheet.dart';
 
 class AdvisorPreviewAppBar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -25,7 +26,7 @@ class AdvisorPreviewAppBar extends StatelessWidget
       systemOverlayStyle:
           const SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
       leading: GestureDetector(
-        onTap: Get.back,
+        onTap: context.pop,
         child: Padding(
           padding: const EdgeInsets.all(14.0),
           child: Assets.vectors.arrowLeft
@@ -41,7 +42,10 @@ class AdvisorPreviewAppBar extends StatelessWidget
                     advisorPreviewCubit.onOpen();
                     flagsBottomSheet(
                         context: context,
-                        onApply: advisorPreviewCubit.onApply,
+                        onApply: () {
+                          advisorPreviewCubit.onApply();
+                          context.pop();
+                        },
                         onSelectLanguage:
                             advisorPreviewCubit.updateActiveLanguagesInUI,
                         activeLanguages: advisorPreviewCubit.languages,

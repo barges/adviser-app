@@ -1,7 +1,8 @@
 // ignore_for_file: invalid_annotation_target
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shared_advisor_interface/data/models/enums/sessions_types.dart';
+
+import '../enums/sessions_types.dart';
 
 part 'reports_meta.freezed.dart';
 
@@ -22,12 +23,12 @@ class ReportsMeta with _$ReportsMeta {
 }
 
 Map<SessionsTypes, double>? _ratesFromJson(json) {
-  final Map<SessionsTypes, double>? ratingMap = {};
+  final Map<SessionsTypes, double> ratingMap = {};
 
   (json as Map<String, dynamic>?)?.forEach((key, value) {
     if (SessionsTypes.actualSessionsTypes.contains(key)) {
       if (value is double) {
-        ratingMap?[SessionsTypes.typeFromString(key)] = value;
+        ratingMap[SessionsTypes.typeFromString(key)] = value;
       }
     }
   });

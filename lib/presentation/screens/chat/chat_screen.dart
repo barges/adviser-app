@@ -1,78 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_size/flutter_keyboard_size.dart';
-import 'package:get/get.dart';
-import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
-import 'package:shared_advisor_interface/data/models/app_errors/ui_error_type.dart';
-import 'package:shared_advisor_interface/data/models/app_success/app_success.dart';
-import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
-import 'package:shared_advisor_interface/data/models/enums/chat_item_status_type.dart';
-import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/main_state.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/appbar/chat_conversation_app_bar.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/choose_option_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/customer_profile/customer_profile_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_success_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/show_delete_alert.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/chat_state.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_input_field_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/active_chat_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/chat_text_input_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_widget.dart';
-import 'package:shared_advisor_interface/presentation/services/audio/audio_player_service.dart';
-import 'package:shared_advisor_interface/presentation/services/check_permission_service.dart';
-import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
-import 'package:shared_advisor_interface/presentation/services/audio/audio_recorder_service.dart';
-import 'package:shared_advisor_interface/presentation/utils/utils.dart';
+import '../../../../infrastructure/routing/app_router.dart';
+
+import '../../../data/models/app_error/app_error.dart';
+import '../../../data/models/app_error/ui_error_type.dart';
+import '../../../data/models/app_success/app_success.dart';
+import '../../../data/models/chats/chat_item.dart';
+import '../../../data/models/enums/chat_item_status_type.dart';
+import '../../../domain/repositories/fortunica_chats_repository.dart';
+import '../../../generated/l10n.dart';
+import '../../../infrastructure/di/inject_config.dart';
+import '../../../main_cubit.dart';
+import '../../../main_state.dart';
+import '../../../services/audio/audio_player_service.dart';
+import '../../../services/audio/audio_recorder_service.dart';
+import '../../../services/check_permission_service.dart';
+import '../../../services/connectivity_service.dart';
+import '../../../utils/utils.dart';
+import '../../common_widgets/appbar/chat_conversation_app_bar.dart';
+import '../../common_widgets/buttons/choose_option_widget.dart';
+import '../../common_widgets/customer_profile/customer_profile_widget.dart';
+import '../../common_widgets/messages/app_error_widget.dart';
+import '../../common_widgets/messages/app_success_widget.dart';
+import '../../common_widgets/ok_cancel_alert.dart';
+import '../../common_widgets/show_delete_alert.dart';
+import '../customer_profile/customer_profile_screen.dart';
+import 'chat_cubit.dart';
+import 'widgets/active_chat_input_field_widget.dart';
+import 'widgets/active_chat_widget.dart';
+import 'widgets/history/history_widget.dart';
 
 class ChatScreen extends StatelessWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+  final ChatScreenArguments chatScreenArguments;
+
+  const ChatScreen({
+    Key? key,
+    required this.chatScreenArguments,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ChatCubit(
-        getIt.get<ChatsRepository>(),
-        getIt.get<ConnectivityService>(),
-        getIt.get<MainCubit>(),
-        AudioRecorderServiceImp(),
-        AudioPlayerServiceImpl(),
-        getIt.get<CheckPermissionService>(),
-        () => showErrorAlert(context),
-        () => confirmSendAnswerAlert(context),
-        () => deleteAudioMessageAlert(context),
-        () => recordingIsNotPossibleAlert(context),
+        audioPlayer: AudioPlayerServiceImpl(),
+        audioRecorder: AudioRecorderServiceImp(),
+        mainCubit: fortunicaGetIt.get<MainCubit>(),
+        connectivityService: fortunicaGetIt.get<ConnectivityService>(),
+        checkPermissionService: fortunicaGetIt.get<CheckPermissionService>(),
+        chatsRepository: fortunicaGetIt.get<FortunicaChatsRepository>(),
+        showErrorAlert: () => showErrorAlert(context),
+        confirmSendAnswerAlert: () => confirmSendAnswerAlert(context),
+        deleteAudioMessageAlert: () => deleteAudioMessageAlert(context),
+        recordingIsNotPossibleAlert: () => recordingIsNotPossibleAlert(context),
+        chatScreenArguments: chatScreenArguments,
       ),
       child: Builder(builder: (context) {
-        return BlocListener<ChatCubit, ChatState>(
-            listenWhen: (prev, current) =>
-                prev.inputTextLength != current.inputTextLength,
-            listener: (context, state) {
-              final theme = Theme.of(context);
-              final ChatCubit chatCubit = context.read<ChatCubit>();
-              final double maxWidth = MediaQuery.of(context).size.width -
-                  scrollbarThickness -
-                  AppConstants.horizontalScreenPadding * 2;
-              final TextStyle? style = theme.textTheme.bodySmall?.copyWith(
-                color: theme.hoverColor,
-                fontSize: 15.0,
-                height: 1.2,
-              );
-              chatCubit.updateHiddenInputHeight(
-                Utils.getTextHeight(
-                    chatCubit.textInputEditingController.text, style, maxWidth),
-                Utils.getTextHeight('\n\n\n\n', style, maxWidth),
-              );
-            },
-            child: const ChatContentWidget());
+        return const ChatContentWidget();
       }),
     );
   }
@@ -83,7 +67,7 @@ class ChatContentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final S s = S.of(context);
+    final SFortunica s = SFortunica.of(context);
     final ChatCubit chatCubit = context.read<ChatCubit>();
     final MainCubit mainCubit = context.read<MainCubit>();
 
@@ -121,12 +105,12 @@ class ChatContentWidget extends StatelessWidget {
                   returnInQueueButtonOnTap: () async {
                     final dynamic needReturn = await showOkCancelAlert(
                       context: context,
-                      title: s.doYouWantToRejectThisQuestion,
-                      description: s.itWillGoBackIntoTheGeneralQueue,
-                      okText: s.return_,
-                      actionOnOK: () => Navigator.pop(context, true),
+                      title: s.doYouWantToRejectThisQuestionFortunica,
+                      description: s.itWillGoBackIntoTheGeneralQueueFortunica,
+                      okText: s.returnFortunica,
                       allowBarrierClick: false,
                       isCancelEnabled: true,
+                      useRootNavigator: false,
                     );
 
                     if (needReturn == true) {
@@ -138,13 +122,15 @@ class ChatContentWidget extends StatelessWidget {
                 child: Builder(builder: (context) {
                   final List<String> tabsTitles = [];
                   if (chatCubit.needActiveChatTab()) {
-                    tabsTitles.add(chatCubit.isPublicChat()
-                        ? S.of(context).question
-                        : S.of(context).activeChat);
+                    tabsTitles.add(
+                      chatCubit.isPublicChat()
+                          ? SFortunica.of(context).questionFortunica
+                          : SFortunica.of(context).activeChatFortunica,
+                    );
                   }
                   tabsTitles.addAll([
-                    S.of(context).history,
-                    S.of(context).profile,
+                    SFortunica.of(context).historyFortunica,
+                    SFortunica.of(context).profileFortunica,
                   ]);
 
                   return Column(
@@ -294,10 +280,10 @@ Future<void> showErrorAlert(BuildContext context) async {
   await showOkCancelAlert(
     context: context,
     title: mainCubit.state.appError.getMessage(context),
-    okText: S.of(context).ok,
+    okText: SFortunica.of(context).okFortunica,
     actionOnOK: () {
       mainCubit.updateSessions();
-      Get.close(2);
+      context.pop();
     },
     allowBarrierClick: false,
     isCancelEnabled: false,
@@ -305,30 +291,46 @@ Future<void> showErrorAlert(BuildContext context) async {
 }
 
 Future<bool?> confirmSendAnswerAlert(BuildContext context) async {
-  final s = S.of(context);
+  final s = SFortunica.of(context);
   return await showOkCancelAlert(
     context: context,
-    title: s.pleaseConfirmThatYourAnswerIsReadyToBeSent,
-    okText: s.confirm,
-    actionOnOK: () => Navigator.pop(context, true),
+    title: s.pleaseConfirmThatYourAnswerIsReadyToBeSentFortunica,
+    okText: s.confirmFortunica,
     allowBarrierClick: false,
     isCancelEnabled: true,
   );
 }
 
 Future<bool?> deleteAudioMessageAlert(BuildContext context) async {
-  return await showDeleteAlert(
-      context, S.of(context).doYouWantToDeleteThisAudioMessage);
+  return await showDeleteAlert(context,
+      SFortunica.of(context).doYouWantToDeleteThisAudioMessageFortunica);
 }
 
 Future<bool?> recordingIsNotPossibleAlert(BuildContext context) async {
-  final s = S.of(context);
+  final s = SFortunica.of(context);
   return await showOkCancelAlert(
     context: context,
-    title: s.recordingIsNotPossibleAllocateSpaceOnTheDevice,
-    okText: s.ok,
-    actionOnOK: () => Navigator.pop(context, true),
+    title: s.recordingIsNotPossibleAllocateSpaceOnTheDeviceFortunica,
+    okText: s.okFortunica,
     allowBarrierClick: true,
     isCancelEnabled: false,
   );
+}
+
+class ChatScreenArguments {
+  final String? clientIdFromPush;
+  final ChatItem? question;
+  final String? publicQuestionId;
+  final String? privateQuestionId;
+  final String? ritualID;
+  final String? storyIdForHistory;
+
+  ChatScreenArguments({
+    this.clientIdFromPush,
+    this.question,
+    this.publicQuestionId,
+    this.privateQuestionId,
+    this.ritualID,
+    this.storyIdForHistory,
+  });
 }

@@ -2,33 +2,27 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
-import 'package:rxdart/rxdart.dart';
-import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
-import 'package:shared_advisor_interface/data/network/responses/questions_list_response.dart';
-import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/search/search_list_state.dart';
-import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
+
+import '../../../../../../../infrastructure/routing/app_router.dart';
+import '../../../../../../../data/models/chats/chat_item.dart';
+import '../../../../../../../data/network/responses/questions_list_response.dart';
+import '../../../../../../../domain/repositories/fortunica_chats_repository.dart';
+import '../../../../../../../fortunica_constants.dart';
+import '../../../../../../../global.dart';
+import '../../../../../../../infrastructure/routing/app_router.gr.dart';
+import '../../../../../../../services/connectivity_service.dart';
+import '../../../../../customer_sessions/customer_sessions_screen.dart';
+import 'search_list_state.dart';
 
 class SearchListCubit extends Cubit<SearchListState> {
-  final ChatsRepository _repository;
-  final double screenHeight;
-  final VoidCallback closeSearch;
-  final ConnectivityService _connectivityService =
-      getIt.get<ConnectivityService>();
+  final FortunicaChatsRepository _repository;
+  final double _screenHeight;
+  final VoidCallback _closeSearch;
+  final ConnectivityService _connectivityService;
 
-  final BehaviorSubject _searchStream = BehaviorSubject<String>();
-
-  final TextEditingController searchTextController = TextEditingController();
   final ScrollController conversationsScrollController = ScrollController();
 
   final List<ChatItem> _conversationsList = [];
-
-  late final StreamSubscription _searchSubscription;
 
   String? _conversationsLastItem;
   bool _conversationsHasMore = true;
@@ -36,19 +30,13 @@ class SearchListCubit extends Cubit<SearchListState> {
 
   SearchListCubit(
     this._repository,
-    this.screenHeight,
-    this.closeSearch,
+    this._connectivityService,
+    this._screenHeight,
+    this._closeSearch,
   ) : super(const SearchListState()) {
-    _searchSubscription = _searchStream
-        .debounceTime(const Duration(milliseconds: 500))
-        .listen((event) async {
-      getConversations(refresh: true);
-    });
-
     conversationsScrollController.addListener(() {
-      ///TODO: Remove context
       if (!_isLoading &&
-          conversationsScrollController.position.extentAfter <= screenHeight) {
+          conversationsScrollController.position.extentAfter <= _screenHeight) {
         getConversations();
       }
     });
@@ -58,19 +46,15 @@ class SearchListCubit extends Cubit<SearchListState> {
 
   @override
   Future<void> close() {
-    _searchStream.close();
-    _searchSubscription.cancel();
-    searchTextController.dispose();
     conversationsScrollController.dispose();
 
     return super.close();
   }
 
-  void changeText(String text) {
-    _searchStream.add(text);
-  }
-
-  Future<void> getConversations({bool refresh = false}) async {
+  Future<void> getConversations({
+    String? searchText,
+    bool refresh = false,
+  }) async {
     _isLoading = true;
     try {
       if (refresh) {
@@ -82,11 +66,9 @@ class SearchListCubit extends Cubit<SearchListState> {
           await _connectivityService.checkConnection()) {
         final QuestionsListResponse result =
             await _repository.getConversationsList(
-          limit: AppConstants.questionsLimit,
+          limit: FortunicaConstants.questionsLimit,
           lastItem: _conversationsLastItem,
-          search: searchTextController.text.isNotEmpty
-              ? searchTextController.text
-              : null,
+          search: searchText?.isNotEmpty == true ? searchText : null,
         );
 
         _conversationsHasMore = result.hasMore ?? true;
@@ -109,12 +91,13 @@ class SearchListCubit extends Cubit<SearchListState> {
     }
   }
 
-  void goToCustomerSessions(ChatItem question) {
-    closeSearch();
-    Get.toNamed(
-      AppRoutes.customerSessions,
-      arguments:
-          CustomerSessionsScreenArguments(question: question, marketIndex: 0),
+  void goToCustomerSessions(BuildContext context, ChatItem question) {
+    _closeSearch();
+    context.push(
+      route: FortunicaCustomerSessions(
+        customerSessionsScreenArguments:
+            CustomerSessionsScreenArguments(question: question, marketIndex: 0),
+      ),
     );
   }
 }

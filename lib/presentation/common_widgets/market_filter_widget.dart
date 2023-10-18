@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/picker_modal_pop_up.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+
+import '../../app_constants.dart';
+import '../../data/models/enums/markets_type.dart';
+import '../../generated/assets/assets.gen.dart';
+import '../../generated/l10n.dart';
+import 'picker_modal_pop_up.dart';
 
 class MarketFilterWidget extends StatelessWidget {
   final List<MarketsType> userMarkets;
@@ -63,7 +64,7 @@ class MarketFilterWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '${S.of(context).market} ${currentMarket.languageName(context)}',
+                      '${SFortunica.of(context).marketFortunica} ${currentMarket.languageName(context)}',
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: currentMarket != MarketsType.all
                             ? theme.primaryColor

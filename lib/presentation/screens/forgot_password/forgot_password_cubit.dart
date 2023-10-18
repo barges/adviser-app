@@ -3,27 +3,26 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
-import 'package:shared_advisor_interface/configuration.dart';
-import 'package:shared_advisor_interface/data/models/app_success/app_success.dart';
-import 'package:shared_advisor_interface/data/models/app_success/ui_success_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/validation_error_type.dart';
-import 'package:shared_advisor_interface/data/network/requests/reset_password_request.dart';
-import 'package:shared_advisor_interface/domain/repositories/auth_repository.dart';
-import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
-import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_state.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
-import 'package:shared_advisor_interface/presentation/screens/login/login_cubit.dart';
-import 'package:shared_advisor_interface/presentation/services/dynamic_link_service.dart';
+
+import '../../../../extensions.dart';
+import '../../../../infrastructure/routing/app_router.dart';
+import '../../../data/models/app_success/app_success.dart';
+import '../../../data/models/app_success/ui_success_type.dart';
+import '../../../data/models/enums/validation_error_type.dart';
+import '../../../data/network/requests/reset_password_request.dart';
+import '../../../domain/repositories/fortunica_auth_repository.dart';
+import '../../../main_cubit.dart';
+import '../../../services/dynamic_link_service.dart';
+import '../../../utils/utils.dart';
+import '../login/login_cubit.dart';
+import 'forgot_password_state.dart';
 
 class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
-  final AuthRepository _repository;
-  final DynamicLinkService _dynamicLinkService;
-  final MainCubit _mainCubit;
-  final LoginCubit _loginCubit;
+  final FortunicaAuthRepository authRepository;
+  final DynamicLinkService dynamicLinkService;
+  final MainCubit mainCubit;
+  final LoginCubit loginCubit;
+  final String? resetToken;
 
   late final StreamSubscription<DynamicLinkData> _linkSubscription;
 
@@ -34,29 +33,24 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
   final FocusNode passwordNode = FocusNode();
   final FocusNode confirmPasswordNode = FocusNode();
 
-  late final ForgotPasswordScreenArguments arguments;
-
-  ForgotPasswordCubit(
-    this._repository,
-    this._dynamicLinkService,
-    this._mainCubit,
-    this._loginCubit,
-  ) : super(const ForgotPasswordState()) {
-    arguments = Get.arguments as ForgotPasswordScreenArguments;
-
-    if (arguments.resetToken != null) {
-      updateResetTokenAndBrand(
-        brand: arguments.brand,
-        token: arguments.resetToken,
+  ForgotPasswordCubit({
+    required this.authRepository,
+    required this.dynamicLinkService,
+    required this.mainCubit,
+    required this.loginCubit,
+    this.resetToken,
+  }) : super(const ForgotPasswordState()) {
+    if (resetToken != null) {
+      updateResetToken(
+        token: resetToken,
       );
-      _verifyToken(arguments.resetToken);
+      _verifyToken(resetToken);
     }
 
     _linkSubscription =
-        _dynamicLinkService.dynamicLinksStream.listen((dynamicLinkData) {
+        dynamicLinkService.dynamicLinksStream.listen((dynamicLinkData) {
       if (dynamicLinkData.token != null) {
-        updateResetTokenAndBrand(
-          brand: dynamicLinkData.brand,
+        updateResetToken(
           token: dynamicLinkData.token,
         );
         _verifyToken(dynamicLinkData.token);
@@ -123,39 +117,38 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     emit(state.copyWith(hiddenConfirmPassword: !state.hiddenConfirmPassword));
   }
 
-  void updateResetTokenAndBrand({required Brand brand, String? token}) {
+  void updateResetToken({String? token}) {
     emit(
       state.copyWith(
-        selectedBrand: brand,
         resetToken: token,
       ),
     );
   }
 
-  Future<void> resetPassword(String? resetToken) async {
+  Future<void> resetPassword(BuildContext context, String? resetToken) async {
     if (resetToken == null) {
-      await sendEmailForReset();
+      await sendEmailForReset(context);
     } else {
       await changePassword();
     }
   }
 
-  Future<void> sendEmailForReset() async {
+  Future<void> sendEmailForReset(BuildContext context) async {
     if (emailIsValid()) {
-      final bool success = await _repository.sendEmailForReset(
+      final bool success = await authRepository.sendEmailForReset(
         ResetPasswordRequest(
           email: emailController.text,
         ),
       );
       if (success) {
-        logger.d(Get.previousRoute);
-        _loginCubit.updateSuccessMessage(
+        loginCubit.updateSuccessMessage(
           UISuccess.withArguments(
-            UISuccessType.weVeSentPasswordResetInstructionsToEmail,
+            UISuccessMessagesType.weVeSentPasswordResetInstructionsToEmail,
             emailController.text,
           ),
         );
-        Get.back();
+        // ignore: use_build_context_synchronously
+        context.pop();
       }
     } else {
       emit(
@@ -167,8 +160,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
 
   Future<void> _verifyToken(String? token) async {
     try {
-      logger.d(token);
-      await _repository.verifyToken(token: token ?? '');
+      await authRepository.verifyToken(token: token ?? '');
     } on DioError catch (e) {
       _checkErrorForReset(e);
     }
@@ -177,13 +169,14 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
   Future<void> changePassword() async {
     try {
       if (passwordIsValid() && confirmPasswordIsValid()) {
-        final bool success = await _repository.sendPasswordForReset(
+        final bool success = await authRepository.sendPasswordForReset(
           request: ResetPasswordRequest(
             password: passwordController.text.to256,
           ),
           token: state.resetToken ?? '',
         );
         if (success) {
+          loginCubit.clearSuccessMessage();
           emit(state.copyWith(isResetSuccess: true));
         }
       } else {
@@ -213,26 +206,17 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     if (error.response?.statusCode == 400 ||
         error.response?.statusCode == 404 ||
         error.response?.statusCode == 403) {
-      updateResetTokenAndBrand(
-        brand: state.selectedBrand,
+      updateResetToken(
         token: null,
       );
     }
   }
 
   void clearErrorMessage() {
-    _mainCubit.clearErrorMessage();
+    mainCubit.clearErrorMessage();
   }
 
-  void goToLogin() {
-    if (Get.previousRoute == AppRoutes.login) {
-      Get.back();
-    } else {
-      Get.offNamed(AppRoutes.login);
-    }
-  }
-
-  bool emailIsValid() => GetUtils.isEmail(emailController.text);
+  bool emailIsValid() => Utils.isEmail(emailController.text);
 
   bool passwordIsValid() => passwordController.text.length >= 6;
 

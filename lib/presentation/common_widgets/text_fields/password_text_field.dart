@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_advisor_interface/data/models/enums/validation_error_type.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
+
+import '../../../app_constants.dart';
+import '../../../data/models/enums/validation_error_type.dart';
+import '../../../generated/assets/assets.gen.dart';
 
 class PasswordTextField extends StatelessWidget {
   final TextEditingController controller;

@@ -1,27 +1,29 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/data/cache/caching_manager.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_month.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_statistics.dart';
-import 'package:shared_advisor_interface/data/models/reports_endpoint/reports_year.dart';
-import 'package:shared_advisor_interface/data/models/user_info/user_profile.dart';
-import 'package:shared_advisor_interface/data/network/responses/reports_response.dart';
-import 'package:shared_advisor_interface/domain/repositories/user_repository.dart';
-import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/dashboard_v1/dashboard_v1_state.dart';
-import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
+
+import '../../../../../data/cache/fortunica_caching_manager.dart';
+import '../../../../../data/models/reports_endpoint/reports_month.dart';
+import '../../../../../data/models/reports_endpoint/reports_statistics.dart';
+import '../../../../../data/models/reports_endpoint/reports_year.dart';
+import '../../../../../data/models/user_info/user_profile.dart';
+import '../../../../../data/network/responses/reports_response.dart';
+import '../../../../../domain/repositories/fortunica_user_repository.dart';
+import '../../../../../global.dart';
+import '../../../../../main_cubit.dart';
+import '../../../../../services/connectivity_service.dart';
+import '../../../../../extensions.dart';
+import 'dashboard_v1_state.dart';
 
 class DashboardV1Cubit extends Cubit<DashboardV1State> {
   final ConnectivityService _connectivityService;
   final MainCubit mainCubit;
-  final UserRepository _userRepository;
-  final CachingManager cacheManager;
+  final FortunicaUserRepository _userRepository;
+  final FortunicaCachingManager cacheManager;
 
-  late final VoidCallback disposeUserProfileListen;
-  late final VoidCallback disposeUserIdListen;
+  late final StreamSubscription _userProfileSubscription;
+  late final StreamSubscription _userIdSubscription;
 
   DashboardV1Cubit(this.cacheManager, this._connectivityService,
       this._userRepository, this.mainCubit)
@@ -29,10 +31,12 @@ class DashboardV1Cubit extends Cubit<DashboardV1State> {
     final UserProfile? userProfile = cacheManager.getUserProfile();
 
     emit(state.copyWith(userProfile: userProfile));
-    disposeUserProfileListen = cacheManager.listenUserProfile((value) {
+    _userProfileSubscription = cacheManager.listenUserProfileStream((value) {
+      logger.d(value);
       emit(state.copyWith(userProfile: value));
     });
-    disposeUserIdListen = cacheManager.listenUserId((value) {
+
+    _userIdSubscription = cacheManager.listenUserIdStream((value) {
       if (value != null) {
         getReports();
       }
@@ -41,8 +45,8 @@ class DashboardV1Cubit extends Cubit<DashboardV1State> {
 
   @override
   Future<void> close() async {
-    disposeUserProfileListen.call();
-    disposeUserIdListen.call();
+    _userProfileSubscription.cancel();
+    _userIdSubscription.cancel();
     return super.close();
   }
 

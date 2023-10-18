@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shared_advisor_interface/data/models/chats/history_ui_model.dart';
 
+import '../../../../../data/models/chats/history_ui_model.dart';
 part 'history_state.freezed.dart';
 
 @freezed

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/data/models/enums/validation_error_type.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/text_fields/password_text_field.dart';
-import 'package:shared_advisor_interface/presentation/screens/forgot_password/forgot_password_cubit.dart';
+
+import '../../../../data/models/enums/validation_error_type.dart';
+import '../../../../generated/l10n.dart';
+import '../../../common_widgets/text_fields/password_text_field.dart';
+import '../forgot_password_cubit.dart';
 
 class ResetPasswordInputPart extends StatelessWidget {
   const ResetPasswordInputPart({Key? key}) : super(key: key);
@@ -23,8 +24,8 @@ class ResetPasswordInputPart extends StatelessWidget {
           return PasswordTextField(
             controller: cubit.passwordController,
             focusNode: cubit.passwordNode,
-            label: S.of(context).newPassword,
-            hintText: S.of(context).enterNewPassword,
+            label: SFortunica.of(context).newPasswordFortunica,
+            hintText: SFortunica.of(context).enterNewPasswordFortunica,
             errorType: passwordErrorType,
             textInputAction: TextInputAction.next,
             onSubmitted: (_) {
@@ -47,8 +48,8 @@ class ResetPasswordInputPart extends StatelessWidget {
             child: PasswordTextField(
               controller: cubit.confirmPasswordController,
               focusNode: cubit.confirmPasswordNode,
-              label: S.of(context).confirmNewPassword,
-              hintText: S.of(context).repeatNewPassword,
+              label: SFortunica.of(context).confirmNewPasswordFortunica,
+              hintText: SFortunica.of(context).repeatNewPasswordFortunica,
               errorType: confirmPasswordErrorType,
               textInputAction: TextInputAction.send,
               hiddenPassword: hiddenConfirmPassword,

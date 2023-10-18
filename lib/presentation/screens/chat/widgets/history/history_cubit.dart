@@ -5,14 +5,15 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/data/models/chats/history.dart';
-import 'package:shared_advisor_interface/data/models/chats/history_ui_model.dart';
-import 'package:shared_advisor_interface/data/network/responses/history_response.dart';
-import 'package:shared_advisor_interface/domain/repositories/chats_repository.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_state.dart';
-import 'package:shared_advisor_interface/presentation/services/connectivity_service.dart';
+
+import '../../../../../data/models/chats/history.dart';
+import '../../../../../data/models/chats/history_ui_model.dart';
+import '../../../../../data/network/responses/history_response.dart';
+import '../../../../../domain/repositories/fortunica_chats_repository.dart';
+import '../../../../../global.dart';
+import '../../../../../services/connectivity_service.dart';
+import '../../chat_cubit.dart';
+import 'history_state.dart';
 
 List<HistoryUiModel> _groupTopHistory(List<History> data) {
   final List<List<History>> groupedItem = _groupByStoryId(data);
@@ -76,7 +77,7 @@ List<List<History>> _groupByStoryId(List<History> data) {
 class HistoryCubit extends Cubit<HistoryState> {
   final ScrollController historyMessagesScrollController = ScrollController();
   final ConnectivityService _connectivityService;
-  final ChatsRepository _repository;
+  final FortunicaChatsRepository _repository;
   final VoidCallback _showErrorAlert;
   final String _clientId;
   final String? _storyId;

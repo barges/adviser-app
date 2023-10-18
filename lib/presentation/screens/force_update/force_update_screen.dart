@@ -1,26 +1,28 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_elevated_button.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../app_constants.dart';
+import '../../../generated/assets/assets.gen.dart';
+import '../../../generated/l10n.dart';
+import '../../../utils/utils.dart';
+import '../../common_widgets/buttons/app_elevated_button.dart';
+
 class ForceUpdateScreen extends StatefulWidget {
-  const ForceUpdateScreen({Key? key}) : super(key: key);
+  final ForceUpdateScreenArguments forceUpdateScreenArguments;
+
+  const ForceUpdateScreen({
+    Key? key,
+    required this.forceUpdateScreenArguments,
+  }) : super(key: key);
 
   @override
   State<ForceUpdateScreen> createState() => _ForceUpdateScreenState();
 }
 
 class _ForceUpdateScreenState extends State<ForceUpdateScreen> {
-  final ForceUpdateScreenArguments? _arguments = Get.arguments;
-
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -58,8 +60,8 @@ class _ForceUpdateScreenState extends State<ForceUpdateScreen> {
                             height: 24.0,
                           ),
                           Text(
-                            _arguments?.title ??
-                                S.of(context).pleaseUpdateTheApp,
+                            widget.forceUpdateScreenArguments.title ??
+                                SFortunica.of(context).pleaseUpdateTheApp,
                             style: theme.textTheme.headlineMedium,
                             textAlign: TextAlign.center,
                           ),
@@ -67,9 +69,8 @@ class _ForceUpdateScreenState extends State<ForceUpdateScreen> {
                             height: 8.0,
                           ),
                           Text(
-                            _arguments?.description ??
-                                S
-                                    .of(context)
+                            widget.forceUpdateScreenArguments.description ??
+                                SFortunica.of(context)
                                     .thisVersionOfTheAppIsNoLongerSupported,
                             style: theme.textTheme.bodyMedium?.copyWith(
                               fontSize: 16.0,
@@ -82,13 +83,15 @@ class _ForceUpdateScreenState extends State<ForceUpdateScreen> {
                     ),
                   ),
                   AppElevatedButton(
-                    title: S.of(context).update,
+                    title: SFortunica.of(context).update,
                     onPressed: _goToStore,
                   ),
                   SizedBox(
-                    height: _arguments?.moreLink == null ? 24.0 : 16.0,
+                    height: widget.forceUpdateScreenArguments.moreLink == null
+                        ? 24.0
+                        : 16.0,
                   ),
-                  if (_arguments?.moreLink != null)
+                  if (widget.forceUpdateScreenArguments.moreLink != null)
                     Padding(
                       padding: const EdgeInsets.only(bottom: 16.0),
                       child: TextButton(
@@ -101,7 +104,7 @@ class _ForceUpdateScreenState extends State<ForceUpdateScreen> {
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
                           child: Text(
-                            S.of(context).learnMore,
+                            SFortunica.of(context).learnMore,
                             style: theme.textTheme.titleMedium?.copyWith(
                               color: theme.primaryColor,
                             ),
@@ -120,11 +123,11 @@ class _ForceUpdateScreenState extends State<ForceUpdateScreen> {
     late Uri uri;
 
     if (Platform.isIOS) {
-      uri = Uri.parse(_arguments?.updateLink ??
+      uri = Uri.parse(widget.forceUpdateScreenArguments.updateLink ??
           'https://apps.apple.com/app/id${AppConstants.fortunicaIosAppId}');
     } else {
       final PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      uri = Uri.parse(_arguments?.updateLink ??
+      uri = Uri.parse(widget.forceUpdateScreenArguments.updateLink ??
           'market://details?id=${packageInfo.packageName}');
     }
 
@@ -132,7 +135,7 @@ class _ForceUpdateScreenState extends State<ForceUpdateScreen> {
   }
 
   Future<void> _openLearnMoreLink() async {
-    final Uri uri = Uri.parse(_arguments?.moreLink ?? '');
+    final Uri uri = Uri.parse(widget.forceUpdateScreenArguments.moreLink ?? '');
     _openUrl(uri);
   }
 
@@ -141,10 +144,28 @@ class _ForceUpdateScreenState extends State<ForceUpdateScreen> {
       uri,
       mode: LaunchMode.externalApplication,
     )) {
-      Get.showSnackbar(GetSnackBar(
-        duration: const Duration(seconds: 2),
-        message: 'Could not launch $uri',
-      ));
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Could not launch $uri'),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
     }
   }
+}
+
+class ForceUpdateScreenArguments {
+  final String? title;
+  final String? description;
+  final String? updateLink;
+  final String? moreLink;
+
+  ForceUpdateScreenArguments({
+    this.title,
+    this.description,
+    this.updateLink,
+    this.moreLink,
+  });
 }

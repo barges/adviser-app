@@ -1,26 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/data/models/app_errors/app_error.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/main_cubit.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/appbar/wide_app_bar.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app_icon_button.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/messages/app_error_widget.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/add_note/add_note_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/add_note/widgets/old_note_date_widget.dart';
+
+import '../../../app_constants.dart';
+import '../../../data/models/app_error/app_error.dart';
+import '../../../generated/assets/assets.gen.dart';
+import '../../../generated/l10n.dart';
+import '../../../infrastructure/di/inject_config.dart';
+import '../../../main_cubit.dart';
+import '../../common_widgets/appbar/wide_app_bar.dart';
+import '../../common_widgets/buttons/app_icon_button.dart';
+import '../../common_widgets/messages/app_error_widget.dart';
+import 'add_note_cubit.dart';
+import 'widgets/old_note_date_widget.dart';
 
 class AddNoteScreen extends StatelessWidget {
+  final AddNoteScreenArguments addNoteScreenArguments;
+
   const AddNoteScreen({
     Key? key,
+    required this.addNoteScreenArguments,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => AddNoteCubit(getIt.get<MainCubit>()),
+      create: (_) => AddNoteCubit(
+        mainCubit: fortunicaGetIt.get<MainCubit>(),
+        customerID: addNoteScreenArguments.customerId,
+        noteChanged: addNoteScreenArguments.noteChanged,
+        oldNote: addNoteScreenArguments.oldNote,
+      ),
       child: Builder(builder: (context) {
         AddNoteCubit addNoteCubit = context.read<AddNoteCubit>();
         bool isNoteNew =
@@ -34,14 +43,18 @@ class AddNoteScreen extends StatelessWidget {
           backgroundColor: Theme.of(context).canvasColor,
           appBar: WideAppBar(
             bottomWidget: Text(
-              isNoteNew ? S.of(context).addNote : S.of(context).editNote,
+              isNoteNew
+                  ? SFortunica.of(context).addNoteFortunica
+                  : SFortunica.of(context).editNoteFortunica,
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             topRightWidget: Opacity(
               opacity: isOnline ? 1.0 : 0.4,
               child: AppIconButton(
                 icon: Assets.vectors.check.path,
-                onTap: isOnline ? addNoteCubit.addNoteToCustomer : () {},
+                onTap: isOnline
+                    ? () => addNoteCubit.addNoteToCustomer(context)
+                    : () {},
               ),
             ),
           ),
@@ -50,8 +63,8 @@ class AddNoteScreen extends StatelessWidget {
               AppErrorWidget(
                 errorMessage: isOnline
                     ? ''
-                    : S.of(context).youDontHaveAnInternetConnection,
-                isRequired: true,
+                    : SFortunica.of(context)
+                        .youDontHaveAnInternetConnectionFortunica,
               ),
               if (isOnline)
                 AppErrorWidget(
@@ -64,7 +77,9 @@ class AddNoteScreen extends StatelessWidget {
                     children: [
                       isNoteNew
                           ? const SizedBox.shrink()
-                          : const OldNoteDateWidget(),
+                          : OldNoteDateWidget(
+                              updatedAt: addNoteScreenArguments.updatedAt,
+                            ),
                       Expanded(
                         child: SingleChildScrollView(
                           child: TextField(
@@ -105,4 +120,18 @@ class AddNoteScreen extends StatelessWidget {
       }),
     );
   }
+}
+
+class AddNoteScreenArguments {
+  final String customerId;
+  final String? oldNote;
+  final DateTime? updatedAt;
+  final VoidCallback noteChanged;
+
+  AddNoteScreenArguments({
+    required this.customerId,
+    required this.noteChanged,
+    this.oldNote,
+    this.updatedAt,
+  });
 }

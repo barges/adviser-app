@@ -3,53 +3,47 @@ description: Shared advisor interface
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.1+66
+version: 1.0.1+67
 
 environment:
   sdk: '>=3.0.2 <4.0.0'  
-  flutter: ">=1.17.0"
-
 
 dependencies:
   flutter:
     sdk: flutter
+
   flutter_localizations:
     sdk: flutter
-  get_it: ^7.2.0
-  get: ^4.6.5
-  get_storage: ^2.0.3
-  rxdart: ^0.27.5
-  intl: ^0.18.0
-  intl_utils: ^2.8.2
-  retrofit: ^4.0.1
-  dio: ^5.0.0
-  url_launcher: ^6.1.6
-  logger: ^1.1.0
-  json_annotation: ^4.8.1
-  flutter_svg: ^2.0.5
-  crypto: ^3.0.2
-  device_info_plus: ^9.0.0
-  package_info_plus: ^4.0.0
-  android_id: ^0.0.7
-  loading_indicator: ^3.1.0
-  open_mail_app: ^0.4.5
-  modal_bottom_sheet: ^2.1.2
-  flutter_bloc: ^8.1.1
-  bloc: ^8.1.0
   freezed: ^2.3.4
   freezed_annotation: ^2.2.0
-  auto_size_text: ^3.0.0
-  freshchat_sdk: ^0.10.0
+  json_annotation: ^4.8.1
+  intl: ^0.18.0
+  intl_utils: ^2.8.2
+  rxdart: ^0.27.5
+  connectivity_plus: ^2.3.9
+  internet_connection_checker: ^1.0.0+1
+  logger: ^1.1.0
+  permission_handler: ^10.2.0
   flutter_local_notifications: ^12.0.3
-  app_tracking_transparency: ^2.0.3
-  web_fonts: ^1.1.1
-  flutter_keyboard_visibility: ^5.4.0
   collection: ^1.16.0
+  cached_network_image: 3.2.3
+  image_picker: ^0.8.6+1
+  flutter_svg: ^2.0.5
+  flutter_bloc: ^8.1.2 #app state management
+  bloc: ^8.1.0
+  auto_route: ^5.0.2
+  equatable: ^2.0.5
   audioplayers: ^2.0.0
-  file: ^6.1.4
-  storage_space: ^1.0.1+5
-  uuid: ^3.0.7
-  flutter_keyboard_size: ^1.0.1
+  flutter_sound: ^9.2.13
+  audio_session: ^0.1.13
+  flutter_media_metadata: ^1.0.0+1
+  package_info_plus: ^4.0.0
+  hive: ^2.2.3
+  freshchat_sdk: ^0.10.3
+  audible_mode: ^1.0.1
+  html: ^0.15.2
+  snapping_sheet_2: ^3.1.5
+  shimmer: ^3.0.0
 
   # Firebase
   firebase_core: ^2.2.0
@@ -59,46 +53,57 @@ dependencies:
   firebase_remote_config: ^3.0.5
   firebase_analytics: ^10.0.5
 
+
+  cupertino_icons: ^1.0.2
+  provider: ^6.0.4
+  shared_preferences: ^2.0.15
+  url_launcher: ^6.1.6
+  retrofit: ^4.0.1
+  dio: ^5.0.0
+  get_it: ^7.2.0
+  web_fonts: ^1.1.1
+  loading_indicator: ^3.1.0
+  open_mail_app: ^0.4.5
+  flutter_launcher_icons: ^0.10.0
+  flutter_native_splash: ^2.2.16
+  crypto: ^3.0.2
+  device_info_plus: ^9.0.0
+  android_id: ^0.0.7
+  modal_bottom_sheet: ^2.1.2
+  auto_size_text: ^3.0.0
+  app_tracking_transparency: ^2.0.3
+  flutter_keyboard_visibility: ^5.4.1
+  file: ^6.1.4
+  disk_space: ^0.2.1
+  uuid: ^3.0.7
+  flutter_keyboard_size: ^1.0.1
   flutter_rating_bar: ^4.0.1
-  equatable: ^2.0.5
-  cached_network_image: 3.2.3
-  image_picker: ^0.8.6+1
-  permission_handler: ^10.2.0
   smooth_page_indicator: ^1.0.0+2
   mime: ^1.0.2
   flutter_cache_manager: ^3.3.0
   flutter_secure_storage: ^8.0.0
-  connectivity_plus: ^2.3.9
-  internet_connection_checker: ^1.0.0+1
-  flutter_sound: ^9.2.13
-  audio_session: ^0.1.13
-  flutter_media_metadata: ^1.0.0+1
-  skeleton_loader: ^2.0.0+4
-
-  cupertino_icons: ^1.0.5
   percent_indicator: ^4.2.2
   carousel_slider: ^4.1.1
   share_plus: ^4.4.0
   blur: ^3.1.0
   charts_painter: ^2.0.0+2
   snapping_sheet: ^3.1.0
-
-  flutter_launcher_icons: ^0.10.0
-  flutter_native_splash: ^2.2.16
+  system_date_time_format: ^0.7.0
+  injectable: ^2.1.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner: ^2.4.4
-  flutter_gen_runner: ^5.3.1
-  flutter_gen: ^5.3.1
-  retrofit_generator: ^7.0.0
-  json_serializable: ^6.6.2
-  mockito: ^5.4.0
-  http_mock_adapter: ^0.4.4
+  #mockito: ^5.3.2
+  #http_mock_adapter: ^0.3.3
   analyzer: 5.12.0
-
   flutter_lints: ^2.0.0
+  flutter_gen_runner: ^5.3.1
+  json_serializable: ^6.6.2
+  injectable_generator: ^2.1.5
+  build_runner: ^2.4.4
+  retrofit_generator: ^7.0.0
+  auto_route_generator: any
 
 flutter_native_splash:
   image: assets/splash_logo.png
@@ -183,3 +188,8 @@ flutter_gen:
 
 flutter_intl:
   enabled: true
+  class_name: SFortunica
+  main_locale: en
+  arb_dir: lib/l10n
+  output_dir: lib/generated
+  use_deferred_loading: false

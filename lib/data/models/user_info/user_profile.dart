@@ -1,9 +1,10 @@
 // ignore_for_file: invalid_annotation_target
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
-import 'package:shared_advisor_interface/data/models/enums/sessions_types.dart';
-import 'package:shared_advisor_interface/data/models/user_info/localized_properties/localized_properties.dart';
+
+import '../enums/markets_type.dart';
+import '../enums/sessions_types.dart';
+import 'localized_properties/localized_properties.dart';
 
 part 'user_profile.freezed.dart';
 
@@ -15,7 +16,7 @@ class UserProfile with _$UserProfile {
   const factory UserProfile({
     @JsonKey(fromJson: _ratingFromJson) Map<MarketsType, double?>? rating,
     @JsonKey(fromJson: _activeLanguagesFromJson)
-        List<MarketsType>? activeLanguages,
+    List<MarketsType>? activeLanguages,
     List<String>? profilePictures,
     List<String>? coverPictures,
     List<String>? galleryPictures,

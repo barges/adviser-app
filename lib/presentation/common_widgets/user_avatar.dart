@@ -4,12 +4,13 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_arguments.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_routes.dart';
+
+import '../../infrastructure/routing/app_router.dart';
+import '../../app_constants.dart';
+import '../../generated/assets/assets.gen.dart';
+import '../../generated/l10n.dart';
+import '../../infrastructure/routing/app_router.gr.dart';
+import '../screens/gallery/gallery_pictures_screen.dart';
 
 class UserAvatar extends StatelessWidget {
   final String? avatarUrl;
@@ -68,13 +69,15 @@ class UserAvatar extends StatelessWidget {
                           width: diameter,
                         )
                       : GestureDetector(
-                          onTap: () => canOpenInFullScreen
-                              ? Get.toNamed(
-                                  AppRoutes.galleryPictures,
-                                  arguments: GalleryPicturesScreenArguments(
-                                    pictures: [avatarUrl!],
-                                  ),
-                                )
+                          onTap: canOpenInFullScreen
+                              ? () => context.push(
+                                    route: FortunicaGalleryPictures(
+                                      galleryPicturesScreenArguments:
+                                          GalleryPicturesScreenArguments(
+                                        pictures: [avatarUrl!],
+                                      ),
+                                    ),
+                                  )
                               : null,
                           child: Container(
                             decoration: BoxDecoration(
@@ -91,13 +94,15 @@ class UserAvatar extends StatelessWidget {
                           ),
                         )
               : GestureDetector(
-                  onTap: () => canOpenInFullScreen
-                      ? Get.toNamed(
-                          AppRoutes.galleryPictures,
-                          arguments: GalleryPicturesScreenArguments(
-                            pictures: [imageFile!.path],
-                          ),
-                        )
+                  onTap: canOpenInFullScreen
+                      ? () => context.push(
+                            route: FortunicaGalleryPictures(
+                              galleryPicturesScreenArguments:
+                                  GalleryPicturesScreenArguments(
+                                pictures: [imageFile!.path],
+                              ),
+                            ),
+                          )
                       : null,
                   child: Container(
                     decoration: BoxDecoration(
@@ -142,7 +147,7 @@ class UserAvatar extends StatelessWidget {
                         ? Alignment.bottomLeft
                         : Alignment.centerLeft,
                     child: AutoSizeText(
-                      S.of(context).photoIsRequired,
+                      SFortunica.of(context).photoIsRequiredFortunica,
                       textAlign: TextAlign.center,
                       maxLines: 2,
                       minFontSize: 10.0,

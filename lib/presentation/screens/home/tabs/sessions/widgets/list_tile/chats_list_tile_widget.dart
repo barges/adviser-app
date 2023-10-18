@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/data/models/chats/chat_item.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/list_tile/private_chats_list_tile_widget.dart';
-import 'package:shared_advisor_interface/presentation/screens/home/tabs/sessions/widgets/list_tile/public_chats_list_tile_widget.dart';
+
+import '../../../../../../../data/models/chats/chat_item.dart';
+import 'private_chats_list_tile_widget.dart';
+import 'public_chats_list_tile_widget.dart';
 
 class ChatsListTileWidget extends StatelessWidget {
   final ChatItem question;

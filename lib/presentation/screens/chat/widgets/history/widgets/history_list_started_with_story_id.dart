@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/data/models/chats/history_ui_model.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/history_cubit.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/widgets/history/widgets/sliver_history_list_widget.dart';
+
+import '../../../../../../data/models/chats/history_ui_model.dart';
+import '../history_cubit.dart';
+import 'sliver_history_list_widget.dart';
 
 const Key _centerKey = ValueKey('second-sliver-list');
 
@@ -25,10 +26,10 @@ class HistoryListStartedWithStoryIdWidget extends StatelessWidget {
         center: _centerKey,
         slivers: <Widget>[
           Builder(builder: (context) {
-            final List<HistoryUiModel>? topHistoriesList = context.select(
-                (HistoryCubit cubit) => cubit.state.topHistoriesList);
+            final List<HistoryUiModel>? topHistoriesList = context
+                .select((HistoryCubit cubit) => cubit.state.topHistoriesList);
             if (topHistoriesList != null) {
-             return SliverPadding(
+              return SliverPadding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 12.0,
                   ),
@@ -45,7 +46,7 @@ class HistoryListStartedWithStoryIdWidget extends StatelessWidget {
               key: _centerKey,
               padding: const EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 16.0),
               sliver:
-              SliverHistoryListWidget(historiesList: bottomHistoriesList)),
+                  SliverHistoryListWidget(historiesList: bottomHistoriesList)),
         ],
       ),
     );

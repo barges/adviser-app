@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_advisor_interface/data/models/chats/rirual_card_info.dart';
-import 'package:shared_advisor_interface/extensions.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/main.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/app_image_widget.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
+
+import '../../../../infrastructure/routing/app_router.dart';
+import '../../../../app_constants.dart';
+import '../../../../data/models/chats/rirual_card_info.dart';
+import '../../../../fortunica_extensions.dart';
+import '../../../../generated/l10n.dart';
+import '../../../../infrastructure/routing/app_router.gr.dart';
+import '../../../common_widgets/app_image_widget.dart';
+import '../../gallery/gallery_pictures_screen.dart';
 
 class RitualInfoCardWidget extends StatelessWidget {
   final RitualCardInfo? ritualCardInfo;
@@ -16,9 +17,6 @@ class RitualInfoCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    logger.d(ritualCardInfo?.birthdate);
-
     final ThemeData theme = Theme.of(context);
     final isLeftImage = ritualCardInfo?.leftImage != null;
     final isRightImage = ritualCardInfo?.rightImage != null;
@@ -39,7 +37,7 @@ class RitualInfoCardWidget extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 12.0),
               child: Text(
-                S.of(context).personalDetails,
+                SFortunica.of(context).personalDetailsFortunica,
                 style: theme.textTheme.labelMedium?.copyWith(
                   color: theme.shadowColor,
                   fontSize: 13.0,
@@ -60,13 +58,15 @@ class RitualInfoCardWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  DateFormat(datePattern1)
-                      .format(ritualCardInfo?.birthdate ?? DateTime.now()),
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.shadowColor,
+                if (ritualCardInfo?.birthdate != null)
+                  Text(
+                    DateFormat(datePattern1).format(
+                      ritualCardInfo!.birthdate!,
+                    ),
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.shadowColor,
+                    ),
                   ),
-                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Container(
@@ -156,10 +156,22 @@ class _RitualInfoCardImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ChatCubit chatCubit = context.read<ChatCubit>();
     return GestureDetector(
       onTap: () {
-        chatCubit.goToGallery(ritualCardInfo, ritualInfoCardImage.value);
+        List<String> pictures = [];
+        if (ritualCardInfo.leftImage != null) {
+          pictures.add(ritualCardInfo.leftImage!);
+        }
+        if (ritualCardInfo.rightImage != null) {
+          pictures.add(ritualCardInfo.rightImage!);
+        }
+        context.push(
+            route: FortunicaGalleryPictures(
+          galleryPicturesScreenArguments: GalleryPicturesScreenArguments(
+            pictures: pictures,
+            initPage: ritualInfoCardImage.value,
+          ),
+        ));
       },
       child: AppImageWidget(
         uri: Uri.parse(ritualInfoCardImage.getImageUrl(ritualCardInfo)),

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/utils/utils.dart';
+
+import '../../app_constants.dart';
+import '../../generated/assets/assets.gen.dart';
+import '../../generated/l10n.dart';
+import '../../utils/utils.dart';
 
 class NoConnectionWidget extends StatelessWidget {
   const NoConnectionWidget({Key? key}) : super(key: key);
@@ -28,7 +29,7 @@ class NoConnectionWidget extends StatelessWidget {
             height: 24.0,
           ),
           Text(
-            S.of(context).noInternetConnection,
+            SFortunica.of(context).noInternetConnectionFortunica,
             style: Theme.of(context).textTheme.headlineMedium,
             textAlign: TextAlign.center,
           ),
@@ -36,7 +37,8 @@ class NoConnectionWidget extends StatelessWidget {
             height: 8.0,
           ),
           Text(
-            S.of(context).uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgain,
+            SFortunica.of(context)
+                .uhOhItLooksLikeYouVeLostYourConnectionPleaseTryAgainFortunica,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontSize: 16.0,
                   color: Theme.of(context).shadowColor,

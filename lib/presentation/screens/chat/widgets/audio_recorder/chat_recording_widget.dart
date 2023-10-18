@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
-import 'package:shared_advisor_interface/generated/l10n.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/chat/chat_cubit.dart';
-import 'package:shared_advisor_interface/presentation/themes/app_colors.dart';
+
+import '../../../../../app_constants.dart';
+import '../../../../../generated/assets/assets.gen.dart';
+import '../../../../../generated/l10n.dart';
+import '../../../../../themes/app_colors.dart';
+import '../../chat_cubit.dart';
 
 class ChatRecordingWidget extends StatelessWidget {
   final VoidCallback? onClosePressed;
@@ -19,7 +20,7 @@ class ChatRecordingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final s = S.of(context);
+    final s = SFortunica.of(context);
     final ChatCubit chatCubit = context.read<ChatCubit>();
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -42,8 +43,9 @@ class ChatRecordingWidget extends StatelessWidget {
               Builder(builder: (context) {
                 context
                     .select((ChatCubit cubit) => cubit.state.recordingDuration);
+
                 return Text(
-                  s.fromXsecToYmin(chatCubit.minRecordDurationInSec,
+                  s.fromXsecToYminFortunica(chatCubit.minRecordDurationInSec,
                       chatCubit.maxRecordDurationInMinutes),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: chatCubit.checkMinRecordDurationIsOk()

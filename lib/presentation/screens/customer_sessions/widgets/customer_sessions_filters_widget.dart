@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_advisor_interface/data/models/enums/markets_type.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/list_of_filters_widget.dart';
-import 'package:shared_advisor_interface/presentation/common_widgets/market_filter_widget.dart';
-import 'package:shared_advisor_interface/presentation/resources/app_constants.dart';
-import 'package:shared_advisor_interface/presentation/screens/customer_sessions/customer_sessions_cubit.dart';
+
+import '../../../../app_constants.dart';
+import '../../../../data/models/enums/markets_type.dart';
+import '../../../common_widgets/list_of_filters_widget.dart';
+import '../../../common_widgets/market_filter_widget.dart';
+import '../customer_sessions_cubit.dart';
 
 class CustomerSessionsFiltersWidget extends StatelessWidget {
   final bool isOnline;
