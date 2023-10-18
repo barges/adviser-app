@@ -18,14 +18,9 @@ import 'services/fresh_chat_service.dart';
 
 @singleton
 class MainCubit extends Cubit<MainState> {
-  // TODO DELETE
-  //final GlobalCachingManager _cacheManager;
   final FortunicaCachingManager _cacheManager;
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  // TODO DELETE
-  //final BrandManager _brandManager;
 
-  //late final StreamSubscription _currentBrandSubscription;
   late final StreamSubscription _localeSubscription;
   late final StreamSubscription<bool> _connectivitySubscription;
 
@@ -40,7 +35,6 @@ class MainCubit extends Cubit<MainState> {
 
   MainCubit(
     this._cacheManager,
-    //this._brandManager,
     this._connectivityService,
   ) : super(const MainState()) {
     _connectivitySubscription =
@@ -50,25 +44,6 @@ class MainCubit extends Cubit<MainState> {
         isAuth: _cacheManager.isAuth,
       ));
     });
-    // TODO ?
-    //final BaseBrand currentBrand = _brandManager.getCurrentBrand();
-
-    //BrandManager.setIsCurrentForBrands(currentBrand);
-
-    //emit(state.copyWith(currentBrand: currentBrand));
-
-    /*_currentBrandSubscription = _brandManager.listenCurrentBrandStream((value) {
-      emit(state.copyWith(
-        currentBrand: value,
-      ));
-      BrandManager.setIsCurrentForBrands(value);
-
-      final String? languageCode = 'EN';//value.languageCode;
-
-      if (languageCode != null) {
-        _cacheManager.saveLanguageCode(languageCode);
-      }
-    });*/
 
     _localeSubscription = _cacheManager.listenLanguageCodeStream(changeLocale);
   }
@@ -78,15 +53,9 @@ class MainCubit extends Cubit<MainState> {
     _connectivitySubscription.cancel();
     _connectivityService.disposeStream();
     _localeSubscription.cancel();
-    //_currentBrandSubscription.cancel();
     _errorTimer?.cancel();
     return super.close();
   }
-
-  // TODO DELETE
-  /*void changeCurrentBrand(BaseBrand brand) {
-     _brandManager.setCurrentBrand(brand);
-  }*/
 
   void updateErrorMessage(AppError appError) {
     if (appError is! EmptyError) {

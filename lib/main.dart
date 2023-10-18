@@ -56,13 +56,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   final FortunicaCachingManager _cacheManager =
       globalGetIt.get<FortunicaCachingManager>();
 
-  // TODO DELETE
-  /*final GlobalCachingManager _cacheManager =
-      globalGetIt.get<GlobalCachingManager>();*/
-
   final MainAppRouter rootRouter = MainAppRouter();
-
-  //final BrandManager brandManager = globalGetIt.get<BrandManager>();
 
   @override
   void initState() {
@@ -197,20 +191,11 @@ class _AppNavigatorObserver extends AutoRouterObserver {
 
   void _clearErrorMessage() {
     fortunicaGetIt.get<MainCubit>().clearErrorMessage();
-    //TODO DELETE
-    //zodiacGetIt.get<ZodiacMainCubit>().clearErrorMessage();
   }
 
   void _setContext() {
     if (navigator?.context != null) {
       currentContext = navigator?.context;
-      // TODO DELETE
-      //final String path = currentContext.router.current.path;
-      //if (path.contains(FortunicaBrand.alias)) {
-      //}
-      /*else if (path.contains(ZodiacBrand.alias)) {
-        ZodiacBrand().context = currentContext;
-      }*/
     }
   }
 }

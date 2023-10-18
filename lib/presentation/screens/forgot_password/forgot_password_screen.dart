@@ -191,8 +191,6 @@ class _BrandLogo extends StatelessWidget {
         ),
         child: Center(
           child: SvgPicture.asset(
-            // TODO ?
-            //FortunicaBrand().iconPath,
             Assets.vectors.fortunica.path,
             height: 72.0,
           ),

@@ -35,8 +35,6 @@ class ChangeLocaleButton extends StatelessWidget {
               fortunicaGetIt
                   .get<FortunicaCachingManager>()
                   .saveLanguageCode(languageCode);
-              // TODO DELETE
-              //FortunicaBrand().languageCode = languageCode;
             }
           },
           currentIndex: currentLocaleIndex,

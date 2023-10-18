@@ -40,17 +40,6 @@ const fortunicaRoute = AutoRoute(
         path: RoutePathsFortunica.loginScreen,
         name: RoutePathsFortunica.loginScreen,
       ),
-      /*AutoRoute(
-          page: FortunicaAuthWrapper,
-          path: RoutePathsFortunica.authScreen,
-          name: RoutePathsFortunica.authScreen,
-          children: [
-            AutoRoute(
-              page: LoginScreen,
-              path: RoutePathsFortunica.loginScreen,
-              name: RoutePathsFortunica.loginScreen,
-            ),
-          ]),*/
       AutoRoute(
           page: HomeScreen,
           path: RoutePathsFortunica.homeScreen,
@@ -136,15 +125,6 @@ const fortunicaRoute = AutoRoute(
   replaceInRouteName: 'Page|Dialog,Route',
   routes: <AutoRoute>[
     fortunicaRoute,
-    /*AutoRoute(
-      page: MainHomeScreen,
-      path: RoutePaths.homeScreen,
-      initial: true,
-      children: [
-        fortunicaRoute,
-        //zodiacRoute,
-      ],
-    ),*/
   ],
 )
 class $MainAppRouter {}

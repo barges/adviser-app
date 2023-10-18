@@ -32,9 +32,6 @@ class ChatConversationAppBar extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    // TODO DELETE
-    //final BaseBrand selectedBrand = FortunicaBrand();
-
     return AppBar(
       automaticallyImplyLeading: false,
       centerTitle: false,
@@ -102,7 +99,6 @@ class ChatConversationAppBar extends StatelessWidget
                           ],
                         ),
                       ),
-                      // TODO DELETE
                       Text(
                         AppConstants.fortunicaName,
                         style: TextStyle(
@@ -114,9 +110,6 @@ class ChatConversationAppBar extends StatelessWidget
                     ],
                   ),
                 ),
-                // if (publicQuestionId != null &&
-                //     questionStatus == ChatItemStatusType.taken)
-                //   const Spacer(),
                 if (zodiacSign != null)
                   SvgPicture.asset(
                     zodiacSign!.imagePath(context),

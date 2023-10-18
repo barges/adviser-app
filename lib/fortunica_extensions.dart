@@ -9,7 +9,6 @@ const String datePattern5 = 'MMM dd, yyyy';
 
 const String currencyPattern = '#,##0.00';
 
-// TODO ?
 const String timeFormat = 'h:mm a';
 
 extension DateTimeExt on DateTime {

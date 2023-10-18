@@ -30,9 +30,6 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO DELETE
-    //final BaseBrand currentBrand = FortunicaBrand();
-
     return AppBar(
         automaticallyImplyLeading: false,
         elevation: 0.5,
@@ -61,14 +58,6 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                               needIconColor: false,
                             ),
                     ),
-                    // TODO DELETE
-                    /*withBrands
-                        ? Builder(builder: (context) {
-                            context.select(
-                                (HomeCubit cubit) => cubit.state.userStatus);
-                            return AuthorizedBrandsAppBarWidget();
-                          })
-                        : */
                     const ChangeLocaleButton(),
                   ],
                 ),

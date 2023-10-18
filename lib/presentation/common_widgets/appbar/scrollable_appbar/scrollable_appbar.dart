@@ -31,9 +31,6 @@ class ScrollableAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO DELETE
-    //final BaseBrand currentBrand = FortunicaBrand();
-
     return BlocProvider(
       create: (_) => ScrollableAppBarCubit(fortunicaGetIt.get<MainCubit>()),
       child: Builder(builder: (context) {
@@ -82,7 +79,7 @@ class ScrollableAppBar extends StatelessWidget {
                           ),
                           Expanded(
                             child: GestureDetector(
-                              //onTap: context.read<MainHomeScreenCubit>().openDrawer,
+                              onTap: context.read<MainCubit>().openDrawer,
                               child: Row(
                                 children: [
                                   Container(
@@ -128,7 +125,6 @@ class ScrollableAppBar extends StatelessWidget {
                   )
                 : const SizedBox.shrink();
           }),
-          //title:
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(_minHeight),
             child: Builder(
@@ -241,7 +237,6 @@ class ScrollableAppBar extends StatelessWidget {
                         child: AppErrorWidget(
                           height: _errorHeight,
                           errorMessage: appError.getMessage(context),
-                          //close: scrollableAppBarCubit.closeErrorWidget,
                         ),
                       ),
                   ],

@@ -191,8 +191,6 @@ void _messageTypeHandler(Map<String, dynamic> meta) {
 
 Future<void> _navigateToNextScreen(RemoteMessage? message) async {
   final BuildContext? fortunicaContext = currentContext;
-  // TODO DELETE ?
-  //if (FortunicaBrand().isAuth && fortunicaContext != null && message != null) {
   if (fortunicaGetIt.get<FortunicaCachingManager>().isAuth &&
       fortunicaContext != null &&
       message != null) {

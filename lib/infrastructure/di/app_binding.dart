@@ -8,22 +8,9 @@ import 'inject_config.dart';
 
 class AppBinding {
   static Future<void> setupInjection(Flavor flavor) async {
-    // TODO DELETE
-    // globalGetIt.registerSingleton<GlobalCachingManager>(GlobalCachingManagerImpl());
-    /*globalGetIt.registerSingleton<FortunicaCachingManager>(
-        FortunicaCachingManagerImpl());*/
-
     globalGetIt.registerSingleton(MainAppRouter());
     await FortunicaCachingManagerImpl.openBoxes();
-    // TODO delete
-    //await GlobalCachingManagerImpl.openBoxes();
-
-    ///injectable and get it configuration
-    //await configureDependencies();
     await configureDependenciesFortunica();
-    // await globalGetIt.get<GlobalCachingManager>().openBoxes();
-    //_injectFlavor(flavor);
-    // await _injectNetworkingDependencies();
   }
 
   static Future _injectNetworkingDependencies() async {

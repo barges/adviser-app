@@ -8,7 +8,6 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:hive/hive.dart';
-import 'package:system_date_time_format/system_date_time_format.dart';
 import '../../app_constants.dart';
 import '../flavor/flavor_config.dart';
 import 'app_binding.dart';
@@ -16,10 +15,6 @@ import 'app_binding.dart';
 class AppInitializer {
   static Future setupPrerequisites(Flavor flavor) async {
     WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-
-    final format = SystemDateTimeFormat();
-
-    final String? timePattern = await format.getTimePattern();
 
     FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
     if (Platform.isIOS) {
@@ -48,13 +43,6 @@ class AppInitializer {
 
     ///dependencies injection
     await AppBinding.setupInjection(flavor);
-
-    if (timePattern != null) {
-      //TODO DELETE
-      //BrandManager.timeFormat = timePattern;
-    }
-    //TODO DELETE
-    //await globalGetIt<BrandManager>().initDi(flavor);
   }
 }
 
