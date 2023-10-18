@@ -11,17 +11,12 @@ import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/scrollable_appbar/scrollable_appbar.dart';
-import 'package:zodiac/presentation/common_widgets/empty_list_widget.dart';
 import 'package:zodiac/presentation/common_widgets/no_connection_widget.dart';
+import 'package:zodiac/presentation/common_widgets/transactions_sliver_list/transactions_sliver_list_widget.dart';
 import 'package:zodiac/presentation/screens/balance_and_transactions/balance_and_transactions_cubit.dart';
 import 'package:zodiac/presentation/screens/balance_and_transactions/widgets/label_widget.dart';
-import 'package:zodiac/presentation/screens/balance_and_transactions/widgets/time_item_widget.dart';
-import 'package:zodiac/presentation/screens/balance_and_transactions/widgets/transaction_statistic_widget.dart';
-import 'package:zodiac/presentation/screens/balance_and_transactions/widgets/transaction_tile_widget.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
-const paddingTopTimeItem = 16.0;
-const paddingBottomTimeItem = 8.0;
 const paddingottomStatisticWidget = 24.0 - paddingTopTimeItem;
 const paddingTopLabelWidget = 8.0;
 
@@ -108,51 +103,14 @@ class BalanceAndTransactionsScreen extends StatelessWidget {
                           return const SliverToBoxAdapter(
                             child: SizedBox.shrink(),
                           );
-                        } else if (transactionsList.isNotEmpty) {
+                        } else {
                           return SliverPadding(
                             padding: const EdgeInsets.only(
                                 left: AppConstants.horizontalScreenPadding,
                                 right: AppConstants.horizontalScreenPadding,
                                 bottom: 14.0),
-                            sliver: SliverList(
-                              delegate: SliverChildBuilderDelegate(
-                                (BuildContext context, int index) {
-                                  if (index == 0) {
-                                    return const Padding(
-                                      padding: EdgeInsets.only(
-                                          bottom: paddingottomStatisticWidget),
-                                      child: TransactionStatisticWidget(),
-                                    );
-                                  }
-                                  return transactionsList[index - 1].when(
-                                      data: (data) => TransactionsTileWidget(
-                                            items: data,
-                                          ),
-                                      separator: (dateCreate) => Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: paddingTopTimeItem,
-                                                bottom: paddingBottomTimeItem),
-                                            child: TimeItemWidget(
-                                                dateTime: dateCreate!),
-                                          ));
-                                },
-                                childCount: transactionsList.length + 1,
-                              ),
-                            ),
-                          );
-                        } else {
-                          return SliverFillRemaining(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                EmptyListWidget(
-                                  title: SZodiac.of(context)
-                                      .noTransactionsYetZodiac,
-                                  label: SZodiac.of(context)
-                                      .yourTransactionsHistoryWillAppearHereZodiac,
-                                ),
-                              ],
+                            sliver: TransactionsSliverListWidget(
+                              transactionsList: transactionsList,
                             ),
                           );
                         }

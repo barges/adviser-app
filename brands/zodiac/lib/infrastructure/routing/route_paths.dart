@@ -18,7 +18,6 @@ class RoutePathsZodiac {
   static const balanceAndTransactionsScreen =
       '${ZodiacBrand.alias}BalanceAndTransactions';
   static const supportScreen = '${ZodiacBrand.alias}Support';
-  static const specialitiesListScreen = '${ZodiacBrand.alias}SpecialitiesList';
   static const localesListScreen = '${ZodiacBrand.alias}LocalesList';
   static const notificationDetailsScreen =
       '${ZodiacBrand.alias}NotificationDetails';
@@ -26,11 +25,17 @@ class RoutePathsZodiac {
   static const smsVerificationScreen = '${ZodiacBrand.alias}SMSVerification';
   static const phoneNumberVerifiedScreen =
       '${ZodiacBrand.alias}PhoneNumberVerified';
-  static const servicesMessagesScreen = '${ZodiacBrand.alias}ServicesMessages';
+  static const servicesScreen = '${ZodiacBrand.alias}Services';
   static const chatScreen = '${ZodiacBrand.alias}Chat';
   static const sendImageScreen = '${ZodiacBrand.alias}SendImage';
   static const addService = '${ZodiacBrand.alias}AddService';
   static const duplicateService = '${ZodiacBrand.alias}DuplicateService';
   static const editService = '${ZodiacBrand.alias}EditService';
   static const completeService = '${ZodiacBrand.alias}CompleteService';
+  static const cannedMessages = '${ZodiacBrand.alias}CannedMessages';
+  static const selectCategoriesScreen = '${ZodiacBrand.alias}SelectCategories';
+  static const categoriesMethodsListScreen =
+      '${ZodiacBrand.alias}CategoriesMethodsList';
+  static const selectMethodsScreen = '${ZodiacBrand.alias}SelectMethods';
+  static const autoReply = '${ZodiacBrand.alias}AutoReply';
 }

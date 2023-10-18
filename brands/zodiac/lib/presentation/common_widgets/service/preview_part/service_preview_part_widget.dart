@@ -11,8 +11,6 @@ typedef ServicePreviewDto = ({
   TextEditingController? titleController,
   TextEditingController? descriptionController,
   double price,
-  double discount,
-  bool discountEnabled,
   ServiceType serviceType,
   double deliveryTime,
   DeliveryTimeTabType deliveryTimeType,

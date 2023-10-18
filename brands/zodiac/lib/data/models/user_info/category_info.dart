@@ -13,15 +13,17 @@ class CategoryInfo with _$CategoryInfo {
   @JsonSerializable(
     includeIfNull: false,
     explicitToJson: true,
+    fieldRename: FieldRename.snake,
   )
   const factory CategoryInfo({
     int? id,
     @JsonKey(name: 'pid') int? parentId,
     String? name,
     String? alias,
-    String? icon,
+    String? icon, //for categories
     int? checked,
     String? image,
+    String? iconUrl, //for methods
     List<CategoryInfo>? sublist,
   }) = _CategoryInfo;
 

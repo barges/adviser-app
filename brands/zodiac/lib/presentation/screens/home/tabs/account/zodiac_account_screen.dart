@@ -2,15 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/data/models/app_error/app_error.dart';
-import 'package:shared_advisor_interface/infrastructure/di/brand_manager.dart';
 import 'package:shared_advisor_interface/main_cubit.dart';
 import 'package:shared_advisor_interface/services/check_permission_service.dart';
-import 'package:shared_advisor_interface/services/connectivity_service.dart';
-import 'package:shared_advisor_interface/services/push_notification/push_notification_manager.dart';
-import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
 import 'package:zodiac/data/models/app_success/app_success.dart';
-import 'package:zodiac/domain/repositories/zodiac_coupons_repository.dart';
-import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/home_app_bar.dart';
 import 'package:zodiac/presentation/common_widgets/messages/app_error_widget.dart';
@@ -29,16 +23,8 @@ class AccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ZodiacAccountCubit(
-        zodiacGetIt.get<BrandManager>(),
-        zodiacGetIt.get<ZodiacMainCubit>(),
-        zodiacGetIt.get<ZodiacUserRepository>(),
-        zodiacGetIt.get<ZodiacCachingManager>(),
-        zodiacGetIt.get<ConnectivityService>(),
-        zodiacGetIt.get<PushNotificationManager>(),
-        zodiacGetIt.get<ZodiacCouponsRepository>(),
-        (value) => handlePermission(context, value),
-      ),
+      create: (_) => zodiacGetIt.get<ZodiacAccountCubit>(
+          param1: (value) => handlePermission(context, value)),
       child: Scaffold(
           appBar: const HomeAppBar(),
           body: Builder(builder: (context) {
