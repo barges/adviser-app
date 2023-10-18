@@ -100,6 +100,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancelZodiac": MessageLookupByLibrary.simpleMessage("Cancelar"),
         "cannedMessagesZodiac":
             MessageLookupByLibrary.simpleMessage("Mensagens anuladas"),
+        "categoriesZodiac": MessageLookupByLibrary.simpleMessage("Categorias"),
         "changeZodiac": MessageLookupByLibrary.simpleMessage("Mudar"),
         "characterLimitExceededZodiac": MessageLookupByLibrary.simpleMessage(
             "Limite de caracteres excedido."),
@@ -184,6 +185,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "explainIn3to5StepsWhatTheCustomersWillGetZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Explique em 3 a 5 etapas o que os clientes receberão."),
+        "firstSelectTheCategoriesZodiac": MessageLookupByLibrary.simpleMessage(
+            "Primeiro selecione as categorias"),
+        "firstSelectTheMethodsZodiac": MessageLookupByLibrary.simpleMessage(
+            "Primeiro selecione os métodos"),
         "firstYouNeedFillInformationAboutServiceZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Primeiro você precisa preencher todas as informações necessárias sobre o serviço e depois enviá-lo para aprovação e assim que estiver pronto você poderá vendê-lo"),
@@ -221,13 +226,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginZodiac": MessageLookupByLibrary.simpleMessage("Conectar-se"),
         "lowestRateZodiac":
             MessageLookupByLibrary.simpleMessage("Tarifa mais baixa"),
+        "mainCategoryZodiac":
+            MessageLookupByLibrary.simpleMessage("Categoria principal"),
         "mainLanguageZodiac":
             MessageLookupByLibrary.simpleMessage("Idioma principal"),
+        "mainMethodZodiac":
+            MessageLookupByLibrary.simpleMessage("Método principal"),
         "mainSpecialtyZodiac":
             MessageLookupByLibrary.simpleMessage("Especialidade principal"),
         "mainZodiac": MessageLookupByLibrary.simpleMessage("Principal"),
         "manageMessagesZodiac":
             MessageLookupByLibrary.simpleMessage("Gerenciar mensagens"),
+        "methodsZodiac": MessageLookupByLibrary.simpleMessage("Métodos"),
         "minutesFullZodiac": MessageLookupByLibrary.simpleMessage("Minutos"),
         "minutesZodiac": MessageLookupByLibrary.simpleMessage("min"),
         "moreAboutOfflineServicesZodiac": MessageLookupByLibrary.simpleMessage(
@@ -342,6 +352,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "secondsZodiac": MessageLookupByLibrary.simpleMessage("seg"),
         "selectAtLeast1CouponZodiac": MessageLookupByLibrary.simpleMessage(
             "Selecione pelo menos 1 cupom"),
+        "selectCategoriesZodiac":
+            MessageLookupByLibrary.simpleMessage("Selecione as categorias"),
+        "selectMainCategoryZodiac": MessageLookupByLibrary.simpleMessage(
+            "Selecione a categoria principal"),
+        "selectMainMethodZodiac": MessageLookupByLibrary.simpleMessage(
+            "Selecione o método principal"),
+        "selectMethodsZodiac":
+            MessageLookupByLibrary.simpleMessage("Selecione métodos"),
         "selectedCouponsWillBeRenewedAutomaticallyZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Os cupons selecionados serão renovados automaticamente e exibidos em seu perfil"),
@@ -450,6 +468,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "youCanChangePriceOncePer24HZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Você pode alterar o preço uma vez a cada 24 h"),
+        "youCanChooseUpTo3CategoriesZodiac": MessageLookupByLibrary.simpleMessage(
+            "Você pode escolher até 3 categorias com as quais prefere trabalhar e a categoria principal entre elas"),
+        "youCanChooseUpTo3MethodsZodiac": MessageLookupByLibrary.simpleMessage(
+            "Você pode escolher até 3 métodos com os quais está trabalhando e o método principal entre eles"),
         "youCanEasilyAccessTheseTemplatesZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Você pode acessar facilmente esses modelos durante e após o bate-papo"),

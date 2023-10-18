@@ -6,6 +6,8 @@ import 'package:zodiac/presentation/screens/auto_reply/auto_reply_screen.dart';
 import 'package:zodiac/presentation/screens/balance_and_transactions/balance_and_transactions_screen.dart';
 import 'package:zodiac/presentation/screens/brand_screen/zodiac_brand_screen.dart';
 import 'package:zodiac/presentation/screens/canned_messages/canned_messages_screen.dart';
+import 'package:zodiac/presentation/screens/select_categories/select_categories_screen.dart';
+import 'package:zodiac/presentation/screens/categories_methods_list/categories_methods_list_screen.dart';
 import 'package:zodiac/presentation/screens/chat/chat_screen.dart';
 import 'package:zodiac/presentation/screens/complete_service/complete_service_screen.dart';
 import 'package:zodiac/presentation/screens/duplicate_service/duplicate_service_screen.dart';
@@ -24,11 +26,11 @@ import 'package:zodiac/presentation/screens/notifications/notifications_screen.d
 import 'package:zodiac/presentation/screens/edit_profile/edit_profile_screen.dart';
 import 'package:zodiac/presentation/screens/phone_number/phone_number_screen.dart';
 import 'package:zodiac/presentation/screens/reviews/reviews_screen.dart';
+import 'package:zodiac/presentation/screens/select_methods/select_methods_screen.dart';
 import 'package:zodiac/presentation/screens/services/services_screen.dart';
 import 'package:zodiac/presentation/screens/sms_verification/sms_verification_screen.dart';
 import 'package:zodiac/presentation/screens/sms_verification/widgets/phone_number_verified_screen.dart';
 import 'package:zodiac/presentation/screens/send_image/send_image_screen.dart';
-import 'package:zodiac/presentation/screens/specialities_list/specialities_list_screen.dart';
 import 'package:zodiac/presentation/screens/support/support_screen.dart';
 import 'package:zodiac/presentation/wrappers/auth_wrapper/zodiac_auth_wrapper.dart';
 import 'package:zodiac/zodiac.dart';
@@ -139,11 +141,6 @@ const zodiacRoute = AutoRoute(
       name: RoutePathsZodiac.supportScreen,
     ),
     AutoRoute(
-      page: SpecialitiesListScreen,
-      path: RoutePathsZodiac.specialitiesListScreen,
-      name: RoutePathsZodiac.specialitiesListScreen,
-    ),
-    AutoRoute(
       page: LocalesListScreen,
       path: RoutePathsZodiac.localesListScreen,
       name: RoutePathsZodiac.localesListScreen,
@@ -182,6 +179,21 @@ const zodiacRoute = AutoRoute(
       page: CompleteServiceScreen,
       path: RoutePathsZodiac.completeService,
       name: RoutePathsZodiac.completeService,
+    ),
+    AutoRoute(
+      page: SelectCategoriesScreen,
+      path: RoutePathsZodiac.selectCategoriesScreen,
+      name: RoutePathsZodiac.selectCategoriesScreen,
+    ),
+    AutoRoute(
+      page: CategoriesMethodsListScreen,
+      path: RoutePathsZodiac.categoriesMethodsListScreen,
+      name: RoutePathsZodiac.categoriesMethodsListScreen,
+    ),
+    AutoRoute(
+      page: SelectMethodsScreen,
+      path: RoutePathsZodiac.selectMethodsScreen,
+      name: RoutePathsZodiac.selectMethodsScreen,
     ),
     AutoRoute<bool?>(
       page: AutoReplyScreen,

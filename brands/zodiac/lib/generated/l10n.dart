@@ -2056,16 +2056,6 @@ class SZodiac {
     );
   }
 
-  /// `You can send {limit} coupons per day.`
-  String youCanSendNCouponsPerDayZodiac(Object limit) {
-    return Intl.message(
-      'You can send $limit coupons per day.',
-      name: 'youCanSendNCouponsPerDayZodiac',
-      desc: '',
-      args: [limit],
-    );
-  }
-
   /// `Add Service`
   String get addServiceZodiac {
     return Intl.message(
@@ -2131,16 +2121,6 @@ class SZodiac {
     return Intl.message(
       'Not selected',
       name: 'notSelectedZodiac',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Main`
-  String get mainZodiac {
-    return Intl.message(
-      'Main',
-      name: 'mainZodiac',
       desc: '',
       args: [],
     );
@@ -2451,6 +2431,146 @@ class SZodiac {
     return Intl.message(
       'Show less',
       name: 'showLessZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can send {limit} coupons per day.`
+  String youCanSendNCouponsPerDayZodiac(Object limit) {
+    return Intl.message(
+      'You can send $limit coupons per day.',
+      name: 'youCanSendNCouponsPerDayZodiac',
+      desc: '',
+      args: [limit],
+    );
+  }
+
+  /// `Main`
+  String get mainZodiac {
+    return Intl.message(
+      'Main',
+      name: 'mainZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Categories`
+  String get categoriesZodiac {
+    return Intl.message(
+      'Categories',
+      name: 'categoriesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select categories`
+  String get selectCategoriesZodiac {
+    return Intl.message(
+      'Select categories',
+      name: 'selectCategoriesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can choose up to 3 categories you prefer to work with and the main category among them`
+  String get youCanChooseUpTo3CategoriesZodiac {
+    return Intl.message(
+      'You can choose up to 3 categories you prefer to work with and the main category among them',
+      name: 'youCanChooseUpTo3CategoriesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Main category`
+  String get mainCategoryZodiac {
+    return Intl.message(
+      'Main category',
+      name: 'mainCategoryZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select main category`
+  String get selectMainCategoryZodiac {
+    return Intl.message(
+      'Select main category',
+      name: 'selectMainCategoryZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `First select the categories`
+  String get firstSelectTheCategoriesZodiac {
+    return Intl.message(
+      'First select the categories',
+      name: 'firstSelectTheCategoriesZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Methods`
+  String get methodsZodiac {
+    return Intl.message(
+      'Methods',
+      name: 'methodsZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select methods`
+  String get selectMethodsZodiac {
+    return Intl.message(
+      'Select methods',
+      name: 'selectMethodsZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can choose up to 3 methods you are working with and the main method among them`
+  String get youCanChooseUpTo3MethodsZodiac {
+    return Intl.message(
+      'You can choose up to 3 methods you are working with and the main method among them',
+      name: 'youCanChooseUpTo3MethodsZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Main method`
+  String get mainMethodZodiac {
+    return Intl.message(
+      'Main method',
+      name: 'mainMethodZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select main method`
+  String get selectMainMethodZodiac {
+    return Intl.message(
+      'Select main method',
+      name: 'selectMainMethodZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `First select the methods`
+  String get firstSelectTheMethodsZodiac {
+    return Intl.message(
+      'First select the methods',
+      name: 'firstSelectTheMethodsZodiac',
       desc: '',
       args: [],
     );

@@ -1,20 +1,17 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_advisor_interface/app_constants.dart';
 import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 import 'package:shared_advisor_interface/presentation/common_widgets/ok_cancel_alert.dart';
-import 'package:shared_advisor_interface/services/connectivity_service.dart';
-import 'package:zodiac/data/cache/zodiac_caching_manager.dart';
-import 'package:zodiac/data/models/user_info/detailed_user_info.dart';
-import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
+import 'package:zodiac/data/models/edit_profile/brand_model.dart';
 import 'package:zodiac/generated/l10n.dart';
 import 'package:zodiac/infrastructure/di/inject_config.dart';
 import 'package:zodiac/presentation/common_widgets/appbar/scrollable_appbar/scrollable_appbar.dart';
 import 'package:zodiac/presentation/screens/edit_profile/edit_profile_cubit.dart';
-import 'package:zodiac/presentation/screens/edit_profile/widgets/locales_descriptions_part_widget.dart';
-import 'package:zodiac/presentation/screens/edit_profile/widgets/main_part_info_widget.dart';
+import 'package:zodiac/presentation/screens/edit_profile/widgets/edit_profile_body_widget.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 class EditProfileScreen extends StatelessWidget {
@@ -24,11 +21,7 @@ class EditProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final ZodiacMainCubit zodiacMainCubit = context.read<ZodiacMainCubit>();
     return BlocProvider(
-      create: (_) => EditProfileCubit(
-        zodiacGetIt.get<ZodiacCachingManager>(),
-        zodiacGetIt.get<ZodiacUserRepository>(),
-        zodiacGetIt.get<ConnectivityService>(),
-      ),
+      create: (_) => zodiacGetIt.get<EditProfileCubit>(),
       child: Builder(builder: (context) {
         final EditProfileCubit editProfileCubit =
             context.read<EditProfileCubit>();
@@ -43,10 +36,10 @@ class EditProfileScreen extends StatelessWidget {
             body: GestureDetector(
               onTap: FocusScope.of(context).unfocus,
               child: Builder(builder: (context) {
-                final DetailedUserInfo? detailedUserInfo = context.select(
-                    (EditProfileCubit cubit) => cubit.state.detailedUserInfo);
                 final bool canRefresh = context
                     .select((EditProfileCubit cubit) => cubit.state.canRefresh);
+                final List<BrandModel>? brands = context
+                    .select((EditProfileCubit cubit) => cubit.state.brands);
 
                 return RefreshIndicator(
                   onRefresh: editProfileCubit.getData,
@@ -59,13 +52,15 @@ class EditProfileScreen extends StatelessWidget {
                       ScrollableAppBar(
                         title: SZodiac.of(context).editProfileZodiac,
                         needShowError: true,
-                        actionOnClick: () async {
-                          await _confirmChanges(
-                            context,
-                            editProfileCubit,
-                            zodiacMainCubit,
-                          );
-                        },
+                        actionOnClick: brands != null
+                            ? () async {
+                                await _confirmChanges(
+                                  context,
+                                  editProfileCubit,
+                                  zodiacMainCubit,
+                                );
+                              }
+                            : null,
                         backOnTap: () {
                           if (editProfileCubit.needUpdateAccount) {
                             zodiacMainCubit.updateAccount();
@@ -73,16 +68,26 @@ class EditProfileScreen extends StatelessWidget {
                         },
                       ),
                       SliverToBoxAdapter(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            MainPartInfoWidget(
-                              detailedUserInfo: detailedUserInfo,
-                            ),
-                            if (detailedUserInfo?.locales?.isNotEmpty == true)
-                              const LocalesDescriptionsPartWidget()
-                          ],
-                        ),
+                        child: Builder(builder: (context) {
+                          final int selectedBrandIndex = context.select(
+                              (EditProfileCubit cubit) =>
+                                  cubit.state.selectedBrandIndex);
+                          if (brands != null) {
+                            return IndexedStack(
+                              index: selectedBrandIndex,
+                              children: brands
+                                  .mapIndexed(
+                                    (i, e) => EditProfileBodyWidget(
+                                      brands: brands,
+                                      brandIndex: i,
+                                    ),
+                                  )
+                                  .toList(),
+                            );
+                          } else {
+                            return const SizedBox.shrink();
+                          }
+                        }),
                       ),
                     ],
                   ),
