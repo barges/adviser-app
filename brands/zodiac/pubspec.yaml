@@ -67,6 +67,7 @@ dependencies:
   syncfusion_flutter_sliders: ^22.1.39
   syncfusion_flutter_core: ^22.1.39
   dotted_border: ^2.0.0+3
+  shimmer: ^3.0.0
   
   audible_mode: ^1.0.1
 
