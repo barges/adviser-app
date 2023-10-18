@@ -27,14 +27,16 @@ class ReactionWidget extends StatelessWidget {
       children: [
         if (chatMessageModel.reaction.isNotEmpty)
           GestureDetector(
-            onTap: () {
-              final String? id = chatMessageModel.id != null
-                  ? chatMessageModel.id.toString()
-                  : chatMessageModel.mid;
-              if (id != null) {
-                chatCubit?.sendReaction(id, '');
-              }
-            },
+            onTap: isOutgoing
+                ? null
+                : () {
+                    final String? id = chatMessageModel.id != null
+                        ? chatMessageModel.id.toString()
+                        : chatMessageModel.mid;
+                    if (id != null) {
+                      chatCubit?.sendReaction(id, '');
+                    }
+                  },
             child: Padding(
               padding: EdgeInsets.only(
                 right: isOutgoing ? reactionContainerPadding : 0,
