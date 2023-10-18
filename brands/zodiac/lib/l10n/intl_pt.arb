@@ -250,5 +250,12 @@
   "youCanChooseUpTo3MethodsZodiac": "Você pode escolher até 3 métodos com os quais está trabalhando e o método principal entre eles",
   "mainMethodZodiac": "Método principal",
   "selectMainMethodZodiac": "Selecione o método principal",
-  "firstSelectTheMethodsZodiac": "Primeiro selecione os métodos"
+  "firstSelectTheMethodsZodiac": "Primeiro selecione os métodos",
+  "autoReplyZodiac": "Resposta automatica",
+  "done": "Feito",
+  "setTimeZodiac": "Definir tempo",
+  "setTimeFromZodiac": "Definir hora de",
+  "setTimeToZodiac": "Defina o horário para",
+  "onZodiac": "Sobre",
+  "offZodiac": "Desligado"
 }

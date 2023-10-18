@@ -85,6 +85,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "articlesZodiac": MessageLookupByLibrary.simpleMessage("Artikel"),
         "audioMessageZodiac":
             MessageLookupByLibrary.simpleMessage("Audio-Nachricht"),
+        "autoReplyZodiac":
+            MessageLookupByLibrary.simpleMessage("Automatische Antwort"),
         "avgDailyEarningsZodiac": MessageLookupByLibrary.simpleMessage(
             "Durchschnittliche Tageseinkommen"),
         "balanceTransactionsZodiac":
@@ -159,6 +161,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "doYouWantToDeleteThisMessageZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Möchten Sie diese Nachricht löschen?"),
+        "doneZodiac": MessageLookupByLibrary.simpleMessage("Fertig"),
         "duplicateAnExistingServiceZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Duplizieren Sie einen vorhandenen Dienst"),
@@ -273,12 +276,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "nowYouCanReceiveCallsZodiac": MessageLookupByLibrary.simpleMessage(
             "Jetzt können Sie Anrufe entgegennehmen"),
         "objectsZodiac": MessageLookupByLibrary.simpleMessage("Objekte"),
+        "offZodiac": MessageLookupByLibrary.simpleMessage("Aus"),
         "offlineServiceTabZodiac":
             MessageLookupByLibrary.simpleMessage("Offline-Dienst"),
         "offlineServiceZodiac":
             MessageLookupByLibrary.simpleMessage("Offline Dienst:"),
         "offlineZodiac": MessageLookupByLibrary.simpleMessage("Offline"),
         "okZodiac": MessageLookupByLibrary.simpleMessage("Ok"),
+        "onZodiac": MessageLookupByLibrary.simpleMessage("An"),
         "onlineServiceTabZodiac":
             MessageLookupByLibrary.simpleMessage("Onlineservice"),
         "onlineServicesZodiac":
@@ -380,6 +385,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "sessionsZodiac": MessageLookupByLibrary.simpleMessage("Sitzungen"),
         "setAsMainLanguageZodiac":
             MessageLookupByLibrary.simpleMessage("Als Hauptsprache festlegen"),
+        "setTimeFromZodiac": MessageLookupByLibrary.simpleMessage(
+            "Stellen Sie die Zeit ein von"),
+        "setTimeToZodiac":
+            MessageLookupByLibrary.simpleMessage("Stellen Sie die Zeit ein"),
+        "setTimeZodiac":
+            MessageLookupByLibrary.simpleMessage("Zeit einstellen"),
         "setUpSuccessfulZodiac":
             MessageLookupByLibrary.simpleMessage("Installation erfolgreich"),
         "showDailyCouponsZodiac":

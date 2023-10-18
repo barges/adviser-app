@@ -2575,6 +2575,76 @@ class SZodiac {
       args: [],
     );
   }
+
+  /// `Auto-reply`
+  String get autoReplyZodiac {
+    return Intl.message(
+      'Auto-reply',
+      name: 'autoReplyZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Done`
+  String get doneZodiac {
+    return Intl.message(
+      'Done',
+      name: 'doneZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Set time`
+  String get setTimeZodiac {
+    return Intl.message(
+      'Set time',
+      name: 'setTimeZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Set time from`
+  String get setTimeFromZodiac {
+    return Intl.message(
+      'Set time from',
+      name: 'setTimeFromZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Set time to`
+  String get setTimeToZodiac {
+    return Intl.message(
+      'Set time to',
+      name: 'setTimeToZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `On`
+  String get onZodiac {
+    return Intl.message(
+      'On',
+      name: 'onZodiac',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Off`
+  String get offZodiac {
+    return Intl.message(
+      'Off',
+      name: 'offZodiac',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<SZodiac> {

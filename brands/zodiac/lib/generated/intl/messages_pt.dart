@@ -81,6 +81,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "articlesZodiac": MessageLookupByLibrary.simpleMessage("Artigos"),
         "audioMessageZodiac":
             MessageLookupByLibrary.simpleMessage("Mensagem de áudio"),
+        "autoReplyZodiac":
+            MessageLookupByLibrary.simpleMessage("Resposta automatica"),
         "avgDailyEarningsZodiac":
             MessageLookupByLibrary.simpleMessage("Ganhos diários médios"),
         "balanceTransactionsZodiac":
@@ -273,12 +275,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "nowYouCanReceiveCallsZodiac": MessageLookupByLibrary.simpleMessage(
             "Agora você pode receber chamadas"),
         "objectsZodiac": MessageLookupByLibrary.simpleMessage("Objetos"),
+        "offZodiac": MessageLookupByLibrary.simpleMessage("Desligado"),
         "offlineServiceTabZodiac":
             MessageLookupByLibrary.simpleMessage("Serviço off-line"),
         "offlineServiceZodiac":
             MessageLookupByLibrary.simpleMessage("Serviço off-line:"),
         "offlineZodiac": MessageLookupByLibrary.simpleMessage("Desligado"),
         "okZodiac": MessageLookupByLibrary.simpleMessage("Ok"),
+        "onZodiac": MessageLookupByLibrary.simpleMessage("Sobre"),
         "onlineServiceTabZodiac":
             MessageLookupByLibrary.simpleMessage("Serviço on-line"),
         "onlineServicesZodiac":
@@ -382,6 +386,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "sessionsZodiac": MessageLookupByLibrary.simpleMessage("Sessões"),
         "setAsMainLanguageZodiac": MessageLookupByLibrary.simpleMessage(
             "Definir como idioma principal"),
+        "setTimeFromZodiac":
+            MessageLookupByLibrary.simpleMessage("Definir hora de"),
+        "setTimeToZodiac":
+            MessageLookupByLibrary.simpleMessage("Defina o horário para"),
+        "setTimeZodiac": MessageLookupByLibrary.simpleMessage("Definir tempo"),
         "setUpSuccessfulZodiac":
             MessageLookupByLibrary.simpleMessage("Configuração bem sucedida"),
         "showDailyCouponsZodiac":

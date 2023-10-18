@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_advisor_interface/generated/assets/assets.gen.dart';
+import 'package:zodiac/presentation/common_widgets/radio_button_widget.dart';
 
 class CheckboxTileWidget extends StatelessWidget {
   final bool isMultiselect;
@@ -51,27 +52,8 @@ class CheckboxTileWidget extends StatelessWidget {
                           )
                         : const SizedBox.shrink(),
                   )
-                : Container(
-                    height: 22.0,
-                    width: 22.0,
-                    padding: const EdgeInsets.all(2.5),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: theme.scaffoldBackgroundColor,
-                      border: Border.all(
-                        color:
-                            isSelected ? theme.primaryColor : theme.shadowColor,
-                        width: 1.5,
-                      ),
-                    ),
-                    child: isSelected
-                        ? Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: theme.primaryColor,
-                            ),
-                          )
-                        : const SizedBox.shrink(),
+                : RadioButtonWidget(
+                    isSelected: isSelected,
                   ),
             const SizedBox(
               width: 16.0,

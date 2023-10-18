@@ -250,5 +250,12 @@
   "youCanChooseUpTo3MethodsZodiac": "You can choose up to 3 methods you are working with and the main method among them",
   "mainMethodZodiac": "Main method",
   "selectMainMethodZodiac": "Select main method",
-  "firstSelectTheMethodsZodiac": "First select the methods"
+  "firstSelectTheMethodsZodiac": "First select the methods",
+  "autoReplyZodiac": "Auto-reply",
+  "doneZodiac": "Done",
+  "setTimeZodiac": "Set time",
+  "setTimeFromZodiac": "Set time from",
+  "setTimeToZodiac": "Set time to",
+  "onZodiac": "On",
+  "offZodiac": "Off"
 }

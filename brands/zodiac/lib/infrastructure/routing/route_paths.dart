@@ -37,4 +37,5 @@ class RoutePathsZodiac {
   static const categoriesMethodsListScreen =
       '${ZodiacBrand.alias}CategoriesMethodsList';
   static const selectMethodsScreen = '${ZodiacBrand.alias}SelectMethods';
+  static const autoReply = '${ZodiacBrand.alias}AutoReply';
 }
