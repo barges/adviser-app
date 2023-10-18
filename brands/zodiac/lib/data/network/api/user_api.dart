@@ -1,14 +1,8 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:zodiac/data/network/requests/add_remove_locale_request.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
-import 'package:zodiac/data/network/requests/change_advisor_specializations_request.dart';
-import 'package:zodiac/data/network/requests/change_main_specialization_request.dart';
 import 'package:zodiac/data/network/requests/list_request.dart';
-import 'package:zodiac/data/network/requests/locale_descriptions_request.dart';
 import 'package:zodiac/data/network/requests/notification_details_request.dart';
 import 'package:zodiac/data/network/requests/notifications_request.dart';
 import 'package:zodiac/data/network/requests/phone_number_request.dart';
@@ -23,9 +17,7 @@ import 'package:zodiac/data/network/requests/update_user_status_request.dart';
 import 'package:zodiac/data/network/responses/balance_response.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/responses/expert_details_response.dart';
-import 'package:zodiac/data/network/responses/locale_descriptions_response.dart';
 import 'package:zodiac/data/network/responses/locales_response.dart';
-import 'package:zodiac/data/network/responses/main_specialization_response.dart';
 import 'package:zodiac/data/network/responses/my_details_response.dart';
 import 'package:zodiac/data/network/responses/notification_details_response.dart';
 import 'package:zodiac/data/network/responses/notifications_response.dart';
@@ -114,52 +106,6 @@ abstract class UserApi {
   Future<SpecializationsResponse> getSpecialities(
     @Body() AuthorizedRequest request,
   );
-
-  @POST('/specializing')
-  Future<SpecializationsResponse> changeAdvisorSpecialities(
-    @Body() ChangeAdvisorSpecializationsRequest request,
-  );
-
-  @POST('/main-specialize')
-  Future<MainSpecializationResponse> getMainSpeciality(
-    @Body() AuthorizedRequest request,
-  );
-
-  @POST('/main-specialize')
-  Future<BaseResponse> changeMainSpeciality(
-    @Body() ChangeMainSpecializationRequest request,
-  );
-
-  @POST('/descriptions')
-  Future<LocaleDescriptionsResponse> getLocaleDescriptions(
-    @Body() LocaleDescriptionsRequest request,
-  );
-
-  @POST('/locale/add-locale-advisor')
-  Future<BaseResponse> addLocaleAdvisor(
-    @Body() AddRemoveLocaleRequest request,
-  );
-
-  @POST('/locale/update-locale-advisor')
-  Future<BaseResponse> updateLocaleDescriptionsAdvisor(
-    @Body() AddRemoveLocaleRequest request,
-  );
-
-  @POST('/locale/remove-locale-advisor')
-  Future<BaseResponse> removeLocaleAdvisor(
-    @Body() AddRemoveLocaleRequest request,
-  );
-
-  @POST('/upload-avatar')
-  @MultiPart()
-  Future<BaseResponse> uploadAvatar({
-    @Part(name: 'secret') String? secret,
-    @Part(name: 'package') String? package,
-    @Part(name: 'version') String? version,
-    @Part(name: 'auth') String? auth,
-    @Part(name: 'brand_id') int? brandId,
-    @Part(name: 'avatar') File? avatar,
-  });
 
   @POST('/get-push')
   Future<NotificationDetailsResponse> getNotificationDetails(

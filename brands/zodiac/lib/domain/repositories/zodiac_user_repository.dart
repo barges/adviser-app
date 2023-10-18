@@ -1,13 +1,7 @@
-import 'dart:io';
-
-import 'package:zodiac/data/network/requests/add_remove_locale_request.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
-import 'package:zodiac/data/network/requests/change_advisor_specializations_request.dart';
-import 'package:zodiac/data/network/requests/change_main_specialization_request.dart';
 import 'package:zodiac/data/network/requests/list_request.dart';
 import 'package:zodiac/data/network/requests/notification_details_request.dart';
 import 'package:zodiac/data/network/requests/notifications_request.dart';
-import 'package:zodiac/data/network/requests/locale_descriptions_request.dart';
 import 'package:zodiac/data/network/requests/phone_number_request.dart';
 import 'package:zodiac/data/network/requests/phone_number_verify_request.dart';
 import 'package:zodiac/data/network/requests/price_settings_request.dart';
@@ -21,9 +15,7 @@ import 'package:zodiac/data/network/responses/balance_response.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/responses/expert_details_response.dart';
 import 'package:zodiac/data/network/responses/notification_details_response.dart';
-import 'package:zodiac/data/network/responses/locale_descriptions_response.dart';
 import 'package:zodiac/data/network/responses/locales_response.dart';
-import 'package:zodiac/data/network/responses/main_specialization_response.dart';
 import 'package:zodiac/data/network/responses/notifications_response.dart';
 import 'package:zodiac/data/network/responses/payments_list_response.dart';
 import 'package:zodiac/data/network/responses/phone_number_response.dart';
@@ -69,40 +61,6 @@ abstract class ZodiacUserRepository {
   Future<SpecializationsResponse> getSpecializations(
     AuthorizedRequest request,
   );
-
-  Future<SpecializationsResponse> changeAdvisorSpecializations(
-    ChangeAdvisorSpecializationsRequest request,
-  );
-
-  Future<MainSpecializationResponse> getMainSpeciality(
-    AuthorizedRequest request,
-  );
-
-  Future<BaseResponse> changeMainSpecialization(
-    ChangeMainSpecializationRequest request,
-  );
-
-  Future<LocaleDescriptionsResponse> getLocaleDescriptions(
-    LocaleDescriptionsRequest request,
-  );
-
-  Future<BaseResponse> addLocaleAdvisor(
-    AddRemoveLocaleRequest request,
-  );
-
-  Future<BaseResponse> updateLocaleDescriptionsAdvisor(
-    AddRemoveLocaleRequest request,
-  );
-
-  Future<BaseResponse> removeLocaleAdvisor(
-    AddRemoveLocaleRequest request,
-  );
-
-  Future<BaseResponse> uploadAvatar({
-    required AuthorizedRequest request,
-    required int brandId,
-    required File avatar,
-  });
 
   Future<NotificationDetailsResponse> getNotificationDetails(
       NotificationDetailsRequest request);

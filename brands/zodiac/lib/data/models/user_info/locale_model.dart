@@ -20,6 +20,8 @@ class LocaleModel with _$LocaleModel {
     String? nameNative,
     String? defaultFlag,
     String? translated,
+    String? name,
+    bool? isDefault,
   }) = _LocaleModel;
 
   factory LocaleModel.fromJson(Map<String, dynamic> json) =>

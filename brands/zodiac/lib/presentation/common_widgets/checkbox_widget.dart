@@ -5,18 +5,18 @@ import 'package:shared_advisor_interface/utils/utils.dart';
 
 class CheckboxWidget extends StatelessWidget {
   final bool value;
-  final ValueChanged<bool> onChanged;
+  final ValueChanged<bool>? onChanged;
   const CheckboxWidget({
     Key? key,
     required this.value,
-    required this.onChanged,
+    this.onChanged,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        onChanged(!value);
+        onChanged?.call(!value);
       },
       child: value
           ? Utils.isDarkMode(context)

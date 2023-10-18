@@ -7,11 +7,13 @@ import 'package:shared_advisor_interface/presentation/common_widgets/buttons/app
 class WideAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget bottomWidget;
   final Widget? topRightWidget;
+  final Widget? bottomRightWidget;
 
   const WideAppBar({
     Key? key,
     required this.bottomWidget,
     this.topRightWidget,
+    this.bottomRightWidget,
   }) : super(key: key);
 
   @override
@@ -42,7 +44,13 @@ class WideAppBar extends StatelessWidget implements PreferredSizeWidget {
                     topRightWidget ?? const SizedBox.shrink()
                   ],
                 ),
-                bottomWidget,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    bottomWidget,
+                    bottomRightWidget ?? const SizedBox.shrink()
+                  ],
+                ),
               ],
             ),
           ),

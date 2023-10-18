@@ -12,6 +12,7 @@ class LanguagesButtons extends StatelessWidget {
   final ValueChanged<int> onTapToLocale;
   final VoidCallback addLocaleOnTap;
   final int? currentLocaleIndex;
+  final int brandIndex;
 
   const LanguagesButtons({
     Key? key,
@@ -19,6 +20,7 @@ class LanguagesButtons extends StatelessWidget {
     required this.locales,
     required this.onTapToLocale,
     required this.addLocaleOnTap,
+    required this.brandIndex,
   }) : super(key: key);
 
   @override
@@ -27,70 +29,67 @@ class LanguagesButtons extends StatelessWidget {
     final theme = Theme.of(context);
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppConstants.horizontalScreenPadding,
-        ),
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: locales.mapIndexed<Widget>(
-              (index, element) {
-                final bool isSelected = index == currentLocaleIndex;
-                final GlobalKey key = editProfileCubit.localesGlobalKeys[index];
-                final bool isMainLocale =
-                    element == editProfileCubit.state.advisorMainLocale;
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: locales.mapIndexed<Widget>(
+            (index, element) {
+              final bool isSelected = index == currentLocaleIndex;
+              final GlobalKey key =
+                  editProfileCubit.localesGlobalKeys[brandIndex][index];
 
-                if (index < locales.length - 1) {
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: _LanguageButton(
+              final bool isMainLocale =
+                  element == editProfileCubit.mainLocales[brandIndex];
+
+              if (index < locales.length - 1) {
+                return Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: _LanguageButton(
+                    key: key,
+                    editProfileCubit: editProfileCubit,
+                    localeCode: element,
+                    isSelected: isSelected,
+                    isMain: isMainLocale,
+                    onTap: isSelected ? null : () => onTapToLocale(index),
+                  ),
+                );
+              } else {
+                return Row(
+                  children: [
+                    _LanguageButton(
                       key: key,
                       editProfileCubit: editProfileCubit,
-                      localeCode: element,
-                      isSelected: isSelected,
-                      isMain: isMainLocale,
                       onTap: isSelected ? null : () => onTapToLocale(index),
+                      localeCode: element,
+                      isMain: isMainLocale,
+                      isSelected: isSelected,
                     ),
-                  );
-                } else {
-                  return Row(
-                    children: [
-                      _LanguageButton(
-                        key: key,
-                        editProfileCubit: editProfileCubit,
-                        onTap: isSelected ? null : () => onTapToLocale(index),
-                        localeCode: element,
-                        isMain: isMainLocale,
-                        isSelected: isSelected,
-                      ),
-                      const SizedBox(
-                        width: 8.0,
-                      ),
-                      GestureDetector(
-                        onTap: addLocaleOnTap,
-                        child: Container(
-                          height: 38.0,
-                          width: 38.0,
-                          decoration: BoxDecoration(
-                              color: theme.canvasColor,
-                              borderRadius: BorderRadius.circular(
-                                AppConstants.buttonRadius,
-                              )),
-                          child: Center(
-                            child: Assets.vectors.add.svg(
-                              height: 24.0,
-                              width: 24.0,
-                              color: theme.primaryColor,
-                            ),
+                    const SizedBox(
+                      width: 8.0,
+                    ),
+                    GestureDetector(
+                      onTap: addLocaleOnTap,
+                      child: Container(
+                        height: 38.0,
+                        width: 38.0,
+                        decoration: BoxDecoration(
+                            color: theme.canvasColor,
+                            borderRadius: BorderRadius.circular(
+                              AppConstants.buttonRadius,
+                            )),
+                        child: Center(
+                          child: Assets.vectors.add.svg(
+                            height: 24.0,
+                            width: 24.0,
+                            color: theme.primaryColor,
                           ),
                         ),
-                      )
-                    ],
-                  );
-                }
-              },
-            ).toList()),
-      ),
+                      ),
+                    )
+                  ],
+                );
+              }
+            },
+          ).toList()),
     );
   }
 }
