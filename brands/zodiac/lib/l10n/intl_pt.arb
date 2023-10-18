@@ -238,5 +238,17 @@
   "needAtLeast20SymbolsZodiac":"Precisa de pelo menos 20 símbolos para enviar a mensagem",
   "completeZodiac": "Completo",
   "activateZodiac": "Ativar",
-  "showLessZodiac": "Mostre menos"
+  "showLessZodiac": "Mostre menos",
+  "categoriesZodiac": "Categorias",
+  "selectCategoriesZodiac": "Selecione as categorias",
+  "youCanChooseUpTo3CategoriesZodiac": "Você pode escolher até 3 categorias com as quais prefere trabalhar e a categoria principal entre elas",
+  "mainCategoryZodiac": "Categoria principal",
+  "selectMainCategoryZodiac": "Selecione a categoria principal",
+  "firstSelectTheCategoriesZodiac": "Primeiro selecione as categorias",
+  "methodsZodiac": "Métodos",
+  "selectMethodsZodiac": "Selecione métodos",
+  "youCanChooseUpTo3MethodsZodiac": "Você pode escolher até 3 métodos com os quais está trabalhando e o método principal entre eles",
+  "mainMethodZodiac": "Método principal",
+  "selectMainMethodZodiac": "Selecione o método principal",
+  "firstSelectTheMethodsZodiac": "Primeiro selecione os métodos"
 }

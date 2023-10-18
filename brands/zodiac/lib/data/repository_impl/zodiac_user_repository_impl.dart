@@ -1,13 +1,7 @@
-import 'dart:io';
-
 import 'package:injectable/injectable.dart';
 import 'package:zodiac/data/network/api/user_api.dart';
-import 'package:zodiac/data/network/requests/add_remove_locale_request.dart';
 import 'package:zodiac/data/network/requests/authorized_request.dart';
-import 'package:zodiac/data/network/requests/change_advisor_specializations_request.dart';
-import 'package:zodiac/data/network/requests/change_main_specialization_request.dart';
 import 'package:zodiac/data/network/requests/list_request.dart';
-import 'package:zodiac/data/network/requests/locale_descriptions_request.dart';
 import 'package:zodiac/data/network/requests/notification_details_request.dart';
 import 'package:zodiac/data/network/requests/notifications_request.dart';
 import 'package:zodiac/data/network/requests/phone_number_request.dart';
@@ -21,9 +15,7 @@ import 'package:zodiac/data/network/responses/balance_response.dart';
 import 'package:zodiac/data/network/responses/base_response.dart';
 import 'package:zodiac/data/network/requests/update_random_call_enabled_request.dart';
 import 'package:zodiac/data/network/responses/expert_details_response.dart';
-import 'package:zodiac/data/network/responses/locale_descriptions_response.dart';
 import 'package:zodiac/data/network/responses/locales_response.dart';
-import 'package:zodiac/data/network/responses/main_specialization_response.dart';
 import 'package:zodiac/data/network/responses/notification_details_response.dart';
 import 'package:zodiac/data/network/responses/notifications_response.dart';
 import 'package:zodiac/data/network/responses/payments_list_response.dart';
@@ -119,71 +111,6 @@ class ZodiacUserRepositoryImpl implements ZodiacUserRepository {
     AuthorizedRequest request,
   ) async {
     return await _userApi.getSpecialities(request);
-  }
-
-  @override
-  Future<SpecializationsResponse> changeAdvisorSpecializations(
-    ChangeAdvisorSpecializationsRequest request,
-  ) async {
-    return await _userApi.changeAdvisorSpecialities(request);
-  }
-
-  @override
-  Future<MainSpecializationResponse> getMainSpeciality(
-    AuthorizedRequest request,
-  ) async {
-    return await _userApi.getMainSpeciality(request);
-  }
-
-  @override
-  Future<BaseResponse> changeMainSpecialization(
-    ChangeMainSpecializationRequest request,
-  ) async {
-    return await _userApi.changeMainSpeciality(request);
-  }
-
-  @override
-  Future<LocaleDescriptionsResponse> getLocaleDescriptions(
-    LocaleDescriptionsRequest request,
-  ) async {
-    return await _userApi.getLocaleDescriptions(request);
-  }
-
-  @override
-  Future<BaseResponse> addLocaleAdvisor(
-    AddRemoveLocaleRequest request,
-  ) async {
-    return await _userApi.addLocaleAdvisor(request);
-  }
-
-  @override
-  Future<BaseResponse> updateLocaleDescriptionsAdvisor(
-    AddRemoveLocaleRequest request,
-  ) async {
-    return await _userApi.updateLocaleDescriptionsAdvisor(request);
-  }
-
-  @override
-  Future<BaseResponse> removeLocaleAdvisor(
-    AddRemoveLocaleRequest request,
-  ) async {
-    return await _userApi.removeLocaleAdvisor(request);
-  }
-
-  @override
-  Future<BaseResponse> uploadAvatar({
-    required AuthorizedRequest request,
-    required int brandId,
-    required File avatar,
-  }) async {
-    return await _userApi.uploadAvatar(
-      secret: request.secret,
-      package: request.package,
-      version: request.version,
-      auth: request.auth,
-      brandId: brandId,
-      avatar: avatar,
-    );
   }
 
   @override
