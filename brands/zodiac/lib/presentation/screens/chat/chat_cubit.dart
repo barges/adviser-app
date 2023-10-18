@@ -578,7 +578,8 @@ class ChatCubit extends BaseCubit<ChatState> {
   setRepliedMessage({
     ChatMessageModel? repliedMessage,
   }) {
-    emit(state.copyWith(repliedMessage: repliedMessage));
+    emit(state.copyWith(
+        repliedMessage: repliedMessage, reactionMessageId: null));
   }
 
   void updateInputTextInfo(int textLength, bool isEnabled) {
@@ -941,7 +942,7 @@ class ChatCubit extends BaseCubit<ChatState> {
   }
 
   void setEmojiPickerOpened(String? id) {
-    emit(state.copyWith(reactionMessageId: id));
+    emit(state.copyWith(reactionMessageId: id, repliedMessage: null));
     Utils.animateToWidget(reactedMessageGlobalKey);
   }
 
