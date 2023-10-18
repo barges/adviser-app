@@ -27,11 +27,11 @@ class AutoReplyListItemWidget extends StatelessWidget {
 
     final Color borderColor = isSelected ? theme.primaryColor : theme.hintColor;
 
-    final (String, String, String) timeRecord =
+    final ({String time, String timeFrom, String timeTo}) timeRecord =
         context.select((AutoReplyCubit cubit) {
       AutoReplyState state = cubit.state;
 
-      return (state.time, state.timeFrom, state.timeTo);
+      return (time: state.time, timeFrom: state.timeFrom, timeTo: state.timeTo);
     });
     final List<String> splittedMessage =
         _splitMessage(timeRecord, autoReplyCubit);
@@ -83,10 +83,11 @@ class AutoReplyListItemWidget extends StatelessWidget {
   }
 
   List<String> _splitMessage(
-      (String, String, String) record, AutoReplyCubit autoReplyCubit) {
-    final String time = record.$1;
-    final String timeFrom = record.$2;
-    final String timeTo = record.$3;
+      ({String time, String timeFrom, String timeTo}) record,
+      AutoReplyCubit autoReplyCubit) {
+    final String time = record.time;
+    final String timeFrom = record.timeFrom;
+    final String timeTo = record.timeTo;
 
     final List<String> splittedMessage = [];
     if (autoReplyCubit.isSingleTimeMessage(message)) {
@@ -112,10 +113,11 @@ class AutoReplyListItemWidget extends StatelessWidget {
     return splittedMessage;
   }
 
-  TextStyle? _getTextSpanStyle(
-      ThemeData theme, String text, (String, String, String) timeRecord) {
-    final bool textIsTime =
-        text == timeRecord.$1 || text == timeRecord.$2 || text == timeRecord.$3;
+  TextStyle? _getTextSpanStyle(ThemeData theme, String text,
+      ({String time, String timeFrom, String timeTo}) timeRecord) {
+    final bool textIsTime = text == timeRecord.time ||
+        text == timeRecord.timeFrom ||
+        text == timeRecord.timeTo;
 
     return theme.textTheme.bodyMedium
         ?.copyWith(color: textIsTime ? theme.primaryColor : theme.hoverColor);

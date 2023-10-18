@@ -30,11 +30,11 @@ class _SelectTimeButtonsPartWidgetState
   Widget build(BuildContext context) {
     final AutoReplyCubit autoReplyCubit = context.read<AutoReplyCubit>();
 
-    final (String, String, String) timeRecord =
+    final ({String time, String timeFrom, String timeTo}) timeRecord =
         context.select((AutoReplyCubit cubit) {
       AutoReplyState state = cubit.state;
 
-      return (state.time, state.timeFrom, state.timeTo);
+      return (time: state.time, timeFrom: state.timeFrom, timeTo: state.timeTo);
     });
 
     final String? selectedMessage = context.select((AutoReplyCubit cubit) {
@@ -47,9 +47,9 @@ class _SelectTimeButtonsPartWidgetState
 
     if (autoReplyCubit.isSingleTimeMessage(selectedMessage)) {
       return SelectTimeButtonWidget(
-        title: timeRecord.$1 == AutoReplyConstants.time
+        title: timeRecord.time == AutoReplyConstants.time
             ? SZodiac.of(context).setTimeZodiac
-            : timeRecord.$1,
+            : timeRecord.time,
         setTime: autoReplyCubit.setSingleTime,
       );
     } else if (autoReplyCubit.isMultiTimeMessage(selectedMessage)) {
@@ -57,9 +57,9 @@ class _SelectTimeButtonsPartWidgetState
         children: [
           Expanded(
             child: SelectTimeButtonWidget(
-              title: timeRecord.$2 == AutoReplyConstants.timeFrom
+              title: timeRecord.timeFrom == AutoReplyConstants.timeFrom
                   ? SZodiac.of(context).setTimeFromZodiac
-                  : timeRecord.$2,
+                  : timeRecord.timeFrom,
               setTime: (time) {
                 autoReplyCubit.setTimeFrom(time);
                 openTimeToPicker.add(true);
@@ -71,9 +71,9 @@ class _SelectTimeButtonsPartWidgetState
           ),
           Expanded(
             child: SelectTimeButtonWidget(
-              title: timeRecord.$3 == AutoReplyConstants.timeTo
+              title: timeRecord.timeTo == AutoReplyConstants.timeTo
                   ? SZodiac.of(context).setTimeToZodiac
-                  : timeRecord.$3,
+                  : timeRecord.timeTo,
               setTime: autoReplyCubit.setTimeTo,
               openPickerStream: openTimeToPicker.stream,
             ),
