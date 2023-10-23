@@ -6,7 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../infrastructure/routing/app_router.dart';
 import '../../../../../app_constants.dart';
-import '../../../../../data/cache/fortunica_caching_manager.dart';
+import '../../../../../data/cache/caching_manager.dart';
 import '../../../../../data/models/enums/fortunica_user_status.dart';
 import '../../../../../data/models/enums/markets_type.dart';
 import '../../../../../data/models/user_info/localized_properties/property_by_language.dart';
@@ -17,7 +17,6 @@ import '../../../../../data/network/requests/push_enable_request.dart';
 import '../../../../../data/network/requests/set_push_notification_token_request.dart';
 import '../../../../../data/network/requests/update_user_status_request.dart';
 import '../../../../../domain/repositories/fortunica_user_repository.dart';
-import '../../../../../fortunica_constants.dart';
 import '../../../../../global.dart';
 import '../../../../../infrastructure/routing/app_router.gr.dart';
 import '../../../../../main_cubit.dart';
@@ -26,7 +25,7 @@ import '../../../../../services/push_notification/push_notification_manager.dart
 import 'account_state.dart';
 
 class AccountCubit extends Cubit<AccountState> {
-  final FortunicaCachingManager _cacheManager;
+  final CachingManager _cacheManager;
   final MainCubit _mainCubit;
   final FortunicaUserRepository _userRepository;
   final ConnectivityService _connectivityService;
@@ -38,7 +37,7 @@ class AccountCubit extends Cubit<AccountState> {
 
   final PushNotificationManager _pushNotificationManager;
 
-  final Uri _url = Uri.parse(FortunicaConstants.webToolUrl);
+  final Uri _url = Uri.parse(AppConstants.webToolUrl);
 
   late final StreamSubscription _userProfileSubscription;
   late final StreamSubscription<bool> _appOnResumeSubscription;
@@ -200,7 +199,7 @@ class AccountCubit extends Cubit<AccountState> {
       } else {
         if (checkPropertiesMapIfHasEmpty(userInfo) ||
             (userInfo.profile?.profileName?.length ?? 0) <
-                FortunicaConstants.minNickNameLength ||
+                AppConstants.minNickNameLength ||
             userInfo.profile?.profilePictures?.isNotEmpty != true) {
           await _cacheManager.saveUserStatus(userStatus?.copyWith(
             status: FortunicaUserStatus.incomplete,

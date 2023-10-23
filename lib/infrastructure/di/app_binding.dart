@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import '../../data/cache/fortunica_caching_manager_impl.dart';
+import '../../data/cache/caching_manager_impl.dart';
 import '../../global.dart';
 import '../flavor/flavor_config.dart';
 import '../routing/app_router.gr.dart';
@@ -9,7 +9,7 @@ import 'inject_config.dart';
 class AppBinding {
   static Future<void> setupInjection(Flavor flavor) async {
     globalGetIt.registerSingleton(MainAppRouter());
-    await FortunicaCachingManagerImpl.openBoxes();
+    await CachingManagerImpl.openBoxes();
     await configureDependenciesFortunica();
   }
 

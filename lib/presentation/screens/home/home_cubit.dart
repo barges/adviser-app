@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/cache/fortunica_caching_manager.dart';
+import '../../../data/cache/caching_manager.dart';
 import '../../../data/models/enums/fortunica_user_status.dart';
 import '../../../infrastructure/routing/app_router.gr.dart';
 import 'home_state.dart';
@@ -16,7 +16,7 @@ class HomeCubit extends Cubit<HomeState> {
     TabsTypes.account,
   ];
 
-  final FortunicaCachingManager _cacheManager;
+  final CachingManager _cacheManager;
   final TabsTypes? _initTab;
   late final StreamSubscription _userStatusSubscription;
   late final List<PageRouteInfo> routes;

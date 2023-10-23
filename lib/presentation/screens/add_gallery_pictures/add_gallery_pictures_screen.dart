@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/cache/fortunica_caching_manager.dart';
+import '../../../data/cache/caching_manager.dart';
 import '../../../domain/repositories/fortunica_user_repository.dart';
 import '../../../generated/l10n.dart';
 import '../../../global.dart';
@@ -19,7 +19,7 @@ class AddGalleryPicturesScreen extends StatelessWidget {
       create: (_) => AddGalleryPicturesCubit(
         globalGetIt.get<FortunicaUserRepository>(),
         globalGetIt.get<ConnectivityService>(),
-        globalGetIt.get<FortunicaCachingManager>(),
+        globalGetIt.get<CachingManager>(),
       ),
       child: Builder(builder: (context) {
         AddGalleryPicturesCubit addGalleryPicturesCubit =

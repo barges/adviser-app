@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../../../app_constants.dart';
 import '../../../../../../../infrastructure/routing/app_router.dart';
 import '../../../../../../../data/models/chats/chat_item.dart';
 import '../../../../../../../data/network/responses/questions_list_response.dart';
 import '../../../../../../../domain/repositories/fortunica_chats_repository.dart';
-import '../../../../../../../fortunica_constants.dart';
 import '../../../../../../../global.dart';
 import '../../../../../../../infrastructure/routing/app_router.gr.dart';
 import '../../../../../../../services/connectivity_service.dart';
@@ -66,7 +66,7 @@ class SearchListCubit extends Cubit<SearchListState> {
           await _connectivityService.checkConnection()) {
         final QuestionsListResponse result =
             await _repository.getConversationsList(
-          limit: FortunicaConstants.questionsLimit,
+          limit: AppConstants.questionsLimit,
           lastItem: _conversationsLastItem,
           search: searchText?.isNotEmpty == true ? searchText : null,
         );

@@ -7,7 +7,6 @@ import '../../../data/models/enums/markets_type.dart';
 import '../../../generated/assets/assets.gen.dart';
 import '../../../generated/l10n.dart';
 import '../../../global.dart';
-import '../../../infrastructure/di/inject_config.dart';
 import '../../../main_cubit.dart';
 import '../../../themes/app_colors_light.dart';
 import '../../common_widgets/messages/app_error_widget.dart';

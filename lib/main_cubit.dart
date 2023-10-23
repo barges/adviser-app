@@ -7,7 +7,7 @@ import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 import '../infrastructure/routing/app_router.dart';
 
-import 'data/cache/fortunica_caching_manager.dart';
+import 'data/cache/caching_manager.dart';
 import 'data/models/app_error/app_error.dart';
 import 'global.dart';
 import 'infrastructure/routing/app_router.gr.dart';
@@ -18,7 +18,7 @@ import 'services/fresh_chat_service.dart';
 
 @singleton
 class MainCubit extends Cubit<MainState> {
-  final FortunicaCachingManager _cacheManager;
+  final CachingManager _cacheManager;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   late final StreamSubscription _localeSubscription;

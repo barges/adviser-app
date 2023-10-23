@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../app_constants.dart';
-import '../../../data/cache/fortunica_caching_manager.dart';
+import '../../../data/cache/caching_manager.dart';
 import '../../../data/models/app_error/app_error.dart';
 import '../../../data/models/app_success/app_success.dart';
 import '../../../data/models/enums/validation_error_type.dart';
@@ -13,7 +13,6 @@ import '../../../domain/repositories/fortunica_auth_repository.dart';
 import '../../../generated/assets/assets.gen.dart';
 import '../../../generated/l10n.dart';
 import '../../../global.dart';
-import '../../../infrastructure/di/inject_config.dart';
 import '../../../main_cubit.dart';
 import '../../../services/dynamic_link_service.dart';
 import '../../../utils/utils.dart';
@@ -43,7 +42,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final VoidCallback openDrawer = context.read<MainCubit>().openDrawer;
     return BlocProvider(
       create: (_) {
         globalGetIt
@@ -52,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
         globalGetIt.registerSingleton(
           LoginCubit(
             globalGetIt.get<FortunicaAuthRepository>(),
-            globalGetIt.get<FortunicaCachingManager>(),
+            globalGetIt.get<CachingManager>(),
             globalGetIt.get<MainCubit>(),
             globalGetIt.get<Dio>(),
           ),
@@ -65,13 +63,10 @@ class _LoginScreenState extends State<LoginScreen> {
             (MainCubit cubit) => cubit.state.internetConnectionIsAvailable);
         return WillPopScope(
           onWillPop: () async {
-            openDrawer();
             return false;
           },
           child: Scaffold(
-            appBar: LoginAppBar(
-              openDrawer: openDrawer,
-            ),
+            appBar: const LoginAppBar(),
             body: SafeArea(
               child: isOnline
                   ? GestureDetector(

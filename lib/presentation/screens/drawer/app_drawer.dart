@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../infrastructure/routing/app_router.dart';
+import '../../../data/cache/caching_manager.dart';
+import '../../../domain/repositories/fortunica_auth_repository.dart';
 import '../../../generated/l10n.dart';
-import '../../common_widgets/brand_drawer_item/fortunica_drawer_item.dart';
-import '../../common_widgets/ok_cancel_bottom_sheet.dart';
+import '../../../global.dart';
+import 'widgets/drawer_item.dart';
 import 'drawer_cubit.dart';
 import 'widgets/bottom_section.dart';
 
 class AppDrawer extends StatelessWidget {
-
   const AppDrawer({
     Key? key,
   }) : super(key: key);
@@ -18,13 +18,13 @@ class AppDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return BlocProvider(
-      create: (_) => DrawerCubit(),
+      create: (_) => DrawerCubit(
+        globalGetIt.get<FortunicaAuthRepository>(),
+        globalGetIt.get<CachingManager>(),
+      ),
       child: Builder(builder: (context) {
         return Container(
-            width: MediaQuery
-                .of(context)
-                .size
-                .width * 0.75,
+            width: MediaQuery.of(context).size.width * 0.75,
             color: theme.canvasColor,
             child: SafeArea(
               child: CustomScrollView(
@@ -45,15 +45,13 @@ class AppDrawer extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      SFortunica
-                                          .of(context)
-                                          .workspaces,
+                                      SFortunica.of(context).workspaces,
                                       style: theme.textTheme.headlineLarge,
                                     ),
                                     const SizedBox(
                                       height: 12.0,
                                     ),
-                                    const FortunicaDrawerItem(),
+                                    const DrawerItem(),
                                     const SizedBox(
                                       height: 8.0,
                                     ),

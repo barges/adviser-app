@@ -4,10 +4,9 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../infrastructure/routing/app_router.dart';
-import '../../../data/cache/fortunica_caching_manager.dart';
+import '../../../data/cache/caching_manager.dart';
 import '../../../generated/assets/assets.gen.dart';
 import '../../../global.dart';
-import '../../../infrastructure/di/inject_config.dart';
 import '../../../infrastructure/routing/app_router.gr.dart';
 import '../../../services/check_permission_service.dart';
 import '../../../services/fresh_chat_service.dart';
@@ -43,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
         needShowSettings: false);
 
     Future.delayed(const Duration(seconds: 2)).then((_) {
-      if (globalGetIt.get<FortunicaCachingManager>().isAuth) {
+      if (globalGetIt.get<CachingManager>().isAuth) {
         context.replaceAll([FortunicaHome()]);
       } else {
         context.replaceAll([const FortunicaLogin()]);

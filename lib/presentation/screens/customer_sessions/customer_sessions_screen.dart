@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/cache/fortunica_caching_manager.dart';
+import '../../../data/cache/caching_manager.dart';
 import '../../../data/models/app_error/app_error.dart';
 import '../../../data/models/chats/chat_item.dart';
 import '../../../data/models/enums/zodiac_sign.dart';
@@ -40,7 +40,7 @@ class CustomerSessionsScreen extends StatelessWidget {
                   globalGetIt.get<FortunicaCustomerRepository>(),
               mainCubit: globalGetIt.get<MainCubit>(),
               connectivityService: globalGetIt.get<ConnectivityService>(),
-              cacheManager: globalGetIt.get<FortunicaCachingManager>(),
+              cacheManager: globalGetIt.get<CachingManager>(),
               screenHeight: MediaQuery.of(context).size.height,
               showErrorAlert: () => showErrorAlert(context),
               arguments: customerSessionsScreenArguments,

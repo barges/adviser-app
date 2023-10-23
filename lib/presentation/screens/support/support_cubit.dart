@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../../data/cache/fortunica_caching_manager.dart';
+import '../../../data/cache/caching_manager.dart';
 import '../../../data/models/user_info/user_info.dart';
 import '../../../data/network/requests/restore_freshchat_id_request.dart';
 import '../../../domain/repositories/fortunica_user_repository.dart';
@@ -11,7 +11,7 @@ import '../../../services/fresh_chat_service.dart';
 import 'support_state.dart';
 
 class SupportCubit extends Cubit<SupportState> {
-  final FortunicaCachingManager cachingManager;
+  final CachingManager cachingManager;
   final FreshChatService freshChatService;
   final FortunicaUserRepository userRepository;
 

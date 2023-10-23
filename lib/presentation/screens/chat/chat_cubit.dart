@@ -36,7 +36,6 @@ import '../../../data/network/requests/answer_request.dart';
 import '../../../data/network/responses/answer_validation_response.dart';
 import '../../../data/network/responses/rituals_response.dart';
 import '../../../domain/repositories/fortunica_chats_repository.dart';
-import '../../../fortunica_constants.dart';
 import '../../../global.dart';
 import '../../../main.dart';
 import '../../../main_cubit.dart';
@@ -343,33 +342,33 @@ class ChatCubit extends BaseCubit<ChatState> {
     _afterShowMessagesInSec =
         answerLimitationContent?.questionRemindMinutes != null
             ? answerLimitationContent!.questionRemindMinutes! *
-                FortunicaConstants.minuteInSec
-            : FortunicaConstants.afterShowAnswerTimingMessagesInSec;
+                AppConstants.minuteInSec
+            : AppConstants.afterShowAnswerTimingMessagesInSec;
     _tillShowMessagesInSec =
         answerLimitationContent?.questionReturnMinutes != null
             ? answerLimitationContent!.questionReturnMinutes! *
-                    FortunicaConstants.minuteInSec -
+                    AppConstants.minuteInSec -
                 _afterShowMessagesInSec
-            : FortunicaConstants.tillShowAnswerTimingMessagesInSec;
+            : AppConstants.tillShowAnswerTimingMessagesInSec;
 
     _minRecordDurationInSec = answerLimitationContent?.audioTime?.min ??
-        FortunicaConstants.minRecordDurationInSec;
+        AppConstants.minRecordDurationInSec;
     _maxRecordDurationInSec = answerLimitationContent?.audioTime?.max ??
-        FortunicaConstants.maxRecordDurationInSec;
+        AppConstants.maxRecordDurationInSec;
     _maxRecordDurationInMinutes =
-        _maxRecordDurationInSec ~/ FortunicaConstants.minuteInSec;
+        _maxRecordDurationInSec ~/ AppConstants.minuteInSec;
 
     _minTextLength = answerLimitationContent?.min ??
         (questionFromDBtype == ChatItemType.ritual
-            ? FortunicaConstants.minTextLengthRitual
-            : FortunicaConstants.minTextLength);
+            ? AppConstants.minTextLengthRitual
+            : AppConstants.minTextLength);
     _maxTextLength = answerLimitationContent?.max ??
         (questionFromDBtype == ChatItemType.ritual
-            ? FortunicaConstants.maxTextLengthRitual
-            : FortunicaConstants.maxTextLength);
+            ? AppConstants.maxTextLengthRitual
+            : AppConstants.maxTextLength);
 
     _maxAttachmentSizeInBytes = answerLimitationContent?.bodySize?.max ??
-        FortunicaConstants.maxAttachmentSizeInBytes;
+        AppConstants.maxAttachmentSizeInBytes;
     _maxAttachmentSizeInMb = _maxAttachmentSizeInBytes /
         (AppConstants.bytesInKilobyte * AppConstants.bytesInKilobyte);
   }
@@ -668,8 +667,7 @@ class ChatCubit extends BaseCubit<ChatState> {
     _tryStartAnswerSend();
 
     final List<File> images = List.of(state.attachedPictures);
-    if (image != null &&
-        images.length < FortunicaConstants.maxAttachedPictures) {
+    if (image != null && images.length < AppConstants.maxAttachedPictures) {
       images.add(image);
     } else {
       return;
@@ -853,7 +851,7 @@ class ChatCubit extends BaseCubit<ChatState> {
               afterTakenInSec;
         }
 
-        if (afterShowMessagesInSec <= FortunicaConstants.minuteInSec) {
+        if (afterShowMessagesInSec <= AppConstants.minuteInSec) {
           _setAnswerIsNotPossible();
         }
 
@@ -873,7 +871,7 @@ class ChatCubit extends BaseCubit<ChatState> {
 
         _answerTimer = Timer.periodic(tick, (_) {
           tillEnd = tillEnd - tick;
-          if (tillEnd.inSeconds > FortunicaConstants.minuteInSec) {
+          if (tillEnd.inSeconds > AppConstants.minuteInSec) {
             if (!_counterMessageCleared) {
               updateSuccessMessage(
                 UISuccess.withArguments(
@@ -883,7 +881,7 @@ class ChatCubit extends BaseCubit<ChatState> {
                 ),
               );
             }
-          } else if (tillEnd.inSeconds == FortunicaConstants.minuteInSec) {
+          } else if (tillEnd.inSeconds == AppConstants.minuteInSec) {
             _setAnswerIsNotPossible();
           }
           if (tillEnd.inSeconds == 0) {
@@ -1197,8 +1195,8 @@ class ChatCubit extends BaseCubit<ChatState> {
   bool canAttachPictureTo({AttachmentType? attachmentType}) {
     return state.attachedPictures.length <
         ((attachmentType != null && attachmentType == AttachmentType.audio)
-            ? FortunicaConstants.minAttachedPictures
-            : FortunicaConstants.maxAttachedPictures);
+            ? AppConstants.minAttachedPictures
+            : AppConstants.maxAttachedPictures);
   }
 
   void _scrollTextFieldToEnd() {

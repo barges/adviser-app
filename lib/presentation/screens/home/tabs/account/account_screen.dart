@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../app_constants.dart';
-import '../../../../../data/cache/fortunica_caching_manager.dart';
+import '../../../../../data/cache/caching_manager.dart';
 import '../../../../../data/models/app_error/app_error.dart';
 import '../../../../../data/models/user_info/user_status.dart';
 import '../../../../../domain/repositories/fortunica_user_repository.dart';
@@ -29,7 +29,7 @@ class AccountScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => AccountCubit(
-        globalGetIt.get<FortunicaCachingManager>(),
+        globalGetIt.get<CachingManager>(),
         globalGetIt.get<MainCubit>(),
         globalGetIt.get<FortunicaUserRepository>(),
         globalGetIt.get<PushNotificationManager>(),

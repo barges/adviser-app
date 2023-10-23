@@ -8,7 +8,6 @@ import '../../../data/models/customer_info/customer_info.dart';
 import '../../../data/models/customer_info/note.dart';
 import '../../../domain/repositories/fortunica_customer_repository.dart';
 import '../../../global.dart';
-import '../../../infrastructure/di/inject_config.dart';
 import '../../../infrastructure/routing/app_router.gr.dart';
 import '../../screens/add_note/add_note_screen.dart';
 import '../../screens/chat/chat_cubit.dart';

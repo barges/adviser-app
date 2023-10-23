@@ -8,7 +8,7 @@ import '../models/user_info/user_info.dart';
 import '../models/user_info/user_profile.dart';
 import '../models/user_info/user_status.dart';
 
-abstract class FortunicaCachingManager {
+abstract class CachingManager {
   bool get pushTokenIsSent;
 
   set pushTokenIsSent(bool value);

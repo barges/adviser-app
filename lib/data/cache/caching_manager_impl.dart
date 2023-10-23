@@ -10,7 +10,7 @@ import '../models/enums/fortunica_user_status.dart';
 import '../models/user_info/user_info.dart';
 import '../models/user_info/user_profile.dart';
 import '../models/user_info/user_status.dart';
-import 'fortunica_caching_manager.dart';
+import 'caching_manager.dart';
 
 const String _fortunicaUserBoxKey = 'fortunicaUserBoxKey';
 const String _localeBoxKey = 'localeBoxKey';
@@ -26,8 +26,8 @@ const String _localeKey = 'localeKey';
 const String _firstPermissionStatusesKey = 'firstPermissionStatusesKey';
 const String _startTimeInactiveResendCodeKey = 'startTimeInactiveResendCodeKey';
 
-@Singleton(as: FortunicaCachingManager)
-class FortunicaCachingManagerImpl implements FortunicaCachingManager {
+@Singleton(as: CachingManager)
+class CachingManagerImpl implements CachingManager {
   static Future<void> openBoxes() async {
     await Hive.openBox(_fortunicaUserBoxKey);
     await Hive.openBox(_localeBoxKey);

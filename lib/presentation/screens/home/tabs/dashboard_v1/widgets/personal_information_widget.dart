@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../../fortunica_extensions.dart';
+import '../../../../../../extensions.dart';
 import '../../../../../../app_constants.dart';
 import '../../../../../../data/models/user_info/user_profile.dart';
 import '../../../../../../generated/l10n.dart';

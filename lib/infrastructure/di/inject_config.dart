@@ -1,4 +1,3 @@
-import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_advisor_interface/global.dart';
 
@@ -14,5 +13,4 @@ import 'inject_config.config.dart';
 )
 //Future<void> configureDependencies() async => $initGetIt(globalGetIt);
 
-Future<void> configureDependenciesFortunica() async =>
-    $initGetIt(globalGetIt);
+Future<void> configureDependenciesFortunica() async => $initGetIt(globalGetIt);

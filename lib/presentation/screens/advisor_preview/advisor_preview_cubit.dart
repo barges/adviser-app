@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/cache/fortunica_caching_manager.dart';
+import '../../../data/cache/caching_manager.dart';
 import '../../../data/models/enums/markets_type.dart';
 import '../../../data/models/user_info/localized_properties/property_by_language.dart';
 import '../../../data/models/user_info/user_profile.dart';
@@ -12,8 +12,7 @@ import 'advisor_preview_constants.dart';
 import 'advisor_preview_state.dart';
 
 class AdvisorPreviewCubit extends Cubit<AdvisorPreviewState> {
-  final FortunicaCachingManager cacheManager =
-      globalGetIt.get<FortunicaCachingManager>();
+  final CachingManager cacheManager = globalGetIt.get<CachingManager>();
   final MainCubit mainCubit;
   late UserProfile userProfile;
   late List<MarketsType> languages;

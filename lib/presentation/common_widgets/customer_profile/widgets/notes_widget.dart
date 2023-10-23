@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../fortunica_extensions.dart';
+import '../../../../extensions.dart';
 import '../../../../app_constants.dart';
 import '../../../../data/models/customer_info/note.dart';
 import '../../../../generated/assets/assets.gen.dart';

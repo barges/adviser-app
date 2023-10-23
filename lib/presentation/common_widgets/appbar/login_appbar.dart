@@ -5,11 +5,8 @@ import '../../../generated/l10n.dart';
 import '../buttons/change_locale_button.dart';
 
 class LoginAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final VoidCallback openDrawer;
-
   const LoginAppBar({
     Key? key,
-    required this.openDrawer,
   }) : super(key: key);
 
   @override

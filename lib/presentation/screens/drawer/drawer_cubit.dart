@@ -1,15 +1,27 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:retrofit/dio.dart';
 
+import '../../../data/cache/caching_manager.dart';
+import '../../../domain/repositories/fortunica_auth_repository.dart';
+import '../../../infrastructure/routing/app_router.dart';
+import '../../../infrastructure/routing/app_router.gr.dart';
+import '../../../main_cubit.dart';
 import 'drawer_state.dart';
 
 class DrawerCubit extends Cubit<DrawerState> {
+  final FortunicaAuthRepository _authRepository;
+  final CachingManager _fortunicaCachingManager;
   Timer? _copyTimer;
 
-  DrawerCubit() : super(const DrawerState()) {
+  DrawerCubit(
+    this._authRepository,
+    this._fortunicaCachingManager,
+  ) : super(const DrawerState()) {
     getVersion();
   }
 
@@ -46,6 +58,17 @@ class DrawerCubit extends Cubit<DrawerState> {
       _copyTimer = Timer(const Duration(seconds: 2), () {
         emit(state.copyWith(copyButtonTapped: false));
       });
+    }
+  }
+
+  Future<void> logout(BuildContext context) async {
+    final HttpResponse response = await _authRepository.logout();
+    if (response.response.statusCode == 200) {
+      await _fortunicaCachingManager.logout();
+      if (context.mounted) {
+        context.read<MainCubit>().updateAuth(false);
+        context.replaceAll([const FortunicaLogin()]);
+      }
     }
   }
 }

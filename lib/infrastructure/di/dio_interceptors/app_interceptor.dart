@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../infrastructure/routing/app_router.dart';
-import '../../../data/cache/fortunica_caching_manager.dart';
+import '../../../data/cache/caching_manager.dart';
 import '../../../data/models/app_error/app_error.dart';
 import '../../../data/models/app_error/ui_error_type.dart';
 import '../../../data/network/api/chats_api.dart';
@@ -27,7 +27,7 @@ const String _moreLinkKey = 'more_link';
 @singleton
 class AppInterceptor extends Interceptor {
   final MainCubit _mainCubit;
-  final FortunicaCachingManager _cachingManager;
+  final CachingManager _cachingManager;
 
   AppInterceptor(this._mainCubit, this._cachingManager);
 

@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import '../../../../infrastructure/routing/app_router.dart';
 import '../../../../app_constants.dart';
 import '../../../../data/models/chats/rirual_card_info.dart';
-import '../../../../fortunica_extensions.dart';
+import '../../../../extensions.dart';
 import '../../../../generated/l10n.dart';
 import '../../../../infrastructure/routing/app_router.gr.dart';
 import '../../../common_widgets/app_image_widget.dart';

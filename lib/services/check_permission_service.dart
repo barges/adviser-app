@@ -8,13 +8,13 @@ import 'package:injectable/injectable.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../app_constants.dart';
-import '../data/cache/fortunica_caching_manager.dart';
+import '../data/cache/caching_manager.dart';
 import '../generated/l10n.dart';
 import '../presentation/common_widgets/ok_cancel_alert.dart';
 
 @singleton
 class CheckPermissionService {
-  final FortunicaCachingManager _cacheManager;
+  final CachingManager _cacheManager;
 
   CheckPermissionService(this._cacheManager);
 

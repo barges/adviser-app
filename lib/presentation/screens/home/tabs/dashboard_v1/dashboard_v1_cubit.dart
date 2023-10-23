@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../data/cache/fortunica_caching_manager.dart';
+import '../../../../../data/cache/caching_manager.dart';
 import '../../../../../data/models/reports_endpoint/reports_month.dart';
 import '../../../../../data/models/reports_endpoint/reports_statistics.dart';
 import '../../../../../data/models/reports_endpoint/reports_year.dart';
@@ -20,7 +20,7 @@ class DashboardV1Cubit extends Cubit<DashboardV1State> {
   final ConnectivityService _connectivityService;
   final MainCubit mainCubit;
   final FortunicaUserRepository _userRepository;
-  final FortunicaCachingManager cacheManager;
+  final CachingManager cacheManager;
 
   late final StreamSubscription _userProfileSubscription;
   late final StreamSubscription _userIdSubscription;

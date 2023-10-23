@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mime/mime.dart';
 
-import '../../../data/cache/fortunica_caching_manager.dart';
+import '../../../data/cache/caching_manager.dart';
 import '../../../data/models/user_info/user_profile.dart';
 import '../../../data/network/requests/update_profile_image_request.dart';
 import '../../../domain/repositories/fortunica_user_repository.dart';
@@ -17,7 +17,7 @@ part 'add_gallery_pictures_cubit.freezed.dart';
 class AddGalleryPicturesCubit extends Cubit<AddGalleryPicturesState> {
   final FortunicaUserRepository _userRepository;
   final ConnectivityService _connectivityService;
-  final FortunicaCachingManager _cacheManager;
+  final CachingManager _cacheManager;
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 

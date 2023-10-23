@@ -4,9 +4,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../app_constants.dart';
 import '../../../infrastructure/routing/app_router.dart';
 
-import '../../../data/cache/fortunica_caching_manager.dart';
+import '../../../data/cache/caching_manager.dart';
 import '../../../data/models/chats/chat_item.dart';
 import '../../../data/models/customer_info/customer_info.dart';
 import '../../../data/models/enums/chat_item_type.dart';
@@ -15,7 +16,6 @@ import '../../../data/models/user_info/user_profile.dart';
 import '../../../data/network/responses/questions_list_response.dart';
 import '../../../domain/repositories/fortunica_chats_repository.dart';
 import '../../../domain/repositories/fortunica_customer_repository.dart';
-import '../../../fortunica_constants.dart';
 import '../../../global.dart';
 import '../../../infrastructure/routing/app_router.gr.dart';
 import '../../../main_cubit.dart';
@@ -25,7 +25,7 @@ import 'customer_sessions_screen.dart';
 import 'customer_sessions_state.dart';
 
 class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
-  final FortunicaCachingManager cacheManager;
+  final CachingManager cacheManager;
   final double screenHeight;
   final VoidCallback showErrorAlert;
   final CustomerSessionsScreenArguments arguments;
@@ -216,7 +216,7 @@ class CustomerSessionsCubit extends Cubit<CustomerSessionsState> {
           final QuestionsListResponse result =
               await chatsRepository.getCustomerHistoryStories(
             id: argumentsQuestion.clientID ?? '',
-            limit: FortunicaConstants.questionsLimit,
+            limit: AppConstants.questionsLimit,
             lastItem: _lastItem,
             filterType: filterType,
             filterLanguage: filtersLanguage,

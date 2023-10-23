@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../../app_constants.dart';
-import '../../../../../data/cache/fortunica_caching_manager.dart';
+import '../../../../../data/cache/caching_manager.dart';
 import '../../../../../data/models/app_error/app_error.dart';
 import '../../../../../data/models/reports_endpoint/reports_month.dart';
 import '../../../../../data/models/reports_endpoint/reports_statistics.dart';
@@ -34,7 +34,7 @@ class DashboardV1Screen extends StatelessWidget {
 
     return BlocProvider(
         create: (_) => DashboardV1Cubit(
-              globalGetIt.get<FortunicaCachingManager>(),
+              globalGetIt.get<CachingManager>(),
               globalGetIt.get<ConnectivityService>(),
               globalGetIt.get<FortunicaUserRepository>(),
               mainCubit,

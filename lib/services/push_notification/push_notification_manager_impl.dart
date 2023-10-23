@@ -9,9 +9,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../infrastructure/routing/app_router.dart';
-import '../../data/cache/fortunica_caching_manager.dart';
+import '../../data/cache/caching_manager.dart';
 import '../../global.dart';
-import '../../infrastructure/di/inject_config.dart';
 import '../../infrastructure/routing/app_router.gr.dart';
 import '../../infrastructure/routing/route_paths_fortunica.dart';
 import '../../main.dart';
@@ -191,7 +190,7 @@ void _messageTypeHandler(Map<String, dynamic> meta) {
 
 Future<void> _navigateToNextScreen(RemoteMessage? message) async {
   final BuildContext? fortunicaContext = currentContext;
-  if (globalGetIt.get<FortunicaCachingManager>().isAuth &&
+  if (globalGetIt.get<CachingManager>().isAuth &&
       fortunicaContext != null &&
       message != null) {
     Map<String, dynamic> data = message.data;

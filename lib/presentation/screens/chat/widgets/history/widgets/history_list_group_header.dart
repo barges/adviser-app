@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../../../../fortunica_extensions.dart';
+import '../../../../../../extensions.dart';
 import '../../../../../../data/models/chats/chat_item.dart';
 
 class HistoryListGroupHeader extends StatelessWidget {

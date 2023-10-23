@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../extensions.dart';
 import '../../../infrastructure/di/modules/api_module.dart';
 import '../../../infrastructure/routing/app_router.dart';
-import '../../../data/cache/fortunica_caching_manager.dart';
+import '../../../data/cache/caching_manager.dart';
 import '../../../data/models/app_success/app_success.dart';
 import '../../../data/models/app_success/ui_success_type.dart';
 import '../../../data/models/enums/validation_error_type.dart';
@@ -22,7 +22,7 @@ import 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
   final FortunicaAuthRepository _repository;
-  final FortunicaCachingManager _cachingManager;
+  final CachingManager _cachingManager;
   final Dio _dio;
   final MainCubit _mainCubit;
 

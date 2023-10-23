@@ -7,8 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mime/mime.dart';
 
+import '../../../app_constants.dart';
 import '../../../infrastructure/routing/app_router.dart';
-import '../../../data/cache/fortunica_caching_manager.dart';
+import '../../../data/cache/caching_manager.dart';
 import '../../../data/models/enums/markets_type.dart';
 import '../../../data/models/enums/validation_error_type.dart';
 import '../../../data/models/user_info/localized_properties/localized_properties.dart';
@@ -18,7 +19,6 @@ import '../../../data/network/requests/reorder_cover_pictures_request.dart';
 import '../../../data/network/requests/update_profile_image_request.dart';
 import '../../../data/network/requests/update_profile_request.dart';
 import '../../../domain/repositories/fortunica_user_repository.dart';
-import '../../../fortunica_constants.dart';
 import '../../../infrastructure/routing/app_router.gr.dart';
 import '../../../main_cubit.dart';
 import '../../../services/connectivity_service.dart';
@@ -29,7 +29,7 @@ import 'edit_profile_state.dart';
 class EditProfileCubit extends Cubit<EditProfileState> {
   final MainCubit mainCubit;
   final FortunicaUserRepository userRepository;
-  final FortunicaCachingManager cacheManager;
+  final CachingManager cacheManager;
   final ConnectivityService connectivityService;
 
   final TextEditingController nicknameController = TextEditingController();
@@ -284,7 +284,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
   bool _checkNickName([bool animate = true]) {
     bool isValid = true;
-    if (nicknameController.text.length < FortunicaConstants.minNickNameLength) {
+    if (nicknameController.text.length < AppConstants.minNickNameLength) {
       isValid = false;
       if (animate) {
         Utils.animateToWidget(nicknameFieldKey);

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
 
-import '../../../../fortunica_extensions.dart';
+import '../../../../extensions.dart';
 import '../../../../data/models/enums/chat_item_type.dart';
 import '../../../../data/models/enums/sessions_types.dart';
 import '../../../../generated/assets/assets.gen.dart';

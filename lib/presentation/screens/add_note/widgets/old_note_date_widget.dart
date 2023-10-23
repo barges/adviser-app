@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../fortunica_extensions.dart';
+import '../../../../extensions.dart';
 import '../../../../app_constants.dart';
 
 class OldNoteDateWidget extends StatelessWidget {

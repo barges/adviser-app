@@ -8,7 +8,6 @@ import '../../../app_constants.dart';
 import '../../../data/models/customer_info/customer_info.dart';
 import '../../../data/models/customer_info/note.dart';
 import '../../../data/models/enums/gender.dart';
-import '../../../fortunica_extensions.dart';
 import '../../../generated/l10n.dart';
 import '../../screens/chat/chat_cubit.dart';
 import '../../screens/customer_profile/customer_profile_screen.dart';

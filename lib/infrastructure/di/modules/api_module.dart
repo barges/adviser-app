@@ -6,9 +6,9 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-import '../../../data/cache/fortunica_caching_manager.dart';
+import '../../../app_constants.dart';
+import '../../../data/cache/caching_manager.dart';
 import '../../../data/cache/secure_storage_manager.dart';
-import '../../../fortunica_constants.dart';
 import '../../../global.dart';
 import '../dio_interceptors/app_interceptor.dart';
 
@@ -17,11 +17,11 @@ abstract class ApiModule {
   @singleton
   @preResolve
   Future<Dio> initDio(
-    FortunicaCachingManager cacheManager,
+    CachingManager cacheManager,
     AppInterceptor appInterceptor,
   ) async {
     final dio = Dio();
-    dio.options.baseUrl = FortunicaConstants.baseUrl;
+    dio.options.baseUrl = AppConstants.baseUrl;
     dio.options.headers = await _getHeaders(cacheManager);
     dio.options.connectTimeout = const Duration(seconds: 30);
     dio.options.receiveTimeout = const Duration(seconds: 30);
@@ -33,8 +33,7 @@ abstract class ApiModule {
     return dio;
   }
 
-  Future<Map<String, dynamic>> _getHeaders(
-      FortunicaCachingManager cacheManager) async {
+  Future<Map<String, dynamic>> _getHeaders(CachingManager cacheManager) async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 

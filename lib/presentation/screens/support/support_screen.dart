@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freshchat_sdk/freshchat_sdk.dart';
 import 'package:intl/intl.dart';
 
-import '../../../data/cache/fortunica_caching_manager.dart';
+import '../../../data/cache/caching_manager.dart';
 import '../../../domain/repositories/fortunica_user_repository.dart';
 import '../../../generated/l10n.dart';
 import '../../../global.dart';
@@ -20,7 +20,7 @@ class SupportScreen extends StatelessWidget {
     return BlocProvider(
       create: (_) => SupportCubit(
         freshChatService: globalGetIt.get<FreshChatService>(),
-        cachingManager: globalGetIt.get<FortunicaCachingManager>(),
+        cachingManager: globalGetIt.get<CachingManager>(),
         userRepository: globalGetIt.get<FortunicaUserRepository>(),
       ),
       child: Builder(builder: (context) {

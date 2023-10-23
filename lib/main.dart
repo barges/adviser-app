@@ -7,12 +7,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'data/cache/fortunica_caching_manager.dart';
+import 'data/cache/caching_manager.dart';
 import 'generated/intl/messages_all.dart';
 import 'generated/l10n.dart';
 import 'global.dart';
 import 'infrastructure/di/app_initializer.dart';
-import 'infrastructure/di/inject_config.dart';
 import 'infrastructure/flavor/flavor_config.dart';
 import 'infrastructure/routing/app_router.gr.dart';
 import 'main_cubit.dart';
@@ -53,8 +52,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final FortunicaCachingManager _cacheManager =
-      globalGetIt.get<FortunicaCachingManager>();
+  final CachingManager _cacheManager = globalGetIt.get<CachingManager>();
 
   final MainAppRouter rootRouter = MainAppRouter();
 

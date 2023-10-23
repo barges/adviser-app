@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../../../fortunica_extensions.dart';
+import '../../../../../../../extensions.dart';
 import '../../../../../../../app_constants.dart';
 import '../../../../../../../data/models/chats/chat_item.dart';
 import '../../../../../../../data/models/enums/chat_item_status_type.dart';

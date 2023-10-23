@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 
 import '../../domain/repositories/fortunica_user_repository.dart';
-import '../cache/fortunica_caching_manager.dart';
+import '../cache/caching_manager.dart';
 import '../models/reports_endpoint/reports_statistics.dart';
 import '../models/user_info/user_info.dart';
 import '../models/user_info/user_profile.dart';
@@ -17,7 +17,7 @@ import '../network/responses/reports_response.dart';
 
 @Injectable(as: FortunicaUserRepository)
 class FortunicaUserRepositoryImpl implements FortunicaUserRepository {
-  final FortunicaCachingManager _cacheManager;
+  final CachingManager _cacheManager;
   final UserApi _api;
 
   FortunicaUserRepositoryImpl(this._api, this._cacheManager);

@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../app_constants.dart';
-import '../../../data/cache/fortunica_caching_manager.dart';
+import '../../../data/cache/caching_manager.dart';
 import '../../../data/models/enums/validation_error_type.dart';
 import '../../../domain/repositories/fortunica_user_repository.dart';
-import '../../../fortunica_constants.dart';
 import '../../../generated/l10n.dart';
 import '../../../global.dart';
 import '../../../main_cubit.dart';
@@ -31,7 +30,7 @@ class EditProfileScreen extends StatelessWidget {
       create: (_) => EditProfileCubit(
         mainCubit: globalGetIt.get<MainCubit>(),
         userRepository: globalGetIt.get<FortunicaUserRepository>(),
-        cacheManager: globalGetIt.get<FortunicaCachingManager>(),
+        cacheManager: globalGetIt.get<CachingManager>(),
         connectivityService: globalGetIt.get<ConnectivityService>(),
       ),
       child: Builder(builder: (context) {
@@ -121,8 +120,7 @@ class EditProfileScreen extends StatelessWidget {
                                                       ?.profileName
                                                       ?.length ??
                                                   0) <
-                                              FortunicaConstants
-                                                  .minNickNameLength,
+                                              AppConstants.minNickNameLength,
                                           detailsText: SFortunica.of(context)
                                               .nameCanBeChangedOnlyOnAdvisorToolFortunica,
                                         );

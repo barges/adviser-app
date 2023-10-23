@@ -4,8 +4,9 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../app_constants.dart';
 import '../../../../../infrastructure/routing/app_router.dart';
-import '../../../../../data/cache/fortunica_caching_manager.dart';
+import '../../../../../data/cache/caching_manager.dart';
 import '../../../../../data/models/app_success/app_success.dart';
 import '../../../../../data/models/app_success/ui_success_type.dart';
 import '../../../../../data/models/chats/chat_item.dart';
@@ -16,7 +17,6 @@ import '../../../../../data/models/user_info/user_status.dart';
 import '../../../../../data/network/requests/answer_request.dart';
 import '../../../../../data/network/responses/questions_list_response.dart';
 import '../../../../../domain/repositories/fortunica_chats_repository.dart';
-import '../../../../../fortunica_constants.dart';
 import '../../../../../global.dart';
 import '../../../../../infrastructure/routing/app_router.gr.dart';
 import '../../../../../main_cubit.dart';
@@ -27,7 +27,7 @@ import '../../../customer_sessions/customer_sessions_screen.dart';
 import 'sessions_state.dart';
 
 class SessionsCubit extends Cubit<SessionsState> {
-  final FortunicaCachingManager cacheManager;
+  final CachingManager cacheManager;
 
   final MainCubit mainCubit;
   final FortunicaChatsRepository chatsRepository;
@@ -199,7 +199,7 @@ class SessionsCubit extends Cubit<SessionsState> {
 
           final QuestionsListResponse result =
               await chatsRepository.getPublicQuestions(
-                  limit: FortunicaConstants.questionsLimit,
+                  limit: AppConstants.questionsLimit,
                   lastId: _lastId,
                   filtersLanguage: filtersLanguage);
           _publicHasMore = result.hasMore ?? true;
@@ -254,7 +254,7 @@ class SessionsCubit extends Cubit<SessionsState> {
 
           final QuestionsListResponse result =
               await chatsRepository.getConversationsList(
-            limit: FortunicaConstants.questionsLimit,
+            limit: AppConstants.questionsLimit,
             filtersLanguage: filtersLanguage,
             lastItem: _conversationsLastItem,
           );

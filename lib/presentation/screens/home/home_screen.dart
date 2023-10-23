@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../data/cache/fortunica_caching_manager.dart';
+import '../../../data/cache/caching_manager.dart';
 import '../../../global.dart';
 import '../../../main_cubit.dart';
 import '../../common_widgets/custom_bottom_navigation_bar.dart';
@@ -22,7 +22,7 @@ class HomeScreen extends StatelessWidget {
     final VoidCallback openDrawer = context.read<MainCubit>().openDrawer;
     return BlocProvider(create: (_) {
       return HomeCubit(
-        globalGetIt.get<FortunicaCachingManager>(),
+        globalGetIt.get<CachingManager>(),
         initTab,
       );
     }, child: Builder(
