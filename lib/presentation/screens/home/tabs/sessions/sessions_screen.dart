@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../app_constants.dart';
@@ -11,7 +11,7 @@ import '../../../../../data/models/user_info/user_status.dart';
 import '../../../../../domain/repositories/fortunica_chats_repository.dart';
 import '../../../../../generated/assets/assets.gen.dart';
 import '../../../../../generated/l10n.dart';
-import '../../../../../infrastructure/di/inject_config.dart';
+import '../../../../../global.dart';
 import '../../../../../main_cubit.dart';
 import '../../../../../services/connectivity_service.dart';
 import '../../../../common_widgets/appbar/home_app_bar.dart';
@@ -45,11 +45,11 @@ class _SessionsScreenState extends State<SessionsScreen> {
 
     return BlocProvider(
       create: (_) {
-        final MainCubit mainCubit = fortunicaGetIt.get<MainCubit>();
+        final MainCubit mainCubit = globalGetIt.get<MainCubit>();
         final SessionsCubit sessionsCubit = SessionsCubit(
-          cacheManager: fortunicaGetIt.get<FortunicaCachingManager>(),
-          connectivityService: fortunicaGetIt.get<ConnectivityService>(),
-          chatsRepository: fortunicaGetIt.get<FortunicaChatsRepository>(),
+          cacheManager: globalGetIt.get<FortunicaCachingManager>(),
+          connectivityService: globalGetIt.get<ConnectivityService>(),
+          chatsRepository: globalGetIt.get<FortunicaChatsRepository>(),
           mainCubit: mainCubit,
         );
 

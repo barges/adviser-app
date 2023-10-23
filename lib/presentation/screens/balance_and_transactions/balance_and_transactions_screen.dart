@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/cache/fortunica_caching_manager.dart';
 import '../../../data/models/reports_endpoint/reports_month.dart';
 import '../../../data/models/reports_endpoint/reports_statistics.dart';
-import '../../../domain/repositories/fortunica_user_repository.dart';
 import '../../../generated/l10n.dart';
-import '../../../infrastructure/di/inject_config.dart';
+import '../../../global.dart';
 import '../../../main_cubit.dart';
 import '../../../main_state.dart';
 import '../../common_widgets/appbar/scrollable_appbar/scrollable_appbar.dart';
@@ -21,11 +19,7 @@ class BalanceAndTransactionsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => BalanceAndTransactionsCubit(
-        fortunicaGetIt.get<FortunicaCachingManager>(),
-        fortunicaGetIt.get<FortunicaUserRepository>(),
-        fortunicaGetIt.get<MainCubit>(),
-      ),
+      create: (_) => globalGetIt.get<BalanceAndTransactionsCubit>(),
       child: Builder(builder: (context) {
         final BalanceAndTransactionsCubit balanceAndTransactionsCubit =
             context.read<BalanceAndTransactionsCubit>();

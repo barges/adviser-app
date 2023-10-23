@@ -6,6 +6,7 @@ import '../../../app_constants.dart';
 import '../../../data/cache/fortunica_caching_manager.dart';
 import '../../../generated/assets/assets.gen.dart';
 import '../../../generated/l10n.dart';
+import '../../../global.dart';
 import '../../../infrastructure/di/inject_config.dart';
 import '../picker_modal_pop_up.dart';
 
@@ -29,10 +30,10 @@ class ChangeLocaleButton extends StatelessWidget {
           setIndex: (index) {
             final String languageCode = locales[index];
             if (languageCode !=
-                fortunicaGetIt
+                globalGetIt
                     .get<FortunicaCachingManager>()
                     .getLanguageCode()) {
-              fortunicaGetIt
+              globalGetIt
                   .get<FortunicaCachingManager>()
                   .saveLanguageCode(languageCode);
             }

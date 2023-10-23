@@ -52,6 +52,6 @@ class AppBinding {
     globalGetIt.registerSingleton(flavorConfig);
 
     ///Register the flavor with our get it
-    fortunicaGetIt.registerSingleton(flavorConfig);
+    globalGetIt.registerSingleton(flavorConfig);
   }
 }

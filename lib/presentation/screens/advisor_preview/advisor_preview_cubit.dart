@@ -6,14 +6,14 @@ import '../../../data/cache/fortunica_caching_manager.dart';
 import '../../../data/models/enums/markets_type.dart';
 import '../../../data/models/user_info/localized_properties/property_by_language.dart';
 import '../../../data/models/user_info/user_profile.dart';
-import '../../../infrastructure/di/inject_config.dart';
+import '../../../global.dart';
 import '../../../main_cubit.dart';
 import 'advisor_preview_constants.dart';
 import 'advisor_preview_state.dart';
 
 class AdvisorPreviewCubit extends Cubit<AdvisorPreviewState> {
   final FortunicaCachingManager cacheManager =
-      fortunicaGetIt.get<FortunicaCachingManager>();
+      globalGetIt.get<FortunicaCachingManager>();
   final MainCubit mainCubit;
   late UserProfile userProfile;
   late List<MarketsType> languages;

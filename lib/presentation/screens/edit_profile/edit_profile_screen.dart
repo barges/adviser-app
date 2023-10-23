@@ -7,7 +7,7 @@ import '../../../data/models/enums/validation_error_type.dart';
 import '../../../domain/repositories/fortunica_user_repository.dart';
 import '../../../fortunica_constants.dart';
 import '../../../generated/l10n.dart';
-import '../../../infrastructure/di/inject_config.dart';
+import '../../../global.dart';
 import '../../../main_cubit.dart';
 import '../../../services/connectivity_service.dart';
 import '../../common_widgets/appbar/scrollable_appbar/scrollable_appbar.dart';
@@ -29,10 +29,10 @@ class EditProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => EditProfileCubit(
-        mainCubit: fortunicaGetIt.get<MainCubit>(),
-        userRepository: fortunicaGetIt.get<FortunicaUserRepository>(),
-        cacheManager: fortunicaGetIt.get<FortunicaCachingManager>(),
-        connectivityService: fortunicaGetIt.get<ConnectivityService>(),
+        mainCubit: globalGetIt.get<MainCubit>(),
+        userRepository: globalGetIt.get<FortunicaUserRepository>(),
+        cacheManager: globalGetIt.get<FortunicaCachingManager>(),
+        connectivityService: globalGetIt.get<ConnectivityService>(),
       ),
       child: Builder(builder: (context) {
         final EditProfileCubit editProfileCubit =

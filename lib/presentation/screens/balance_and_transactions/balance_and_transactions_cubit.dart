@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../data/cache/fortunica_caching_manager.dart';
 import '../../../data/models/reports_endpoint/reports_month.dart';
@@ -14,6 +15,7 @@ import '../../../global.dart';
 import '../../../main_cubit.dart';
 import 'balance_and_transactions_state.dart';
 
+@injectable
 class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
   final FortunicaCachingManager _cacheManager;
   final FortunicaUserRepository _userRepository;

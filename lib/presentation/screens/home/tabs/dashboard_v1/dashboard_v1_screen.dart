@@ -10,7 +10,7 @@ import '../../../../../data/models/reports_endpoint/reports_statistics.dart';
 import '../../../../../domain/repositories/fortunica_user_repository.dart';
 import '../../../../../generated/assets/assets.gen.dart';
 import '../../../../../generated/l10n.dart';
-import '../../../../../infrastructure/di/inject_config.dart';
+import '../../../../../global.dart';
 import '../../../../../main_cubit.dart';
 import '../../../../../services/connectivity_service.dart';
 import '../../../../common_widgets/appbar/home_app_bar.dart';
@@ -34,9 +34,9 @@ class DashboardV1Screen extends StatelessWidget {
 
     return BlocProvider(
         create: (_) => DashboardV1Cubit(
-              fortunicaGetIt.get<FortunicaCachingManager>(),
-              fortunicaGetIt.get<ConnectivityService>(),
-              fortunicaGetIt.get<FortunicaUserRepository>(),
+              globalGetIt.get<FortunicaCachingManager>(),
+              globalGetIt.get<ConnectivityService>(),
+              globalGetIt.get<FortunicaUserRepository>(),
               mainCubit,
             ),
         child: Builder(builder: (context) {

@@ -9,11 +9,9 @@ import 'drawer_cubit.dart';
 import 'widgets/bottom_section.dart';
 
 class AppDrawer extends StatelessWidget {
-  final GlobalKey<ScaffoldState> scaffoldKey;
 
   const AppDrawer({
     Key? key,
-    required this.scaffoldKey,
   }) : super(key: key);
 
   @override
@@ -23,7 +21,10 @@ class AppDrawer extends StatelessWidget {
       create: (_) => DrawerCubit(),
       child: Builder(builder: (context) {
         return Container(
-            width: MediaQuery.of(context).size.width * 0.75,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width * 0.75,
             color: theme.canvasColor,
             child: SafeArea(
               child: CustomScrollView(
@@ -44,15 +45,15 @@ class AppDrawer extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      SFortunica.of(context).workspaces,
+                                      SFortunica
+                                          .of(context)
+                                          .workspaces,
                                       style: theme.textTheme.headlineLarge,
                                     ),
                                     const SizedBox(
                                       height: 12.0,
                                     ),
-                                    BrandItem(
-                                      scaffoldKey: scaffoldKey,
-                                    ),
+                                    const FortunicaDrawerItem(),
                                     const SizedBox(
                                       height: 8.0,
                                     ),
@@ -76,31 +77,6 @@ class AppDrawer extends StatelessWidget {
               ),
             ));
       }),
-    );
-  }
-}
-
-class BrandItem extends StatelessWidget {
-  final GlobalKey<ScaffoldState> scaffoldKey;
-
-  const BrandItem({
-    Key? key,
-    required this.scaffoldKey,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return FortunicaDrawerItem(
-      openLogoutDialog: (fortunicaContext, callback) => showOkCancelBottomSheet(
-        context: context,
-        okButtonText: SFortunica.of(context).logOut,
-        okOnTap: () {
-          callback(fortunicaContext).then((value) {
-            context.pop();
-            scaffoldKey.currentState?.closeDrawer();
-          });
-        },
-      ),
     );
   }
 }

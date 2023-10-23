@@ -190,7 +190,7 @@ class _AppNavigatorObserver extends AutoRouterObserver {
   }
 
   void _clearErrorMessage() {
-    fortunicaGetIt.get<MainCubit>().clearErrorMessage();
+    globalGetIt.get<MainCubit>().clearErrorMessage();
   }
 
   void _setContext() {

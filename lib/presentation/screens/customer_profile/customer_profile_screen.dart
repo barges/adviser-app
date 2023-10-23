@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/models/app_error/app_error.dart';
 import '../../../data/models/enums/zodiac_sign.dart';
-import '../../../infrastructure/di/inject_config.dart';
+import '../../../global.dart';
 import '../../../main_cubit.dart';
 import '../../common_widgets/appbar/chat_conversation_app_bar.dart';
 import '../../common_widgets/customer_profile/customer_profile_widget.dart';
@@ -22,7 +22,7 @@ class CustomerProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => CustomerProfileScreenCubit(
-        fortunicaGetIt.get<MainCubit>(),
+        globalGetIt.get<MainCubit>(),
         customerProfileScreenArguments,
       ),
       child: Builder(builder: (context) {

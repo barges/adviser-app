@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_size/flutter_keyboard_size.dart';
-import '../../../../infrastructure/routing/app_router.dart';
 
+import '../../../../infrastructure/routing/app_router.dart';
 import '../../../data/models/app_error/app_error.dart';
 import '../../../data/models/app_error/ui_error_type.dart';
 import '../../../data/models/app_success/app_success.dart';
@@ -10,7 +10,7 @@ import '../../../data/models/chats/chat_item.dart';
 import '../../../data/models/enums/chat_item_status_type.dart';
 import '../../../domain/repositories/fortunica_chats_repository.dart';
 import '../../../generated/l10n.dart';
-import '../../../infrastructure/di/inject_config.dart';
+import '../../../global.dart';
 import '../../../main_cubit.dart';
 import '../../../main_state.dart';
 import '../../../services/audio/audio_player_service.dart';
@@ -45,10 +45,10 @@ class ChatScreen extends StatelessWidget {
       create: (_) => ChatCubit(
         audioPlayer: AudioPlayerServiceImpl(),
         audioRecorder: AudioRecorderServiceImp(),
-        mainCubit: fortunicaGetIt.get<MainCubit>(),
-        connectivityService: fortunicaGetIt.get<ConnectivityService>(),
-        checkPermissionService: fortunicaGetIt.get<CheckPermissionService>(),
-        chatsRepository: fortunicaGetIt.get<FortunicaChatsRepository>(),
+        mainCubit: globalGetIt.get<MainCubit>(),
+        connectivityService: globalGetIt.get<ConnectivityService>(),
+        checkPermissionService: globalGetIt.get<CheckPermissionService>(),
+        chatsRepository: globalGetIt.get<FortunicaChatsRepository>(),
         showErrorAlert: () => showErrorAlert(context),
         confirmSendAnswerAlert: () => confirmSendAnswerAlert(context),
         deleteAudioMessageAlert: () => deleteAudioMessageAlert(context),

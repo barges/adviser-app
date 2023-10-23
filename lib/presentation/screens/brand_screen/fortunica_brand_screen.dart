@@ -16,9 +16,7 @@ class FortunicaBrandScreen extends StatelessWidget {
           context.select((MainCubit cubit) => cubit.state.isAuth);
       return Scaffold(
           key: mainCubit.scaffoldKey,
-          drawer: AppDrawer(
-            scaffoldKey: mainCubit.scaffoldKey,
-          ),
+          drawer: const AppDrawer(),
           // it works on device
           drawerEnableOpenDragGesture: isAuth,
           body: const AutoRouter());

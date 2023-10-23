@@ -19,7 +19,7 @@ class CustomerProfileCubit extends Cubit<CustomerProfileState> {
   final String customerID;
   final ValueChanged<CustomerProfileScreenArguments?>? updateClientInformation;
   final FortunicaCustomerRepository _repository =
-      fortunicaGetIt.get<FortunicaCustomerRepository>();
+      globalGetIt.get<FortunicaCustomerRepository>();
   final ChatCubit? _chatCubit;
 
   late final StreamSubscription<bool>? _refreshChatInfoSubscription;

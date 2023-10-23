@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:freshchat_sdk/freshchat_sdk.dart';
+import 'package:intl/intl.dart';
 
-import '../../../infrastructure/routing/app_router.dart';
 import '../../../data/cache/fortunica_caching_manager.dart';
 import '../../../domain/repositories/fortunica_user_repository.dart';
 import '../../../generated/l10n.dart';
-import '../../../infrastructure/di/inject_config.dart';
+import '../../../global.dart';
+import '../../../infrastructure/routing/app_router.dart';
 import '../../../services/fresh_chat_service.dart';
 import 'support_cubit.dart';
 import 'support_state.dart';
@@ -19,9 +19,9 @@ class SupportScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => SupportCubit(
-        freshChatService: fortunicaGetIt.get<FreshChatService>(),
-        cachingManager: fortunicaGetIt.get<FortunicaCachingManager>(),
-        userRepository: fortunicaGetIt.get<FortunicaUserRepository>(),
+        freshChatService: globalGetIt.get<FreshChatService>(),
+        cachingManager: globalGetIt.get<FortunicaCachingManager>(),
+        userRepository: globalGetIt.get<FortunicaUserRepository>(),
       ),
       child: Builder(builder: (context) {
         final SupportCubit supportCubit = context.read<SupportCubit>();

@@ -6,6 +6,7 @@ import '../../../data/models/app_error/app_error.dart';
 import '../../../data/models/enums/markets_type.dart';
 import '../../../generated/assets/assets.gen.dart';
 import '../../../generated/l10n.dart';
+import '../../../global.dart';
 import '../../../infrastructure/di/inject_config.dart';
 import '../../../main_cubit.dart';
 import '../../../themes/app_colors_light.dart';
@@ -29,7 +30,7 @@ class AdvisorPreviewScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => AdvisorPreviewCubit(
-        fortunicaGetIt.get<MainCubit>(),
+        globalGetIt.get<MainCubit>(),
       ),
       child: Builder(builder: (context) {
         final AdvisorPreviewCubit advisorPreviewCubit =

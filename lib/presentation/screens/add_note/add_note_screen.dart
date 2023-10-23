@@ -5,7 +5,7 @@ import '../../../app_constants.dart';
 import '../../../data/models/app_error/app_error.dart';
 import '../../../generated/assets/assets.gen.dart';
 import '../../../generated/l10n.dart';
-import '../../../infrastructure/di/inject_config.dart';
+import '../../../global.dart';
 import '../../../main_cubit.dart';
 import '../../common_widgets/appbar/wide_app_bar.dart';
 import '../../common_widgets/buttons/app_icon_button.dart';
@@ -25,7 +25,7 @@ class AddNoteScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => AddNoteCubit(
-        mainCubit: fortunicaGetIt.get<MainCubit>(),
+        mainCubit: globalGetIt.get<MainCubit>(),
         customerID: addNoteScreenArguments.customerId,
         noteChanged: addNoteScreenArguments.noteChanged,
         oldNote: addNoteScreenArguments.oldNote,

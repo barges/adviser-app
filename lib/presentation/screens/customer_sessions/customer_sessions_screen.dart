@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../infrastructure/routing/app_router.dart';
 import '../../../data/cache/fortunica_caching_manager.dart';
 import '../../../data/models/app_error/app_error.dart';
 import '../../../data/models/chats/chat_item.dart';
@@ -9,7 +8,8 @@ import '../../../data/models/enums/zodiac_sign.dart';
 import '../../../domain/repositories/fortunica_chats_repository.dart';
 import '../../../domain/repositories/fortunica_customer_repository.dart';
 import '../../../generated/l10n.dart';
-import '../../../infrastructure/di/inject_config.dart';
+import '../../../global.dart';
+import '../../../infrastructure/routing/app_router.dart';
 import '../../../infrastructure/routing/app_router.gr.dart';
 import '../../../main_cubit.dart';
 import '../../../services/connectivity_service.dart';
@@ -35,12 +35,12 @@ class CustomerSessionsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
         create: (_) => CustomerSessionsCubit(
-              chatsRepository: fortunicaGetIt.get<FortunicaChatsRepository>(),
+              chatsRepository: globalGetIt.get<FortunicaChatsRepository>(),
               customerRepository:
-                  fortunicaGetIt.get<FortunicaCustomerRepository>(),
-              mainCubit: fortunicaGetIt.get<MainCubit>(),
-              connectivityService: fortunicaGetIt.get<ConnectivityService>(),
-              cacheManager: fortunicaGetIt.get<FortunicaCachingManager>(),
+                  globalGetIt.get<FortunicaCustomerRepository>(),
+              mainCubit: globalGetIt.get<MainCubit>(),
+              connectivityService: globalGetIt.get<ConnectivityService>(),
+              cacheManager: globalGetIt.get<FortunicaCachingManager>(),
               screenHeight: MediaQuery.of(context).size.height,
               showErrorAlert: () => showErrorAlert(context),
               arguments: customerSessionsScreenArguments,
@@ -125,7 +125,7 @@ class CustomerSessionsScreen extends StatelessWidget {
   showErrorAlert(BuildContext context) async {
     await showOkCancelAlert(
       context: context,
-      title: fortunicaGetIt.get<MainCubit>().state.appError.getMessage(context),
+      title: globalGetIt.get<MainCubit>().state.appError.getMessage(context),
       okText: SFortunica.of(context).okFortunica,
       actionOnOK: () async {
         context.replaceAll([

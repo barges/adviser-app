@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../infrastructure/routing/app_router.dart';
 import '../../../../../data/models/chats/history_ui_model.dart';
 import '../../../../../domain/repositories/fortunica_chats_repository.dart';
 import '../../../../../generated/l10n.dart';
-import '../../../../../infrastructure/di/inject_config.dart';
+import '../../../../../global.dart';
+import '../../../../../infrastructure/routing/app_router.dart';
 import '../../../../../infrastructure/routing/app_router.gr.dart';
 import '../../../../../main_cubit.dart';
 import '../../../../../services/connectivity_service.dart';
@@ -32,8 +32,8 @@ class HistoryWidget extends StatelessWidget {
     final ChatCubit chatCubit = context.read<ChatCubit>();
     return BlocProvider(
       create: (_) => HistoryCubit(
-        fortunicaGetIt.get<FortunicaChatsRepository>(),
-        fortunicaGetIt.get<ConnectivityService>(),
+        globalGetIt.get<FortunicaChatsRepository>(),
+        globalGetIt.get<ConnectivityService>(),
         () => showErrorAlert(context),
         clientId,
         storyId,
@@ -100,7 +100,7 @@ class HistoryWidget extends StatelessWidget {
   showErrorAlert(BuildContext context) async {
     await showOkCancelAlert(
       context: context,
-      title: fortunicaGetIt.get<MainCubit>().state.appError.getMessage(context),
+      title: globalGetIt.get<MainCubit>().state.appError.getMessage(context),
       okText: SFortunica.of(context).okFortunica,
       actionOnOK: () {
         context.replaceAll([

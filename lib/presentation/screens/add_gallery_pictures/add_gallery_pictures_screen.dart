@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../data/cache/fortunica_caching_manager.dart';
 import '../../../domain/repositories/fortunica_user_repository.dart';
 import '../../../generated/l10n.dart';
-import '../../../infrastructure/di/inject_config.dart';
+import '../../../global.dart';
 import '../../../services/connectivity_service.dart';
 import '../../common_widgets/appbar/scrollable_appbar/scrollable_appbar.dart';
 import 'add_gallery_pictures_cubit.dart';
@@ -17,9 +17,9 @@ class AddGalleryPicturesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => AddGalleryPicturesCubit(
-        fortunicaGetIt.get<FortunicaUserRepository>(),
-        fortunicaGetIt.get<ConnectivityService>(),
-        fortunicaGetIt.get<FortunicaCachingManager>(),
+        globalGetIt.get<FortunicaUserRepository>(),
+        globalGetIt.get<ConnectivityService>(),
+        globalGetIt.get<FortunicaCachingManager>(),
       ),
       child: Builder(builder: (context) {
         AddGalleryPicturesCubit addGalleryPicturesCubit =

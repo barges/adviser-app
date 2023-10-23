@@ -40,7 +40,6 @@ dependencies:
   package_info_plus: ^4.0.0
   hive: ^2.2.3
   freshchat_sdk: ^0.10.3
-  audible_mode: ^1.0.1
   html: ^0.15.2
   snapping_sheet_2: ^3.1.5
   shimmer: ^3.0.0

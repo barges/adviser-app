@@ -1,11 +1,10 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_advisor_interface/global.dart';
 
 import 'inject_config.config.dart';
 
 ///Configuration file to get started with injectable and get it
-
-final fortunicaGetIt = GetIt.instance; //GetIt.asNewInstance();
 
 @InjectableInit(
   //generateForDir: ['lib'],
@@ -16,4 +15,4 @@ final fortunicaGetIt = GetIt.instance; //GetIt.asNewInstance();
 //Future<void> configureDependencies() async => $initGetIt(globalGetIt);
 
 Future<void> configureDependenciesFortunica() async =>
-    $initGetIt(fortunicaGetIt);
+    $initGetIt(globalGetIt);

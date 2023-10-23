@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../data/cache/fortunica_caching_manager.dart';
-import '../../../infrastructure/di/inject_config.dart';
+import '../../../global.dart';
 import '../../../main_cubit.dart';
 import '../../common_widgets/custom_bottom_navigation_bar.dart';
 import 'home_cubit.dart';
@@ -14,6 +14,7 @@ import 'tabs_types.dart';
 
 class HomeScreen extends StatelessWidget {
   final TabsTypes? initTab;
+
   const HomeScreen({Key? key, this.initTab}) : super(key: key);
 
   @override
@@ -21,7 +22,7 @@ class HomeScreen extends StatelessWidget {
     final VoidCallback openDrawer = context.read<MainCubit>().openDrawer;
     return BlocProvider(create: (_) {
       return HomeCubit(
-        fortunicaGetIt.get<FortunicaCachingManager>(),
+        globalGetIt.get<FortunicaCachingManager>(),
         initTab,
       );
     }, child: Builder(

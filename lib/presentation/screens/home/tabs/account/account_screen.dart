@@ -6,7 +6,7 @@ import '../../../../../data/cache/fortunica_caching_manager.dart';
 import '../../../../../data/models/app_error/app_error.dart';
 import '../../../../../data/models/user_info/user_status.dart';
 import '../../../../../domain/repositories/fortunica_user_repository.dart';
-import '../../../../../infrastructure/di/inject_config.dart';
+import '../../../../../global.dart';
 import '../../../../../main_cubit.dart';
 import '../../../../../main_state.dart';
 import '../../../../../services/check_permission_service.dart';
@@ -29,11 +29,11 @@ class AccountScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => AccountCubit(
-        fortunicaGetIt.get<FortunicaCachingManager>(),
-        fortunicaGetIt.get<MainCubit>(),
-        fortunicaGetIt.get<FortunicaUserRepository>(),
-        fortunicaGetIt.get<PushNotificationManager>(),
-        fortunicaGetIt.get<ConnectivityService>(),
+        globalGetIt.get<FortunicaCachingManager>(),
+        globalGetIt.get<MainCubit>(),
+        globalGetIt.get<FortunicaUserRepository>(),
+        globalGetIt.get<PushNotificationManager>(),
+        globalGetIt.get<ConnectivityService>(),
         (value) => handlePermission(context, value),
       ),
       child: Builder(builder: (context) {
@@ -133,7 +133,7 @@ class AccountScreen extends StatelessWidget {
 
   Future<bool> handlePermission(
       BuildContext context, bool needShowSettingsAlert) async {
-    return await fortunicaGetIt.get<CheckPermissionService>().handlePermission(
+    return await globalGetIt.get<CheckPermissionService>().handlePermission(
         context, PermissionType.notification,
         needShowSettings: needShowSettingsAlert);
   }

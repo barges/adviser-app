@@ -2,12 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../../extensions.dart';
 import '../../../../infrastructure/routing/app_router.dart';
-
 import '../../../data/network/responses/update_note_response.dart';
 import '../../../domain/repositories/fortunica_customer_repository.dart';
-import '../../../infrastructure/di/inject_config.dart';
+import '../../../global.dart';
 import '../../../main_cubit.dart';
 import 'add_note_state.dart';
 
@@ -18,7 +18,7 @@ class AddNoteCubit extends Cubit<AddNoteState> {
 
   final String? oldTitle = null;
   final FortunicaCustomerRepository _repository =
-      fortunicaGetIt.get<FortunicaCustomerRepository>();
+      globalGetIt.get<FortunicaCustomerRepository>();
   late final TextEditingController noteController;
   late final TextEditingController titleController;
   final MainCubit mainCubit;

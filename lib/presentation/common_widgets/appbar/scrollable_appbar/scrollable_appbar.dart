@@ -7,7 +7,7 @@ import '../../../../app_constants.dart';
 import '../../../../data/models/app_error/app_error.dart';
 import '../../../../generated/assets/assets.gen.dart';
 import '../../../../generated/l10n.dart';
-import '../../../../infrastructure/di/inject_config.dart';
+import '../../../../global.dart';
 import '../../../../main_cubit.dart';
 import '../../buttons/app_icon_button.dart';
 import '../../messages/app_error_widget.dart';
@@ -32,7 +32,7 @@ class ScrollableAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ScrollableAppBarCubit(fortunicaGetIt.get<MainCubit>()),
+      create: (_) => ScrollableAppBarCubit(globalGetIt.get<MainCubit>()),
       child: Builder(builder: (context) {
         final ScrollableAppBarCubit scrollableAppBarCubit =
             context.read<ScrollableAppBarCubit>();

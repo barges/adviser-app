@@ -43,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
         needShowSettings: false);
 
     Future.delayed(const Duration(seconds: 2)).then((_) {
-      if (fortunicaGetIt.get<FortunicaCachingManager>().isAuth) {
+      if (globalGetIt.get<FortunicaCachingManager>().isAuth) {
         context.replaceAll([FortunicaHome()]);
       } else {
         context.replaceAll([const FortunicaLogin()]);

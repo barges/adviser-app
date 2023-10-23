@@ -37,7 +37,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   @override
   void dispose() {
-    fortunicaGetIt.unregister<LoginCubit>();
+    globalGetIt.unregister<LoginCubit>();
     super.dispose();
   }
 
@@ -46,18 +46,18 @@ class _LoginScreenState extends State<LoginScreen> {
     final VoidCallback openDrawer = context.read<MainCubit>().openDrawer;
     return BlocProvider(
       create: (_) {
-        fortunicaGetIt
+        globalGetIt
             .get<DynamicLinkService>()
             .checkLinkForResetPasswordFortunica(context);
-        fortunicaGetIt.registerSingleton(
+        globalGetIt.registerSingleton(
           LoginCubit(
-            fortunicaGetIt.get<FortunicaAuthRepository>(),
-            fortunicaGetIt.get<FortunicaCachingManager>(),
-            fortunicaGetIt.get<MainCubit>(),
-            fortunicaGetIt.get<Dio>(),
+            globalGetIt.get<FortunicaAuthRepository>(),
+            globalGetIt.get<FortunicaCachingManager>(),
+            globalGetIt.get<MainCubit>(),
+            globalGetIt.get<Dio>(),
           ),
         );
-        return fortunicaGetIt.get<LoginCubit>();
+        return globalGetIt.get<LoginCubit>();
       },
       child: Builder(builder: (context) {
         final LoginCubit loginCubit = context.read<LoginCubit>();

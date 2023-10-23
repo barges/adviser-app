@@ -149,7 +149,7 @@ class PushNotificationManagerImpl implements PushNotificationManager {
       Map<String, dynamic> meta = jsonDecode(message.data['meta'] ?? '{}');
       final String? type = meta['type'];
       if (type != null && type != PushType.tips.name) {
-        fortunicaGetIt.get<MainCubit>().updateSessions();
+        globalGetIt.get<MainCubit>().updateSessions();
       }
 
       _navigateToNextScreen(message);
@@ -181,17 +181,17 @@ void _messageTypeHandler(Map<String, dynamic> meta) {
           fortunicaContext.currentRoutePath == RoutePathsFortunica.chatScreen) {
         fortunicaContext.replaceAll([const FortunicaLogin()]);
       } else {
-        fortunicaGetIt.get<MainCubit>().updateSessions();
+        globalGetIt.get<MainCubit>().updateSessions();
       }
     } else if (type != PushType.tips.name) {
-      fortunicaGetIt.get<MainCubit>().updateSessions();
+      globalGetIt.get<MainCubit>().updateSessions();
     }
   }
 }
 
 Future<void> _navigateToNextScreen(RemoteMessage? message) async {
   final BuildContext? fortunicaContext = currentContext;
-  if (fortunicaGetIt.get<FortunicaCachingManager>().isAuth &&
+  if (globalGetIt.get<FortunicaCachingManager>().isAuth &&
       fortunicaContext != null &&
       message != null) {
     Map<String, dynamic> data = message.data;

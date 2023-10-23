@@ -7,7 +7,7 @@ import '../../../../../../../data/models/chats/chat_item.dart';
 import '../../../../../../../data/models/enums/markets_type.dart';
 import '../../../../../../../domain/repositories/fortunica_chats_repository.dart';
 import '../../../../../../../generated/l10n.dart';
-import '../../../../../../../infrastructure/di/inject_config.dart';
+import '../../../../../../../global.dart';
 import '../../../../../../../main_cubit.dart';
 import '../../../../../../../main_state.dart';
 import '../../../../../../../services/connectivity_service.dart';
@@ -31,8 +31,8 @@ class SearchListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => SearchListCubit(
-        fortunicaGetIt.get<FortunicaChatsRepository>(),
-        fortunicaGetIt.get<ConnectivityService>(),
+        globalGetIt.get<FortunicaChatsRepository>(),
+        globalGetIt.get<ConnectivityService>(),
         MediaQuery.of(context).size.height,
         closeOnTap,
       ),

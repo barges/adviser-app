@@ -8,7 +8,7 @@ import '../../../data/models/app_error/app_error.dart';
 import '../../../domain/repositories/fortunica_auth_repository.dart';
 import '../../../generated/assets/assets.gen.dart';
 import '../../../generated/l10n.dart';
-import '../../../infrastructure/di/inject_config.dart';
+import '../../../global.dart';
 import '../../../main_cubit.dart';
 import '../../../services/dynamic_link_service.dart';
 import '../../../utils/utils.dart';
@@ -34,11 +34,11 @@ class ForgotPasswordScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ForgotPasswordCubit(
-        authRepository: fortunicaGetIt.get<FortunicaAuthRepository>(),
-        dynamicLinkService: fortunicaGetIt.get<DynamicLinkService>(),
-        loginCubit: fortunicaGetIt.get<LoginCubit>(),
+        authRepository: globalGetIt.get<FortunicaAuthRepository>(),
+        dynamicLinkService: globalGetIt.get<DynamicLinkService>(),
+        loginCubit: globalGetIt.get<LoginCubit>(),
         resetToken: resetToken,
-        mainCubit: fortunicaGetIt.get<MainCubit>(),
+        mainCubit: globalGetIt.get<MainCubit>(),
       ),
       child: Builder(builder: (context) {
         final ForgotPasswordCubit cubit = context.read<ForgotPasswordCubit>();
