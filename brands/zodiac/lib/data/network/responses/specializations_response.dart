@@ -10,6 +10,11 @@ class SpecializationsResponse extends BaseResponse {
 
   const SpecializationsResponse({
     this.result,
+    super.status,
+    super.errorCode,
+    super.errorField,
+    super.errorMsg,
+    super.message,
   });
 
   factory SpecializationsResponse.fromJson(Map<String, dynamic> json) =>

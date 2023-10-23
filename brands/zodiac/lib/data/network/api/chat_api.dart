@@ -3,7 +3,11 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
+import 'package:zodiac/data/network/requests/authorized_request.dart';
 import 'package:zodiac/data/network/requests/create_audio_message_request.dart';
+import 'package:zodiac/data/network/requests/auto_reply_settings_request.dart';
+import 'package:zodiac/data/network/responses/auto_reply_list_response.dart';
+import 'package:zodiac/data/network/responses/auto_reply_settings_response.dart';
 import 'package:zodiac/data/network/responses/create_audio_message_response.dart';
 import 'package:zodiac/data/network/responses/send_image_response.dart';
 import 'package:zodiac/data/network/responses/upload_audio_message_response.dart';
@@ -40,4 +44,12 @@ abstract class ChatApi {
     @Part(name: 'entity_id') int? entityId,
     @Part(name: 'audio_file') File? audioFile,
   });
+
+  @POST('/private-messages/list')
+  Future<AutoReplyListResponse> getAutoReplyList(
+      @Body() AuthorizedRequest request);
+
+  @POST('/private-messages/settings')
+  Future<AutoReplySettingsResponse> autoReplySettings(
+      @Body() AutoReplySettingsRequest request);
 }

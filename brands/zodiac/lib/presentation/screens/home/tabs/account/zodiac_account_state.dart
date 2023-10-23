@@ -32,5 +32,6 @@ class ZodiacAccountState with _$ZodiacAccountState {
     @Default(EmptySuccess()) AppSuccess appSuccess,
     @Default(false) bool disableDailyCouponsEnabling,
     @Default(false) bool disableDailyRenewalEnabling,
+    bool? autoReplyEnabled,
   }) = _ZodiacAccountState;
 }

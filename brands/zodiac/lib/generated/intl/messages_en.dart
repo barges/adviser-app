@@ -81,6 +81,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "articlesZodiac": MessageLookupByLibrary.simpleMessage("Articles"),
         "audioMessageZodiac":
             MessageLookupByLibrary.simpleMessage("Audio message"),
+        "autoReplyZodiac": MessageLookupByLibrary.simpleMessage("Auto-reply"),
         "avgDailyEarningsZodiac":
             MessageLookupByLibrary.simpleMessage("Avg Daily Earnings"),
         "balanceTransactionsZodiac":
@@ -97,6 +98,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancelZodiac": MessageLookupByLibrary.simpleMessage("Cancel"),
         "cannedMessagesZodiac":
             MessageLookupByLibrary.simpleMessage("Сanned messages"),
+        "categoriesZodiac": MessageLookupByLibrary.simpleMessage("Categories"),
         "changeZodiac": MessageLookupByLibrary.simpleMessage("Change"),
         "characterLimitExceededZodiac":
             MessageLookupByLibrary.simpleMessage("Character limit exceeded."),
@@ -155,6 +157,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "doYouWantToDeleteThisMessageZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Do you want to delete this message?"),
+        "doneZodiac": MessageLookupByLibrary.simpleMessage("Done"),
         "duplicateAnExistingServiceZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Duplicate an existing service"),
@@ -181,6 +184,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "explainIn3to5StepsWhatTheCustomersWillGetZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Explain in 3-5 steps what the customers will get."),
+        "firstSelectTheCategoriesZodiac":
+            MessageLookupByLibrary.simpleMessage("First select the categories"),
+        "firstSelectTheMethodsZodiac":
+            MessageLookupByLibrary.simpleMessage("First select the methods"),
         "firstYouNeedFillInformationAboutServiceZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "First you need to fill up all required information about the service then send it for approval and as it would be ready you will be able to sell it"),
@@ -214,13 +221,17 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Limit reached"),
         "loginZodiac": MessageLookupByLibrary.simpleMessage("Login"),
         "lowestRateZodiac": MessageLookupByLibrary.simpleMessage("Lowest rate"),
+        "mainCategoryZodiac":
+            MessageLookupByLibrary.simpleMessage("Main category"),
         "mainLanguageZodiac":
             MessageLookupByLibrary.simpleMessage("Main language"),
+        "mainMethodZodiac": MessageLookupByLibrary.simpleMessage("Main method"),
         "mainSpecialtyZodiac":
             MessageLookupByLibrary.simpleMessage("Main specialty"),
         "mainZodiac": MessageLookupByLibrary.simpleMessage("Main"),
         "manageMessagesZodiac":
             MessageLookupByLibrary.simpleMessage("Manage messages"),
+        "methodsZodiac": MessageLookupByLibrary.simpleMessage("Methods"),
         "minutesFullZodiac": MessageLookupByLibrary.simpleMessage("Minutes"),
         "minutesZodiac": MessageLookupByLibrary.simpleMessage("min"),
         "moreAboutOfflineServicesZodiac":
@@ -258,12 +269,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "nowYouCanReceiveCallsZodiac":
             MessageLookupByLibrary.simpleMessage("Now you can receive calls"),
         "objectsZodiac": MessageLookupByLibrary.simpleMessage("Objects"),
+        "offZodiac": MessageLookupByLibrary.simpleMessage("Off"),
         "offlineServiceTabZodiac":
             MessageLookupByLibrary.simpleMessage("Offline service"),
         "offlineServiceZodiac":
             MessageLookupByLibrary.simpleMessage("Offline service:"),
         "offlineZodiac": MessageLookupByLibrary.simpleMessage("Offline"),
         "okZodiac": MessageLookupByLibrary.simpleMessage("Ok"),
+        "onZodiac": MessageLookupByLibrary.simpleMessage("On"),
         "onlineServiceTabZodiac":
             MessageLookupByLibrary.simpleMessage("Online service"),
         "onlineServicesZodiac":
@@ -334,6 +347,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "secondsZodiac": MessageLookupByLibrary.simpleMessage("sec"),
         "selectAtLeast1CouponZodiac":
             MessageLookupByLibrary.simpleMessage("Select at least 1 coupon"),
+        "selectCategoriesZodiac":
+            MessageLookupByLibrary.simpleMessage("Select categories"),
+        "selectMainCategoryZodiac":
+            MessageLookupByLibrary.simpleMessage("Select main category"),
+        "selectMainMethodZodiac":
+            MessageLookupByLibrary.simpleMessage("Select main method"),
+        "selectMethodsZodiac":
+            MessageLookupByLibrary.simpleMessage("Select methods"),
         "selectedCouponsWillBeRenewedAutomaticallyZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "Selected coupons will be renewed automatically and displayed on your profile"),
@@ -359,6 +380,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "sessionsZodiac": MessageLookupByLibrary.simpleMessage("Sessions"),
         "setAsMainLanguageZodiac":
             MessageLookupByLibrary.simpleMessage("Set as main language"),
+        "setTimeFromZodiac":
+            MessageLookupByLibrary.simpleMessage("Set time from"),
+        "setTimeToZodiac": MessageLookupByLibrary.simpleMessage("Set time to"),
+        "setTimeZodiac": MessageLookupByLibrary.simpleMessage("Set time"),
         "setUpSuccessfulZodiac":
             MessageLookupByLibrary.simpleMessage("Set up successful"),
         "showDailyCouponsZodiac":
@@ -432,6 +457,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "youCanChangePriceOncePer24HZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "You can change price once per 24 h"),
+        "youCanChooseUpTo3CategoriesZodiac": MessageLookupByLibrary.simpleMessage(
+            "You can choose up to 3 categories you prefer to work with and the main category among them"),
+        "youCanChooseUpTo3MethodsZodiac": MessageLookupByLibrary.simpleMessage(
+            "You can choose up to 3 methods you are working with and the main method among them"),
         "youCanEasilyAccessTheseTemplatesZodiac":
             MessageLookupByLibrary.simpleMessage(
                 "You can easily access these templates during and after the chat"),

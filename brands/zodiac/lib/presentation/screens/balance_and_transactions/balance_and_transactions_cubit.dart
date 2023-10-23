@@ -15,19 +15,18 @@ import 'package:zodiac/data/models/user_info/user_balance.dart';
 import 'package:zodiac/data/network/requests/list_request.dart';
 import 'package:zodiac/data/network/responses/payments_list_response.dart';
 import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
+import 'package:zodiac/presentation/common_widgets/transactions_sliver_list/time_item_widget.dart';
+import 'package:zodiac/presentation/common_widgets/transactions_sliver_list/transaction_tile_widget.dart';
+import 'package:zodiac/presentation/common_widgets/transactions_sliver_list/transactions_sliver_list_widget.dart';
 import 'package:zodiac/presentation/screens/balance_and_transactions/balance_and_transactions_screen.dart';
 import 'package:zodiac/presentation/screens/balance_and_transactions/balance_and_transactions_state.dart';
 import 'package:zodiac/presentation/screens/balance_and_transactions/widgets/label_widget.dart';
-import 'package:zodiac/presentation/screens/balance_and_transactions/widgets/time_item_widget.dart';
-import 'package:zodiac/presentation/screens/balance_and_transactions/widgets/transaction_statistic_widget.dart';
-import 'package:zodiac/presentation/screens/balance_and_transactions/widgets/transaction_tile_widget.dart';
 import 'package:zodiac/zodiac_main_cubit.dart';
 
 const double appBarExtension = AppConstants.appBarHeight;
 const double startTilesPosition = appBarExtension +
     paddingTopLabelWidget +
     labelWidgetHeight +
-    statisticWidgetHeight +
     paddingottomStatisticWidget +
     paddingTopTimeItem;
 const double internalItemTileHeight =
@@ -153,8 +152,8 @@ class BalanceAndTransactionsCubit extends Cubit<BalanceAndTransactionsState> {
         _offset = _offset + _limit;
 
         _transactionsListData.addAll(response.result ?? []);
-        final List<TransactionUiModel> transactionUiModelsList =
-            await compute(_toTransactionUiModels, _transactionsListData);
+        final List<TransactionUiModel> transactionUiModelsList = await compute(
+            TransactionUiModel.toTransactionUiModels, _transactionsListData);
 
         setTilePositions(transactionUiModelsList);
 
@@ -221,24 +220,4 @@ class _TilePosition {
   final double start;
   final double end;
   const _TilePosition(this.start, this.end);
-}
-
-List<TransactionUiModel> _toTransactionUiModels(List<PaymentInformation> data) {
-  final uiModelItems = <TransactionUiModel>[];
-  DateTime? dateCreate;
-  List<PaymentInformation> items = [];
-  for (var item in data) {
-    if (item.dateCreate == null) continue;
-
-    if (dateCreate?.day != item.dateCreate?.day ||
-        dateCreate?.month != item.dateCreate?.month ||
-        dateCreate?.year != item.dateCreate?.year) {
-      items = [];
-      dateCreate = item.dateCreate;
-      uiModelItems.add(TransactionUiModel.separator(dateCreate));
-      uiModelItems.add(TransactionUiModel.data(items));
-    }
-    items.add(item);
-  }
-  return uiModelItems;
 }
