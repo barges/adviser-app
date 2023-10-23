@@ -209,7 +209,7 @@ class ChatCubit extends BaseCubit<ChatState> {
     textInputFocusNode.addListener(() {
       final bool isFocused = textInputFocusNode.hasFocus;
 
-      if (!isFocused) {
+      if (!isFocused && !_isAttachingPicture) {
         setTextInputFocus(false);
       }
       getBottomTextAreaHeight();
