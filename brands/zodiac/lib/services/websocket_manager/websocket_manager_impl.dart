@@ -358,7 +358,7 @@ class WebSocketManagerImpl implements WebSocketManager {
           path: "/wss",
           queryParameters: {"authToken": authToken});
 
-      logger.d("Socket is connecting ...");
+      logger.d("Socket is connecting ...  $_host");
       _channel = IOWebSocketChannel.connect(url);
       _webSocketStateStream.add(WebSocketState.connected);
       _currentState = WebSocketState.connected;
@@ -373,12 +373,13 @@ class WebSocketManagerImpl implements WebSocketManager {
           logger.d("SUB Socket event: $event");
         }
         _emitter.emit(message.action, this, message);
-      }, onDone: () {
-        logger.d("Socket is closed...");
+      }, onDone: () async {
+        logger.d("Socket is closed...  $_host");
         _webSocketStateStream.add(WebSocketState.closed);
         _currentState = WebSocketState.closed;
         // _authCheckOnBackend();
-        _setHost();
+        await _setHost();
+        connect();
       }, onError: (error) async {
         logger.d("Socket error: $error");
         _webSocketStateStream.add(WebSocketState.closed);
