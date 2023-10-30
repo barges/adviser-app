@@ -8,6 +8,8 @@ import 'package:zodiac/presentation/screens/chat/widgets/is_delivered_widget.dar
 import 'package:zodiac/presentation/screens/chat/widgets/messages/reaction_widget.dart';
 import 'package:zodiac/zodiac_extensions.dart';
 
+import '../replied_message_content_widget.dart';
+
 class AudioMessageWidget extends StatelessWidget {
   final ChatMessageModel chatMessageModel;
   final bool hideLoader;
@@ -83,11 +85,6 @@ class _MessageContainer extends StatelessWidget {
       children: [
         Container(
           width: 222.0,
-          /*constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width -
-                reactionContainerWidth -
-                ZodiacConstants.chatHorizontalPadding * 2,
-          ),*/
           padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
           decoration: BoxDecoration(
             color: isOutgoing ? theme.primaryColor : theme.canvasColor,
@@ -95,7 +92,40 @@ class _MessageContainer extends StatelessWidget {
               AppConstants.buttonRadius,
             ),
           ),
-          child: child,
+          child: Column(
+            children: [
+              if (chatMessageModel.repliedMessage != null)
+                Row(
+                  children: [
+                    Container(
+                      height: 36.0,
+                      width: 2.0,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(2.0),
+                        color: isOutgoing
+                            ? theme.backgroundColor
+                            : theme.primaryColor,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 12.0,
+                    ),
+                    Expanded(
+                      child: RepliedMessageContentWidget(
+                        repliedMessage: chatMessageModel.repliedMessage,
+                        authorNameColor: isOutgoing
+                            ? theme.backgroundColor
+                            : theme.primaryColor,
+                        messageColor: isOutgoing
+                            ? theme.backgroundColor
+                            : theme.shadowColor,
+                      ),
+                    )
+                  ],
+                ),
+              child,
+            ],
+          ),
         ),
         Positioned(
           bottom: 10.0,
