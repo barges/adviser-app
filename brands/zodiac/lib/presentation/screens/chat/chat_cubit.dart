@@ -229,6 +229,15 @@ class ChatCubit extends BaseCubit<ChatState> {
             sendMessageToChat(text: helloMessage!);
           }
         }
+      } else if (event.clientId == null &&
+          state.chatIsActive &&
+          !event.isActive) {
+        emit(state.copyWith(
+            chatIsActive: event.isActive,
+            shouldShowInput: event.isActive,
+            chatTimerValue: null,
+            reactionMessageId: null));
+        _chatTimer?.cancel();
       }
     }));
 
