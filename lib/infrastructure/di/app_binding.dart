@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:shared_advisor_interface/data/cache/global_caching_manager.dart';
 import 'package:shared_advisor_interface/data/cache/global_caching_manager_impl.dart';
 import 'package:shared_advisor_interface/global.dart';
 import 'package:shared_advisor_interface/infrastructure/flavor/flavor_config.dart';
