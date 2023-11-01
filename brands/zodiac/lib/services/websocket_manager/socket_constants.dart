@@ -42,4 +42,6 @@ class SocketConstants {
   static const String coupons = 'coupons';
 
   static const String actions = 'actions';
+
+  static const String check = 'check';
 }

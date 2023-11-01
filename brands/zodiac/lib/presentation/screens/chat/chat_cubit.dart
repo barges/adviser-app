@@ -221,14 +221,17 @@ class ChatCubit extends BaseCubit<ChatState> {
         if (!event.isActive) {
           _chatTimer?.cancel();
           emit(state.copyWith(chatTimerValue: null, reactionMessageId: null));
-        }
-        if (event.isActive) {
+        } else {
           _stopOfflineSession();
           final String? helloMessage = enterRoomData?.expertData?.helloMessage;
           if (helloMessage?.isNotEmpty == true) {
             sendMessageToChat(text: helloMessage!);
           }
         }
+      } else if (event.clientId == null &&
+          state.chatIsActive &&
+          !event.isActive) {
+        setChatInactiveIfChatEndedDuringAppInBackground();
       }
     }));
 
@@ -485,6 +488,15 @@ class ChatCubit extends BaseCubit<ChatState> {
     _webSocketManager.sendUpsellingActions();
 
     getClientInformation();
+  }
+
+  void setChatInactiveIfChatEndedDuringAppInBackground() {
+    emit(state.copyWith(
+        chatIsActive: false,
+        shouldShowInput: false,
+        chatTimerValue: null,
+        reactionMessageId: null));
+    _chatTimer?.cancel();
   }
 
   @override

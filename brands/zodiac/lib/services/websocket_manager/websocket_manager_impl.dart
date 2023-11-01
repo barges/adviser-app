@@ -645,7 +645,16 @@ class WebSocketManagerImpl implements WebSocketManager {
   }
 
   void _onGetState(Event event) {
-    ///TODO - Implement onGetState
+    final SocketMessage message = (event.eventData as SocketMessage);
+    final bool currentRouteIsChat =
+        ZodiacBrand().context?.currentRoutePath == RoutePathsZodiac.chatScreen;
+    final bool? check = message.params[SocketConstants.check];
+    if (currentRouteIsChat && check == null) {
+      _chatIsActiveStream.add(ActiveChatEvent(
+        isActive: false,
+      ));
+      _zodiacMainCubit.updateSessions();
+    }
   }
 
   void _onChatLogin(Event event) {
