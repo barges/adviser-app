@@ -54,6 +54,7 @@ class ChatScreen extends StatelessWidget {
         deleteAudioMessageAlert: () => deleteAudioMessageAlert(context),
         recordingIsNotPossibleAlert: () => recordingIsNotPossibleAlert(context),
         chatScreenArguments: chatScreenArguments,
+        popForcedCallback: () => context.popForced(),
       ),
       child: Builder(builder: (context) {
         return const ChatContentWidget();
@@ -110,7 +111,6 @@ class ChatContentWidget extends StatelessWidget {
                       okText: s.returnFortunica,
                       allowBarrierClick: false,
                       isCancelEnabled: true,
-                      useRootNavigator: false,
                     );
 
                     if (needReturn == true) {

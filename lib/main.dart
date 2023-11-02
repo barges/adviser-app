@@ -19,8 +19,6 @@ import 'multiple_localization/multiple_localization.dart';
 import 'presentation/common_widgets/app_loading_indicator.dart';
 import 'themes/app_themes.dart';
 
-BuildContext? currentContext;
-
 void main() async {
   runZonedGuarded(
     () async {
@@ -54,7 +52,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final CachingManager _cacheManager = globalGetIt.get<CachingManager>();
 
-  final MainAppRouter rootRouter = MainAppRouter();
+  final MainAppRouter rootRouter = globalGetIt.get<MainAppRouter>();
 
   @override
   void initState() {
@@ -151,50 +149,28 @@ class _AppNavigatorObserver extends AutoRouterObserver {
   void didPush(Route route, Route? previousRoute) {
     super.didPush(route, previousRoute);
     _clearErrorMessage();
-    _setContext();
   }
 
   @override
   void didReplace({Route? newRoute, Route? oldRoute}) {
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
     _clearErrorMessage();
-    _setContext();
   }
 
   @override
   void didRemove(Route route, Route? previousRoute) {
     super.didRemove(route, previousRoute);
     _clearErrorMessage();
-    _setContext();
-  }
-
-  @override
-  void didInitTabRoute(TabPageRoute route, TabPageRoute? previousRoute) {
-    super.didInitTabRoute(route, previousRoute);
-    _setContext();
-  }
-
-  @override
-  void didChangeTabRoute(TabPageRoute route, TabPageRoute previousRoute) {
-    super.didChangeTabRoute(route, previousRoute);
-    _setContext();
   }
 
   @override
   void didPop(Route route, Route? previousRoute) {
     super.didPop(route, previousRoute);
     _clearErrorMessage();
-    _setContext();
   }
 
   void _clearErrorMessage() {
     globalGetIt.get<MainCubit>().clearErrorMessage();
-  }
-
-  void _setContext() {
-    if (navigator?.context != null) {
-      currentContext = navigator?.context;
-    }
   }
 }
 

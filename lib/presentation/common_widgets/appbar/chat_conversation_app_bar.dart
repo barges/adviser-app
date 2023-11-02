@@ -8,7 +8,6 @@ import '../../../data/models/enums/chat_item_status_type.dart';
 import '../../../data/models/enums/zodiac_sign.dart';
 import '../../../generated/assets/assets.gen.dart';
 import '../../../generated/l10n.dart';
-import '../../../main.dart';
 import '../../screens/chat/chat_cubit.dart';
 import '../buttons/app_icon_button.dart';
 
@@ -64,7 +63,7 @@ class ChatConversationAppBar extends StatelessWidget
                 if (questionStatus != ChatItemStatusType.taken)
                   AppIconButton(
                     icon: Assets.vectors.arrowLeft.path,
-                    onTap: currentContext?.pop,
+                    onTap: context?.pop,
                   ),
                 Expanded(
                   child: Column(

@@ -46,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
       create: (_) {
         globalGetIt
             .get<DynamicLinkService>()
-            .checkLinkForResetPasswordFortunica(context);
+            .checkLinkForResetPasswordFortunica();
         globalGetIt.registerSingleton(
           LoginCubit(
             globalGetIt.get<FortunicaAuthRepository>(),

@@ -11,7 +11,6 @@ import 'data/cache/caching_manager.dart';
 import 'data/models/app_error/app_error.dart';
 import 'global.dart';
 import 'infrastructure/routing/app_router.gr.dart';
-import 'main.dart';
 import 'main_state.dart';
 import 'services/connectivity_service.dart';
 import 'services/fresh_chat_service.dart';
@@ -112,7 +111,7 @@ class MainCubit extends Cubit<MainState> {
     emit(state.copyWith(isAuth: isAuth));
   }
 
-  void goToSupport() {
-    currentContext?.push(route: const FortunicaSupport());
+  void goToSupport(BuildContext context) {
+    context.push(route: const FortunicaSupport());
   }
 }

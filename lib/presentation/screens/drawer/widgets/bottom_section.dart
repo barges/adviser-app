@@ -32,7 +32,7 @@ class BottomSection extends StatelessWidget {
                 text: SFortunica.of(context).customerSupport,
                 onTap: () {
                   context.pop();
-                  context.read<MainCubit>().goToSupport();
+                  context.read<MainCubit>().goToSupport(context);
                 },
               ),
               const SizedBox(

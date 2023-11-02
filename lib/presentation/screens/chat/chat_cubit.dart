@@ -15,8 +15,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:snapping_sheet_2/snapping_sheet.dart';
 import 'package:uuid/uuid.dart';
+import 'package:shared_advisor_interface/infrastructure/routing/app_router.dart';
 
-import '../../../../infrastructure/routing/app_router.dart';
 import '../../../app_constants.dart';
 import '../../../data/models/app_error/app_error.dart';
 import '../../../data/models/app_error/ui_error_type.dart';
@@ -37,7 +37,7 @@ import '../../../data/network/responses/answer_validation_response.dart';
 import '../../../data/network/responses/rituals_response.dart';
 import '../../../domain/repositories/fortunica_chats_repository.dart';
 import '../../../global.dart';
-import '../../../main.dart';
+import '../../../infrastructure/routing/app_router.gr.dart';
 import '../../../main_cubit.dart';
 import '../../../services/audio/audio_player_service.dart';
 import '../../../services/audio/audio_recorder_service.dart';
@@ -63,6 +63,8 @@ class ChatCubit extends BaseCubit<ChatState> {
 
   final PublishSubject<bool> refreshChatInfoTrigger = PublishSubject();
 
+  final MainAppRouter rootRouter = globalGetIt.get<MainAppRouter>();
+
   GlobalKey? questionGlobalKey;
 
   final ConnectivityService connectivityService;
@@ -77,6 +79,7 @@ class ChatCubit extends BaseCubit<ChatState> {
   final AudioPlayerService audioPlayer;
   final AudioRecorderService audioRecorder;
   final CheckPermissionService checkPermissionService;
+  final Function popForcedCallback;
   final _uuid = const Uuid();
   int _tillShowMessagesInSec = 0;
   int _afterShowMessagesInSec = 0;
@@ -115,6 +118,7 @@ class ChatCubit extends BaseCubit<ChatState> {
     required this.deleteAudioMessageAlert,
     required this.recordingIsNotPossibleAlert,
     required this.chatScreenArguments,
+    required this.popForcedCallback,
   }) : super(const ChatState()) {
     textInputEditingController.addListener(textInputEditingControllerListener);
 
@@ -540,7 +544,7 @@ class ChatCubit extends BaseCubit<ChatState> {
     }
 
     mainCubit.updateSessions();
-    currentContext?.popForced();
+    popForcedCallback();
     _answerTimer?.cancel();
   }
 

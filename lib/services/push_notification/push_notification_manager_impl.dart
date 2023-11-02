@@ -4,16 +4,13 @@ import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../infrastructure/routing/app_router.dart';
 import '../../data/cache/caching_manager.dart';
 import '../../global.dart';
 import '../../infrastructure/routing/app_router.gr.dart';
 import '../../infrastructure/routing/route_paths_fortunica.dart';
-import '../../main.dart';
 import '../../main_cubit.dart';
 import '../../presentation/screens/chat/chat_screen.dart';
 import 'push_notification_manager.dart';
@@ -21,6 +18,8 @@ import 'push_notification_manager.dart';
 bool _isRegisteredForPushNotifications = false;
 
 final ReceivePort _receiveNotificationPort = ReceivePort();
+final MainAppRouter rootRouter = globalGetIt.get<MainAppRouter>();
+
 const String _notificationPortChannel = 'communication_channel';
 
 @Singleton(as: PushNotificationManager)
@@ -172,13 +171,11 @@ Future<void> _backgroundMessageHandler(RemoteMessage message) async {
 }
 
 void _messageTypeHandler(Map<String, dynamic> meta) {
-  final BuildContext? fortunicaContext = currentContext;
   final String? type = meta['type'];
   if (type != null) {
     if (type == PushType.publicReturned.name) {
-      if (fortunicaContext != null &&
-          fortunicaContext.currentRoutePath == RoutePathsFortunica.chatScreen) {
-        fortunicaContext.replaceAll([const FortunicaLogin()]);
+      if (rootRouter.currentPath == RoutePathsFortunica.chatScreen) {
+        rootRouter.replaceAll([const FortunicaLogin()]);
       } else {
         globalGetIt.get<MainCubit>().updateSessions();
       }
@@ -189,10 +186,7 @@ void _messageTypeHandler(Map<String, dynamic> meta) {
 }
 
 Future<void> _navigateToNextScreen(RemoteMessage? message) async {
-  final BuildContext? fortunicaContext = currentContext;
-  if (globalGetIt.get<CachingManager>().isAuth &&
-      fortunicaContext != null &&
-      message != null) {
+  if (globalGetIt.get<CachingManager>().isAuth && message != null) {
     Map<String, dynamic> data = message.data;
 
     Map<String, dynamic> meta = json.decode(data['meta']);
@@ -202,24 +196,21 @@ Future<void> _navigateToNextScreen(RemoteMessage? message) async {
     if (entityId != null && type != null) {
       if (type == PushType.private.name) {
         globalGetIt.get<MainCubit>().stopAudio();
-        fortunicaContext.push(
-            route: FortunicaChat(
+        rootRouter.push(FortunicaChat(
           chatScreenArguments: ChatScreenArguments(privateQuestionId: entityId),
         ));
       } else if (type == PushType.session.name) {
         globalGetIt.get<MainCubit>().stopAudio();
-        fortunicaContext.push(
-            route: FortunicaChat(
+        rootRouter.push(FortunicaChat(
           chatScreenArguments: ChatScreenArguments(ritualID: entityId),
         ));
       } else if (type == PushType.tips.name) {
         globalGetIt.get<MainCubit>().stopAudio();
-        fortunicaContext.push(
-            route: FortunicaChat(
+        rootRouter.push(FortunicaChat(
           chatScreenArguments: ChatScreenArguments(clientIdFromPush: entityId),
         ));
       } else if (type == PushType.publicReturned.name) {
-        fortunicaContext.replaceAll([const FortunicaLogin()]);
+        rootRouter.replaceAll([const FortunicaLogin()]);
       }
     }
   }
