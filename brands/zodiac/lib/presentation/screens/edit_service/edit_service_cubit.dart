@@ -23,6 +23,7 @@ import 'package:zodiac/domain/repositories/zodiac_user_repository.dart';
 import 'package:zodiac/presentation/screens/add_service/widgets/sliders_part/delivery_time_slider_widget.dart';
 import 'package:zodiac/presentation/screens/edit_service/edit_service_state.dart';
 import 'package:zodiac/zodiac_constants.dart';
+import 'package:collection/collection.dart';
 
 const int _textFieldsCount = 2;
 
@@ -130,11 +131,11 @@ class EditServiceCubit extends Cubit<EditServiceState> {
             String? waitingForApprovalDescription = element.description?.value;
 
             String? approvedTitle = translations
-                ?.firstWhere((item) => element.code == item.code)
-                .title;
+                ?.firstWhereOrNull((item) => element.code == item.code)
+                ?.title;
             String? approvedDescription = translations
-                ?.firstWhere((item) => element.code == item.code)
-                .description;
+                ?.firstWhereOrNull((item) => element.code == item.code)
+                ?.description;
 
             approvedFields.add(ServiceLanguageModel(
               code: element.code,
